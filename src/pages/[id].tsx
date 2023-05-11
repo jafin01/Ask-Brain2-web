@@ -28,8 +28,8 @@ export default function Home({ chat }: any) {
   //   });
 
   return (
-    <div>
-      <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 h-screen flex flex-col">
+    <div className="w-full bg-app-bg">
+      <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 h-screen flex flex-col border-r border-l border-white border-opacity-10">
         <div className="px-5 py-5 flex items-center justify-center h-16">
           <h1 className="text-gray-100 text-xl font-mono">{chat.title}</h1>
         </div>
@@ -39,12 +39,27 @@ export default function Home({ chat }: any) {
               <div className="px-4 font-lato">
                 <div className="relative">
                   <div className="absolute inset-0 border opacity-10 rounded-3xl" />
-                  <div className="relative flex gap-4 justify-between p-4 my-3 rounded-3xl">
+                  <div className="relative flex gap-4 p-4 my-3 rounded-3xl">
                     <div className="relative">
-                      <div className="h-12 w-12 rounded-full bg-bgmatte-primary" />
+                      <div className="h-12 w-12 rounded-full bg-bgmatte-primary flex items-center justify-center p-2 text-grad-purple">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-full h-full"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                          />
+                        </svg>
+                      </div>
                     </div>
-                    <div className="mb-15">
-                      <p className="text-gray-400 font-light leading-[1.5rem] tracking-[0.05rem] pr-2">
+                    <div className="mb-15 flex-1">
+                      <p className="text-gray-400 font-light leading-[1.5rem] tracking-[0.05rem]">
                         {message.content}
                       </p>
                     </div>
