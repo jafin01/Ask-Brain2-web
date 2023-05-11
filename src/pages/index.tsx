@@ -2,14 +2,14 @@
 import { functions } from 'config/firebase';
 import {
   httpsCallable,
-  connectFunctionsEmulator,
+  // connectFunctionsEmulator,
   // getFunctions,
 } from 'firebase/functions';
 import React, { useEffect } from 'react';
 
 function index() {
   // const functions = getFunctions(getApp());
-  connectFunctionsEmulator(functions, 'localhost', 5001);
+  // connectFunctionsEmulator(functions, 'localhost', 5001);
   const generateText = httpsCallable(functions, 'generateChat');
   // Call the Cloud Function with the required data
   useEffect(() => {
