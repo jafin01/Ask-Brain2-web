@@ -3,14 +3,14 @@ import React from 'react';
 import { db } from 'config/firebase';
 import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
 
-export default function Home({ chat }: any) {
+export default function Screenshot({ chat }: any) {
   return (
     <div className="w-full bg-app-bg">
-      <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 h-screen flex flex-col border-r border-l border-white border-opacity-10">
+      <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 flex flex-col">
         <div className="px-5 py-5 flex items-center justify-center h-16">
           <h1 className="text-gray-100 text-xl font-mono">{chat.title}</h1>
         </div>
-        <main className="flex-1 flex flex-col gap-1 overflow-y-auto">
+        <main className="flex-1 flex flex-col gap-1">
           {chat.messages.reverse().map((message: any) => {
             return message.role === 'user' ? (
               <div className="px-4 font-lato">
@@ -83,15 +83,6 @@ export default function Home({ chat }: any) {
             );
           })}
         </main>
-
-        <div className="w-full py-4 px-4">
-          <button
-            type="button"
-            className="bg-grad-purple rounded-[23px] text-lg w-full h-20 text-white font-lato font-bold"
-          >
-            Download Ask Brain 2
-          </button>
-        </div>
       </div>
     </div>
   );
