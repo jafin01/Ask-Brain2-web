@@ -27,7 +27,7 @@ function Home() {
   return (
     <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen w-full">
       <Navbar isOpen={isOpen} handleOpen={handleOpen} />
-      <section className="pt-52 md:pt-0 md:flex w-full h-full md:justify-center md:items-center">
+      <section className="pt-36 md:pt-0 md:flex w-full h-screen md:justify-center md:items-center">
         <aside className="w-full md:w-1/2 text-white px-16">
           <section>
             <h1 className="text-5xl leading-snug font-poppins font-medium lg:text-6xl md:leading-snug ">
