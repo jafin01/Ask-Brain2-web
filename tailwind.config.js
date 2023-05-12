@@ -13,6 +13,14 @@ module.exports = {
     fontFamily: {
       lato: ['Lato', 'sans-serif'],
       mono: ['Roboto Mono', 'monospace'],
+      poppins: ['Poppins', 'sans-serif'],
+      legal: [
+        'Haas Grot Text R Web',
+        'Helvetica Neue',
+        'Helvetica',
+        'Arial',
+        'sans-serif',
+      ],
     },
   },
   plugins: [],
