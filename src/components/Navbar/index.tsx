@@ -9,7 +9,7 @@ type Props = {
 function Navbar({ isOpen, handleOpen }: Props) {
   return (
     <nav
-      className={`absolute w-full font-poppins bg-transparent text-white h-16 flex justify-between px-10 items-center ${
+      className={`fixed w-full font-poppins lg:bg-transparent text-white h-16 flex justify-between px-10 items-center bg-app-bg ${
         isOpen && 'bg-app-bg'
       }`}
     >
