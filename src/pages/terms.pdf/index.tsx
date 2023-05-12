@@ -15,6 +15,7 @@ export default function Terms() {
           type="application/pdf"
           width="100%"
           height="100%"
+          title="Helloo this is new"
         />
       </div>
     </>
