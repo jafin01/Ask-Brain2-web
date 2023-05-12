@@ -81,7 +81,7 @@ function Navbar({ isOpen, handleOpen }: Props) {
       <div className="flex items-center justify-between">
         {isOpen && (
           <div className="md:hidden">
-            <div className="absolute top-16 left-0 w-full h-1/2 bg-gradient-to-br from-bg-app-bg to-bg-grad-purple shadow-lg z-10">
+            <div className="absolute top-16 left-0 w-full py-20 bg-gradient-to-br from-bg-app-bg to-bg-grad-purple shadow-lg z-10">
               <div className="flex flex-col gap-10 items-center justify-center h-full">
                 <Link href="/about">About</Link>
                 <Link href="/faq">FAQ</Link>
