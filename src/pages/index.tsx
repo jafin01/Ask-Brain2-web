@@ -16,7 +16,7 @@ function Home() {
       <Navbar isOpen={isOpen} handleOpen={handleOpen} />
       <section className="pt-24 md:pt-0 md:flex w-full h-full md:justify-center md:items-center">
         <aside className="w-full md:w-1/2 text-white px-10">
-          <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green tracking-tight">
+          <div className="text-6xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green tracking-tight">
             <p className="md:py-5 text-transparent">Your Intelligent</p>
             <p className="text-transparent">Chat Companion</p>
           </div>
@@ -48,8 +48,6 @@ function Home() {
           />
         </aside>
       </section>
-
-      <section className="h-500 w-full">hello</section>
     </div>
   );
 }
