@@ -1,21 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { connectFunctionsEmulator, httpsCallable } from 'firebase/functions';
-import React, { useState } from 'react';
-// import { functions } from 'config/firebase';
+import { connectFunctionsEmulator, httpsCallable } from 'firebase/functions';
+import React, { useEffect, useState } from 'react';
+import { functions } from 'config/firebase';
 import Navbar from '@/components/Navbar';
 
 function Home() {
   // const functions = getFunctions(getApp());
-  // connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  // const fetchData = httpsCallable(functions, 'fetchData');
+  // const generateText = httpsCallable(functions, 'generateChat');
+
+  const takeScreenshot = httpsCallable(functions, 'takeScreenshot');
+
+  useEffect(() => {
+    takeScreenshot({
+      // url: 'http://www.google.com',
+      id: 'f16bfd7c-9a8e-49ac-8ed7-2859a49a5699',
+    })
+      .then((result: any) => {
+        console.log('Fetched data:', result.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   // useEffect(() => {
-  //   fetchData()
+  //   generateText({
+  //     prompt: [
+  //       {
+  //         role: 'user',
+  //         content: 'Hello, how are you?',
+  //       },
+  //     ],
+  //   })
   //     .then((result: any) => {
   //       console.log('Fetched data:', result.data);
   //     })
