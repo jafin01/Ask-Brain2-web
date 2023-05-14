@@ -82,7 +82,7 @@ function Home() {
       <section className="px-10 w-full text-gray-300 py-10">
         <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed">
           <span className="md:block md:py-5">
-            Maximize your potential with{' '}
+            Maximise your potential with{' '}
           </span>
           <span className="text-4xl md:text-5xl lg:text-6xl text-transparent md:py-5 bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-grad-green md:tracking-tight">
             ASK BRAIN 2
