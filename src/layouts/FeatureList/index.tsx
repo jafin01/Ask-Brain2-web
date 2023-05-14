@@ -6,7 +6,7 @@ export default function FeatureList() {
     <div className="flex flex-col md:flex-row gap-7">
       <Card className="w-full h-auto md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
-          <div className="rounded-full h-16 w-16 m-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
+          <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
               width="241"
               height="212"
@@ -33,7 +33,7 @@ export default function FeatureList() {
       </Card>
       <Card className="w-full h-auto md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
-          <div className="rounded-full h-16 w-16 m-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
+          <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
               width="241"
               height="212"
@@ -60,7 +60,7 @@ export default function FeatureList() {
       </Card>
       <Card className="w-full h-auto md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
-          <div className="rounded-full h-16 w-16 m-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
+          <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
               width="241"
               height="212"
@@ -89,7 +89,7 @@ export default function FeatureList() {
       </Card>
       <Card className="w-full h-auto md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
-          <div className="rounded-full h-16 w-16 m-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
+          <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
               width="241"
               height="212"
