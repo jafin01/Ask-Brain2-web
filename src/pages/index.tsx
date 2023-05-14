@@ -3,6 +3,7 @@ import { connectFunctionsEmulator } from 'firebase/functions';
 import React, { useState } from 'react';
 import { functions } from 'config/firebase';
 import Navbar from '@/components/Navbar';
+import Card from '@/components/Card';
 
 function Home() {
   connectFunctionsEmulator(functions, 'localhost', 5001);
@@ -12,10 +13,10 @@ function Home() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen md:h-screen pb-10 md:pb-0 w-full">
+    <div className="w-full px-10 bg-gradient-to-br from-app-bg via-app-bg to-grad-purple pb-10 md:pb-0">
       <Navbar isOpen={isOpen} handleOpen={handleOpen} />
-      <section className="pt-24 md:pt-0 md:flex w-full h-full md:justify-center md:items-center">
-        <aside className="w-full md:w-1/2 text-white px-10">
+      <section className="pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
+        <aside className="w-full md:w-1/2 text-white">
           <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
             <p className="md:py-5 text-transparent">Your Intelligent</p>
             <p className="text-transparent">Chat Companion</p>
@@ -47,6 +48,30 @@ function Home() {
             className="h-3/4 w-full object-cover"
           />
         </aside>
+      </section>
+      <section className="w-full md:min-h-700` text-gray-300 md:px-5 pt-20 md:pt-0">
+        <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed">
+          <span className="md:block md:py-5">
+            Maximize your potential with{' '}
+          </span>
+          <span className="text-4xl md:text-5xl lg:text-6xl text-transparent md:py-5 bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-grad-green md:tracking-tight">
+            ASK BRAIN 2
+          </span>
+        </div>
+        <div className="flex flex-col md:flex-row gap-5 relative py-16">
+          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
+            Hello
+          </Card>
+          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
+            Hello
+          </Card>
+          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
+            Hello
+          </Card>
+          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
+            Hello
+          </Card>
+        </div>
       </section>
     </div>
   );
