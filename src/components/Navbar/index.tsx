@@ -4,14 +4,16 @@ import React from 'react';
 type Props = {
   isOpen: boolean;
   handleOpen: () => void;
+  handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  isScrolling: boolean;
 };
 
-function Navbar({ isOpen, handleOpen }: Props) {
+function Navbar({ isOpen, isScrolling, handleOpen, handleScroll }: Props) {
   return (
     <nav
-      className={`fixed w-full font-poppins lg:bg-transparent text-white h-16 flex justify-between px-10 items-center bg-app-bg ${
-        isOpen && 'bg-app-bg'
-      }`}
+      className={`fixed w-full font-poppins ${
+        isScrolling ? 'bg-app-bg' : 'bg-transparent'
+      } text-white h-16 flex justify-between px-10 items-center z-50`}
     >
       <div className="w-full flex justify-between items-center">
         <aside className="w-full md:w-1/4">
@@ -36,11 +38,13 @@ function Navbar({ isOpen, handleOpen }: Props) {
           </div>
         </aside>
         <aside className="hidden md:flex w-3/4 justify-around">
-          <Link href="/about">About</Link>
-          <Link href="/faq">FAQ</Link>
-          <Link href="/features">Features</Link>
-          <Link href="/resources">Resources</Link>
-          <Link href="/pricing">Pricing</Link>
+          <Link href="#about" onClick={handleScroll}>
+            About
+          </Link>
+          <Link href="#faq">FAQ</Link>
+          <Link href="#features">Features</Link>
+          <Link href="#resources">Resources</Link>
+          <Link href="#pricing">Pricing</Link>
         </aside>
         <aside className="flex md:hidden">
           {!isOpen ? (
@@ -83,7 +87,9 @@ function Navbar({ isOpen, handleOpen }: Props) {
           <div className="md:hidden">
             <div className="absolute top-16 left-0 w-full py-20 bg-gradient-to-br from-bg-app-bg to-bg-grad-purple shadow-lg z-10">
               <div className="flex flex-col gap-10 items-center justify-center h-full">
-                <Link href="/about">About</Link>
+                <Link href="#about" onClick={handleScroll}>
+                  About
+                </Link>
                 <Link href="/faq">FAQ</Link>
                 <Link href="/features">Features</Link>
                 <Link href="/resources">Resources</Link>
