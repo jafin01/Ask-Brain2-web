@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { connectFunctionsEmulator } from 'firebase/functions';
+// import { connectFunctionsEmulator } from 'firebase/functions';
 import React, { useState } from 'react';
-import { functions } from 'config/firebase';
+// import { functions } from 'config/firebase';
 import Navbar from '@/components/Navbar';
-import Card from '@/components/Card';
+import FeatureList from '@/layouts/FeatureList';
 
 function Home() {
-  connectFunctionsEmulator(functions, 'localhost', 5001);
+  // connectFunctionsEmulator(functions, 'localhost', 5001);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className="w-full px-10 bg-gradient-to-br from-app-bg via-app-bg to-grad-purple pb-10 md:pb-0">
+    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple pb-10 md:pb-0">
       <Navbar isOpen={isOpen} handleOpen={handleOpen} />
-      <section className="pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
+      <section className="px-10 pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
         <aside className="w-full md:w-1/2 text-white">
           <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
             <p className="md:py-5 text-transparent">Your Intelligent</p>
@@ -49,7 +49,8 @@ function Home() {
           />
         </aside>
       </section>
-      <section className="w-full md:min-h-700` text-gray-300 md:px-5 pt-20 md:pt-0">
+
+      <section className="px-10 w-full text-gray-300 py-20">
         <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed">
           <span className="md:block md:py-5">
             Maximize your potential with{' '}
@@ -58,19 +59,8 @@ function Home() {
             ASK BRAIN 2
           </span>
         </div>
-        <div className="flex flex-col md:flex-row gap-5 relative py-16">
-          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
-            Hello
-          </Card>
-          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
-            Hello
-          </Card>
-          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
-            Hello
-          </Card>
-          <Card className="h-96 w-full md:w-[30%] relative bg-transparent shadow-2xl border border-grad-green">
-            Hello
-          </Card>
+        <div className="pt-16">
+          <FeatureList />
         </div>
       </section>
     </div>
