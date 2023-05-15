@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import FeatureList from '@/layouts/FeatureList';
 import MetricsList from '@/layouts/MetricsList';
+import Accordion from '@/components/Accordian';
 
 function Home() {
   // connectFunctionsEmulator(functions, 'localhost', 5001);
@@ -91,6 +92,17 @@ function Home() {
         <div id="about" className="pt-16">
           <FeatureList />
         </div>
+      </section>
+
+      <section className="px-10 py-32 w-full text-gray-300">
+        <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed pb-10 text-center">
+          <span className="md:block md:py-5">FAQ</span>
+        </div>
+        <Accordion title="How do we use">We can use it</Accordion>
+        <Accordion title="How do we use">We can use it</Accordion>
+        <Accordion title="How do we use">We can use it</Accordion>
+        <Accordion title="How do we use">We can use it</Accordion>
+        <Accordion title="How do we use">We can use it</Accordion>
       </section>
     </div>
   );
