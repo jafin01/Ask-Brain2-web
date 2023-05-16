@@ -10,7 +10,7 @@ function Accordion({ title, children }: AccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border rounded-lg overflow-hidden md:w-1/2 mx-auto bg-gradient-to-r from-app-bg via-grad-purple to-app-bg text-white">
+    <div className="border m-3 rounded-lg overflow-hidden md:w-1/2 mx-auto bg-gradient-to-r from-app-bg via-grad-purple to-app-bg text-white">
       <button
         type="button"
         className="flex items-center justify-between w-full p-4 focus:outline-none"
@@ -52,7 +52,7 @@ function Accordion({ title, children }: AccordionProps) {
         )}
       </button>
       {isOpen && (
-        <div className="p-4 bg-gray-100">
+        <div className="p-4">
           <div className="prose">{children}</div>
         </div>
       )}
