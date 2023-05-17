@@ -4,7 +4,7 @@ export default function MetricsList() {
   return (
     <>
       <hr className="h-px border-0 bg-gradient-to-br from-blue-400 to-purple-500 opacity-60" />
-      <div className="flex flex-col md:flex-row justify-around items-center gap-32 md:gap-0 py-20">
+      <div className="flex flex-col md:flex-row justify-around items-center text-center gap-32 md:gap-0 py-20">
         <div className="flex flex-col gap-3 justify-center items-center">
           <p className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-grad-green">
             2000+
