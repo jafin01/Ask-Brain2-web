@@ -5,7 +5,7 @@ export default function PricingCard() {
   return (
     <div className="md:flex gap-8 justify-center">
       <Card className="w-full m-0 mb-8 md:mb-0 md:w-1/4 p-14 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
-        <h3 className="text-lg w-1/4 mb-8 text-center flex justify-center bg-gray-300 py-1 px-4 md:px-12 rounded-md text-app-bg">
+        <h3 className="text-lg w-1/3 mb-8 text-center flex justify-center bg-gray-300 py-1 px-12 rounded-md text-app-bg">
           BASIC
         </h3>
         <h1 className="text-5xl text-gray-400 font-bold">$0</h1>
@@ -163,7 +163,7 @@ export default function PricingCard() {
         </div>
       </Card>
       <Card className="relative w-full mb-8 md:mb-0 md:w-1/4 p-14 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
-        <h3 className="text-lg w-1/4 mb-8 text-center flex justify-center bg-gradient-to-r from-white to-yellow-300 py-1 px-4 md:px-12 rounded-md text-app-bg">
+        <h3 className="text-lg w-1/4 mb-8 text-center flex justify-center bg-gradient-to-r from-white to-yellow-300 py-1 px-12 rounded-md text-app-bg">
           PRO
         </h3>
         <h3 className="text-sm w-24 tracking-tight absolute right-5 top-5 items-center mb-8 flex justify-center bg-grad-green text-white py-1 px-4  rounded-full">
