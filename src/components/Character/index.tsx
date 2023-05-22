@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, deleteDoc } from '@firebase/firestore';
 import { db } from 'config/firebase';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import { characterData, removeCharacter, updateCharacter } from '@/services/characters';
 
 export default function CharecterForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,12 @@ export default function CharecterForm() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    characterData();
+    // updateCharacter();
+    removeCharacter();
+  }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -55,7 +62,7 @@ export default function CharecterForm() {
                       id="name"
                       type="text"
                       name="name"
-                      placeholder="Enter your email"
+                      placeholder="Enter your Name"
                       className={`peer relative h-10 w-full outline-none rounded-md bg-gray-50 p-4 font-thin drop-shadow-sm transition-all duration-200 ease-in-out focus:ring-1 focus:bg-white focus:ring-blue-400  ${
                         touched.name && errors.name
                           ? 'border border-red-500'
