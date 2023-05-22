@@ -1,3 +1,5 @@
+import { auth } from 'config/firebase';
+import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import React from 'react';
 
@@ -6,9 +8,16 @@ type Props = {
   handleOpen: () => void;
   handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   isScrolling: boolean;
+  isAuthenticated: boolean | null;
 };
 
-function Navbar({ isOpen, isScrolling, handleOpen, handleScroll }: Props) {
+function Navbar({
+  isOpen,
+  isScrolling,
+  handleOpen,
+  handleScroll,
+  isAuthenticated,
+}: Props) {
   return (
     <nav
       className={`fixed w-full font-poppins ${
@@ -37,14 +46,54 @@ function Navbar({ isOpen, isScrolling, handleOpen, handleScroll }: Props) {
             Ask Brain 2
           </div>
         </aside>
-        <aside className="hidden md:flex w-3/4 justify-around">
-          <Link href="#about" onClick={handleScroll}>
-            About
+        <aside className="hidden md:flex w-1/2 justify-around">
+          <Link href="#features" onClick={handleScroll}>
+            Features
           </Link>
-          <Link href="#faq">FAQ</Link>
-          <Link href="#features">Features</Link>
-          <Link href="#resources">Resources</Link>
-          <Link href="#pricing">Pricing</Link>
+          <Link href="#faq" onClick={handleScroll}>
+            FAQ
+          </Link>
+          <Link href="#pricing" onClick={handleScroll}>
+            Pricing
+          </Link>
+        </aside>
+        <aside className="hidden md:flex w-1/4 justify-end">
+          {isAuthenticated ? (
+            <div className="flex items-center gap-5">
+              <Link href="/user">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 28"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-12 h-12 pt-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </Link>
+              <button
+                type="button"
+                onClick={() => signOut(auth)}
+                className="bg-app-bg text-white px-4 py-2 rounded-md border"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <button
+                type="button"
+                className="bg-app-bg text-white px-4 py-2 rounded-md border"
+              >
+                Login
+              </button>
+            </Link>
+          )}
         </aside>
         <aside className="flex md:hidden">
           {!isOpen ? (
@@ -87,13 +136,15 @@ function Navbar({ isOpen, isScrolling, handleOpen, handleScroll }: Props) {
           <div className="md:hidden">
             <div className="absolute top-16 left-0 w-full py-20 bg-gradient-to-br from-bg-app-bg to-bg-grad-purple shadow-lg z-10">
               <div className="flex flex-col gap-10 items-center justify-center h-full">
-                <Link href="#about" onClick={handleScroll}>
-                  About
+                <Link href="#features" onClick={handleScroll}>
+                  Features
                 </Link>
-                <Link href="/faq">FAQ</Link>
-                <Link href="/features">Features</Link>
-                <Link href="/resources">Resources</Link>
-                <Link href="/pricing">Pricing</Link>
+                <Link href="#faq" onClick={handleScroll}>
+                  FAQ
+                </Link>
+                <Link href="#pricing" onClick={handleScroll}>
+                  Pricing
+                </Link>
               </div>
             </div>
           </div>

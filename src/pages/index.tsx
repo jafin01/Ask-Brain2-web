@@ -1,6 +1,8 @@
 // import { connectFunctionsEmulator } from 'firebase/functions';
 import React, { useEffect, useState } from 'react';
 // import { functions } from 'config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from 'config/firebase';
 import Navbar from '@/components/Navbar';
 import FeatureList from '@/layouts/FeatureList';
 import MetricsList from '@/layouts/MetricsList';
@@ -12,6 +14,18 @@ function Home() {
   // connectFunctionsEmulator(functions, 'localhost', 5001);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    async function isLoggedIn() {
+      const unsubscribe = await onAuthStateChanged(auth, (user) => {
+        setIsAuthenticated(!!user);
+      });
+      return () => unsubscribe();
+    }
+
+    isLoggedIn();
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -42,6 +56,7 @@ function Home() {
         handleOpen={handleOpen}
         handleScroll={handleScroll}
         isScrolling={isScrolling}
+        isAuthenticated={isAuthenticated}
       />
       <section className="px-10 pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
         <aside className="w-full md:w-1/2 text-white">
@@ -82,7 +97,7 @@ function Home() {
         <MetricsList />
       </section>
 
-      <section className="px-10 w-full text-gray-300 py-10">
+      <section id="features" className="px-10 w-full text-gray-300 py-10">
         <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed">
           <span className="md:block md:py-5">
             Maximise your potential with{' '}
@@ -96,7 +111,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-10 py-32 w-full text-gray-300">
+      <section id="faq" className="px-10 py-32 w-full text-gray-300">
         <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed pb-10 text-center">
           <h1 className="md:py-4">FAQ</h1>
         </div>
@@ -107,8 +122,8 @@ function Home() {
         <Accordion title="How do we use">We can use it</Accordion>
       </section>
 
-      <section className="px-10 font-poppins">
-        <div className="text-center text-gray-300 pb-10">
+      <section id="pricing" className="px-10 font-poppins">
+        <div className="text-center text-gray-300 pb-10 pt-10">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6">
             Subscription Options
           </h1>
