@@ -87,7 +87,7 @@ export default function CharacterCard() {
                     <div>
                       <div className="w-12 h-12 rounded-full bg-gray-200 flex justify-center items-center">
                         <img
-                          className="w-12 h-12 rounded-full"
+                          className="w-12 h-12 rounded-full object-cover"
                           src={character.data.avatar}
                           alt="avatar"
                         />
