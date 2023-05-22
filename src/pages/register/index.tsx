@@ -4,10 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { auth } from 'config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/router';
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const { push } = useRouter();
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -19,6 +22,7 @@ function LoginForm() {
       setIsLoading(false);
     } finally {
       setSubmitting(false);
+      push('/login');
     }
   };
 

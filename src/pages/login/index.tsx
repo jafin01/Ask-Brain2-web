@@ -21,6 +21,7 @@ function LoginForm() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      push('/');
     } catch (error) {
       push('/register');
     }
@@ -30,7 +31,8 @@ function LoginForm() {
     try {
       setIsLoading(true);
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      setIsLoading(false);
+      // setIsLoading(false);
+      push('/');
     } catch (error) {
       setIsLoading(false);
     } finally {
@@ -43,12 +45,12 @@ function LoginForm() {
       .email('Invalid email address')
       .required('Email is required'),
     password: Yup.string()
-      .min(8, 'Min 8 char required')
+      .min(6, 'Min 6 char required')
       .required('Password is required'),
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-app-bg to-grad-purple text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-app-bg via-app-bg to-grad-purple text-white">
       <h1 className="text-5xl lg:text-6xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-grad-green py-5">
         Login
       </h1>
