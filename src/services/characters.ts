@@ -9,9 +9,18 @@ import { db } from 'config/firebase';
 
 export async function characterData() {
   const characters = await getDocs(collection(db, 'characters'));
-  characters.forEach((docid) => {
-    console.log(docid.id, ' => ', docid.data());
+  const characterArray: any[] = [];
+
+  characters.forEach((docId: any) => {
+    characterArray.push({ id: docId.id, data: docId.data() });
   });
+
+  return characterArray;
+  // characters.forEach((docid) => {
+  //   console.log(docid.id, ' => ', docid.data());
+  // });
+
+  // return characters;
 }
 
 export async function updateCharacter() {
