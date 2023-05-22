@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { addDoc, collection, deleteDoc } from '@firebase/firestore';
+import { addDoc, collection } from '@firebase/firestore';
 import { db, storage } from 'config/firebase';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
