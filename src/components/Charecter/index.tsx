@@ -1,20 +1,31 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { addDoc, collection, deleteDoc } from '@firebase/firestore';
-import { db } from 'config/firebase';
+import { db, storage } from 'config/firebase';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { characterData, removeCharacter, updateCharacter } from '@/services/characters';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+// import {
+//   characterData,
+//   removeCharacter,
+//   updateCharacter,
+// } from '@/services/characters';
 
 export default function CharecterForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [avatar, setAvatar] = useState<File | undefined>();
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       setIsLoading(true);
+
+      const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
+      await uploadBytes(uploadAvatar, avatar!);
+      const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
+
       const docRef = await addDoc(collection(db, 'characters'), {
         name: values.name,
-        avatar: values.avatar,
+        avatar: downloadedAvatarUrl,
         description: values.description,
       });
 
@@ -27,20 +38,24 @@ export default function CharecterForm() {
     }
   };
 
-  useEffect(() => {
-    characterData();
-    // updateCharacter();
-    removeCharacter();
-  }, []);
+  const handleAvatarUpload = (e: any) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+  };
+
+  // useEffect(() => {
+  //   characterData();
+  //   // updateCharacter();
+  //   removeCharacter();
+  // }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    avatar: Yup.string().required('Avatar is required'),
     description: Yup.string().required('Description is required'),
   });
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen">
-      <div className="w-full h-full flex flex-col justify-center items-center gap-5">
+    <div className="bg-transparent">
+      <div className="w-full flex flex-col justify-center items-center gap-5">
         <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text">
           Create your character
         </h1>
@@ -48,6 +63,7 @@ export default function CharecterForm() {
           initialValues={{ name: '', avatar: '', description: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          onChange={handleAvatarUpload}
         >
           {({ errors, touched }) => (
             <Form className="px-8 pt-6 pb-8 mb-3 w-full md:w-1/3">
@@ -88,10 +104,11 @@ export default function CharecterForm() {
                 >
                   Avatar
                   <div className="relative flex items-center">
-                    <Field
+                    <input
                       id="avatar"
-                      type="text"
+                      type="file"
                       name="avatar"
+                      onChange={handleAvatarUpload}
                       placeholder="place your avatar link"
                       className={`peer relative h-10 w-full outline-none rounded-md bg-gray-50 p-4 font-thin drop-shadow-sm transition-all duration-200 ease-in-out focus:ring-1 focus:bg-white focus:ring-blue-400  ${
                         touched.avatar && errors.avatar
@@ -104,11 +121,11 @@ export default function CharecterForm() {
                 </span> */}
                   </div>
                 </label>
-                <ErrorMessage
+                {/* <ErrorMessage
                   name="avatar"
                   component="div"
                   className="text-red-500 text-xs mt-1"
-                />
+                /> */}
               </div>
 
               <div className="group w-full mb-6">
