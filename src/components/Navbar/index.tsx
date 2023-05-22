@@ -8,7 +8,7 @@ type Props = {
   handleOpen: () => void;
   handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   isScrolling: boolean;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
 };
 
 function Navbar({

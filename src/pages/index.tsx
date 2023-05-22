@@ -14,14 +14,17 @@ function Home() {
   // connectFunctionsEmulator(functions, 'localhost', 5001);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-    });
+    async function isLoggedIn() {
+      const unsubscribe = await onAuthStateChanged(auth, (user) => {
+        setIsAuthenticated(!!user);
+      });
+      return () => unsubscribe();
+    }
 
-    return () => unsubscribe();
+    isLoggedIn();
   }, []);
 
   useEffect(() => {
