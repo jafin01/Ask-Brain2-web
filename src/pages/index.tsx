@@ -142,37 +142,3 @@ function Home() {
 }
 
 export default Home;
-
-// const generateText = httpsCallable(functions, 'generateChat');
-
-// const takeScreenshot = httpsCallable(functions, 'takeScreenshot');
-
-// useEffect(() => {
-//   takeScreenshot({
-//     // url: 'http://www.google.com',
-//     id: 'f16bfd7c-9a8e-49ac-8ed7-2859a49a5699',
-//   })
-//     .then((result: any) => {
-//       console.log('Fetched data:', result.data);
-//     })
-//     .catch((error) => {
-//       console.error('Error fetching data:', error);
-//     });
-// }, []);
-
-// useEffect(() => {
-//   generateText({
-//     prompt: [
-//       {
-//         role: 'user',
-//         content: 'Hello, how are you?',
-//       },
-//     ],
-//   })
-//     .then((result: any) => {
-//       console.log('Fetched data:', result.data);
-//     })
-//     .catch((error) => {
-//       console.error('Error fetching data:', error);
-//     });
-// }, []);
