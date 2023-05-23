@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import React from 'react';
 import Link from 'next/link';
 import Card from '@/components/Card';
