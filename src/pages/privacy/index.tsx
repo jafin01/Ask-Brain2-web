@@ -15,7 +15,7 @@ export default function PrivacyCustom() {
               margin-bottom: 2rem;
             }
           `}</style>
-          <p>updated Date: 5 May 2023</p>
+          <p>Updated Date: 5 May 2023</p>
           <h3 className="font-bold pt-4">1. Objective</h3>
           <p>
             The objective of Herogram (also referred to as &quot;the

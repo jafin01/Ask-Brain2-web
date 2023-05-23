@@ -13,6 +13,35 @@ export default function Footer() {
       <p className="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">
         © 2023 Ask Brain 2
       </p>
+      <div className="flex flex-1 justify-center gap-8">
+        <Link href="/" className="ml-4 text-gray-400 hover:text-gray-500">
+          Home
+        </Link>
+        <Link
+          href="#features"
+          className="ml-4 text-gray-400 hover:text-gray-500"
+        >
+          Features
+        </Link>
+        <Link href="#faq" className="text-gray-400 hover:text-gray-500">
+          FAQ
+        </Link>
+        <Link href="/terms" className="ml-4 text-gray-400 hover:text-gray-500">
+          Terms
+        </Link>
+        <Link
+          href="/privacy"
+          className="ml-4 text-gray-400 hover:text-gray-500"
+        >
+          Privacy
+        </Link>
+        <Link
+          href="/community"
+          className="ml-4 text-gray-400 hover:text-gray-500"
+        >
+          Community
+        </Link>
+      </div>
       <span className="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
         <Link
           href="/facebook.com"
