@@ -854,6 +854,323 @@ export default function TermsCustom() {
             provisions.
           </p>
           <h3 className="pt-4 font-bold">12. RIGHTS INFRINGEMENTS</h3>
+          <p>
+            <strong>12.1</strong>
+            Confidentiality, intellectual property rights, including copyrights,
+            and personal data are of utmost importance to Herogram, and we
+            prioritize transparency regarding these matters. By using Herogram
+            Apps, Users agree to comply with the principles outlined in this
+            Agreement and other materials provided by Herogram. Users must
+            ensure that they only upload materials they have produced or have
+            been authorized to use on Herogram Apps. Additionally, Users must
+            not infringe on the rights of other Users under this Agreement.
+          </p>
+          <p>
+            <strong>12.2</strong>
+            If you believe in good faith that materials transmitted or created
+            through Ask Brain2 App infringe your copyright, personal right, or
+            privacy, you can submit an infringement form to Herogram requesting
+            the removal of the material or blocking access to it
+          </p>
+          <h3 className="pt-4 font-bold">13. IN-APP PURCHASE AND PAYMENT</h3>
+          <p>
+            <strong>13.1</strong>
+            The Herogram Apps will be available worldwide through the Apple App
+            Store and/or Google Play, with some features and limitations only
+            accessible through in-app purchases. If you wish to use these paid
+            features, you must make a payment before accessing them. In-app
+            purchases are available on a weekly, monthly, quarterly,
+            semi-annual, or annual basis and are automatically renewed by the
+            Apple App Store and/or Google Play until canceled by you. The Apple
+            App Store and/or Google Play will send a renewal reminder email with
+            a hyperlink to the subscription management process before renewal.
+            Payments for in-app purchases will be processed by the Apple App
+            Store and/or Google Play from which you originally downloaded the
+            application, and you can view the relevant in-app purchase rules and
+            policies directly from the Apple App Store and/or Google Play. You
+            understand and agree that it is your responsibility to manage your
+            in-app purchases and monitor the amount spent on in-app purchases
+            within the Herogram Apps.
+          </p>
+          <p>
+            <strong>13.2</strong>
+            Please note that to purchase content or the Herogram Apps through
+            Google Play, you must have a Google Payments account and agree to
+            the Google Payments Terms and Terms of Service. Each time you use
+            your Google Payments account to purchase content, the Google
+            Payments Privacy Notice will apply. You are responsible for all
+            payments related to purchases made through your Google Payments
+            account. Additionally, Google may offer alternative payment
+            processing options outside of Google Payments to simplify your
+            purchases through Google Play. You must comply with the relevant
+            terms and conditions or other legal agreement that governs your use
+            of any payment processing method, whether with Google or a third
+            party. Google may add or remove payment processing methods at its
+            discretion. You are solely responsible for all amounts payable
+            associated with any purchases you make on Google Play.
+          </p>
+          <p>
+            <strong>13.3</strong>
+            To determine your eligibility to bill purchases of content or the
+            Herogram Apps to your network provider&&apos;s account, Google Play
+            will send your device&&apos;s identifiers to your network provider
+            when you create a Google Play account on a device. You must accept
+            the network provider&&apos;s terms of service to allow this. The
+            network provider may send us your billing address information.
+            Google Play will hold and use this information in accordance with
+            Google&&apos;s Privacy Policies and Google Payments Privacy Notice
+          </p>
+          <p>
+            <strong>13.4</strong>
+            If you are under 18, you must have your parents or legal guardians
+            permission to make any in-app purchases. By completing an in-app
+            purchase, you confirm that you have all necessary permission to make
+            that purchase. If you are a parent or legal guardian of someone
+            under the age of 18, we recommend that you consider any parental
+            control that may be provided by the Apple App Store and/or Google
+            Play if you are concerned that your child may make excessive in-app
+            purchases
+          </p>
+          <p>
+            <strong>13.5</strong>
+            Herogram wishes to make it clear that in-app purchases are made from
+            and billed by the Apple App Store or Google Play, not by Herogram.
+            Any purchases made are subject to the terms and conditions of the
+            respective app store. If you have any billing or refund inquiries,
+            please contact the Apple App Store and/or Google Play directly, as
+            Herogram does not have access to these accounts and transactions.
+          </p>
+          <p>
+            <strong>13.6</strong>
+            In the event that an in-app purchase is not downloaded successfully
+            or does not work once it has been downloaded, we will investigate
+            the reason for the fault after being notified by you. We will then
+            decide whether to provide you with a replacement in-app purchase or
+            issue you with a patch to repair the fault. We will not charge you
+            any additional fees to replace or repair the in-app purchase. If we
+            are unable to replace or repair the in-app purchase or do so within
+            a reasonable period of time and without significant inconvenience to
+            you, we will authorize the Apple App Store and/or Google Play to
+            refund you an amount up to the cost of the relevant in-app purchase.
+            If you wish to request a refund, you may contact the Apple App Store
+            and/or Google Play directly.
+          </p>
+          <p>
+            <strong>13.7</strong>
+            It is acknowledged and agreed that the Apple App Store and/or Google
+            Play, from whose platform you downloaded the Herogram Apps, are
+            solely responsible for handling all billing and transaction
+            processes related to the app. The terms and conditions/end user
+            license agreement of the Apple App Store and/or Google Play shall
+            govern these processes. In the event of any payment-related issues
+            with in-app purchases, it is advised to directly contact the Apple
+            App Store and/or Google Play
+          </p>
+          <h3 className="pt-4 font-bold">14. TERM AND TERMINATION</h3>
+          <p>
+            <strong>14.1</strong>
+            This Agreement will take effect on the date of approval and will
+            remain in force as long as the User continues to use the Ask Brain2
+            App. It will continue to be legally effective and operative between
+            Herogram and the User.
+          </p>
+          <p>
+            <strong>14.2</strong>
+            Under any circumstances where the User breaches this Agreement or
+            any other agreements or rules applicable to different services
+            offered over the Apple App Store and/or Google Play, Herogram may
+            unilaterally terminate this Agreement without any obligation of
+            compensation and further notice. Specifically, this includes if the
+            User manipulates the operation of the Herogram Apps using any
+            method, violates the provisions of this Agreement or any other
+            agreements to be executed over the Apple App Store and/or Google
+            Play, or violates third party rights. Additionally, if the data,
+            contents, visuals, texts and articles shared with Ask Brain2 App by
+            the User have an unlawful element or are posted for unlawful or
+            immoral purposes, Herogram may terminate the Agreement.
+          </p>
+          <p>
+            <strong>14.3</strong>
+            The User agrees that Herogram will not be liable to the User or any
+            third-party for any termination or disabling of the Herogram Apps.
+            Upon termination of this Agreement, the User must immediately stop
+            using the Ask Brain2 App and uninstall, remove or destroy all copies
+            of the Ask Brain2 App in their possession or control. However, the
+            termination will not limit any of Herogram&&apos;s other rights or
+            remedies at law.
+          </p>
+          <h3 className="pt-4 font-bold">15. INDEMNIFICATION</h3>
+          <p>
+            <strong>15.1</strong>
+            You agree to hold harmless and indemnify Herogram, its affiliates,
+            officers, directors, licensors, partners, shareholders, licensees,
+            contractors, agents, attorneys, employees, and third-party service
+            providers (collectively referred to as the “Indemnitees”) from any
+            and all claims, liabilities, costs, and expenses, including
+            reasonable attorneys fees (collectively, “Claims”) that directly or
+            indirectly result from your use of the Herogram Services, your
+            information, or your breach of this Agreement.
+          </p>
+          <p>
+            <strong>15.2</strong>
+            You agree to assume sole responsibility for defending any Claims
+            made against any Indemnitee, while granting the relevant Indemnitee
+            the right to participate with counsel of its own choosing.
+            Additionally, you agree to pay for any damages or losses arising
+            from any Claims against any Indemnitee. You will not agree to any
+            settlement that imposes any obligation or liability on any
+            Indemnitee without obtaining Herogram&&apos;s prior express written
+            consent.
+          </p>
+          <h3 className="pt-4 font-bold">16. WARRANTY DISCLAIMER</h3>
+          <p>
+            <strong>16.1</strong>
+            To the extent permitted by applicable law, Herogram Apps are
+            provided to you &&apos;AS IS&&apos;, &&apos;WITH ALL FAULTS&&apos;
+            and &&apos;AS AVAILABLE&&apos;, and you use them at your own risk.
+            Subject to applicable law, Herogram, on behalf of itself and its
+            affiliates, licensors, distributors, vendors, agents, and suppliers,
+            expressly disclaims any and all warranties of any kind, whether
+            express or implied, including but not limited to the implied
+            warranties of merchantability, non-infringement, and any other
+            warranty arising from applicable legislation
+          </p>
+          <p>
+            <strong>16.2</strong>
+            Herogram makes no warranty that the Herogram Apps will meet your
+            requirements, be uninterrupted, timely, secure, or error-free, or
+            that the results obtained from the use of the Herogram products will
+            be accurate or reliable. Additionally, Herogram assumes no liability
+            or responsibility for any property damage resulting from your use of
+            the Herogram Apps, any unauthorized access to or use of our secure
+            servers and/or any personal or financial information stored therein,
+            any interruption or cessation of transmission to or from the
+            Herogram Apps or servers, any bugs, viruses, Trojan horses, or other
+            harmful content transmitted by any third party, or any errors or
+            omissions in any content. Furthermore, Herogram will not be liable
+            for any loss or damage of any kind incurred as a result of the use
+            of any content posted, e-mailed, transmitted, or otherwise made
+            available via the Herogram Apps
+          </p>
+          <p>
+            <strong>16.3</strong>
+            The Herogram Apps may include a feature that allows you to record
+            phone conversations on your Android or iOS device. However, it is
+            important to note that some local, state, federal, and international
+            laws prohibit the recording of third-party audio without the consent
+            of all parties involved. It is your responsibility to comply with
+            all applicable laws regarding call recording and obtaining any
+            necessary consent. Please be aware that Herogram is not responsible
+            for any failure to comply with local, state, federal, or
+            international laws regarding third-party audio recording.
+          </p>
+          <p>
+            <strong>16.4</strong>
+            You should be aware that the use and performance of the Herogram
+            Apps are at your own risk. Herogram explicitly disclaims all
+            warranties regarding products and/or services provided by Third
+            Party Partners. This warranty disclaimer is an essential part of
+            this agreement.
+          </p>
+          <h3 className="pt-4 font-bold">17. LIMITATION OF LIABILITY</h3>
+          <p>
+            <strong>17.1</strong>
+            In accordance with applicable laws, it is understood and agreed that
+            Herogram shall not be liable for any direct, indirect, incidental,
+            special, consequential, or exemplary damages. This includes, but is
+            not limited to, damages for loss of profits, goodwill, use, data, or
+            other intangible losses, resulting from: (i) the use or inability to
+            use the Herogram Apps; (ii) unauthorized access to or alteration of
+            your transmission or data; (iii) statements or conduct of any third
+            party; or (iv) any other matter relating to Herogram.
+          </p>
+          <p>
+            <strong>17.2</strong>
+            Herogram’s total liability to you for all damages, losses, and
+            causes of action (whether in contract, tort or otherwise) shall not
+            exceed the amount paid by you for accessing the Herogram App. The
+            aforementioned limitations will be applicable even if the stated
+            remedy fails of its essential purpose.
+          </p>
+          <h3 className="pt-4 font-bold">
+            18. FORCE MAJOR EVENT AND APPLICABLE LAW
+          </h3>
+          <p>
+            <strong>18.1</strong>
+            In legal terms, if an event of force majeure occurs, Herogram will
+            not be held liable for any failure to perform its obligations,
+            whether incomplete or delayed, as agreed herein. Such failures will
+            not be considered default or incomplete or faulty performance, and
+            no compensation claim may be made against Herogram.
+          </p>
+          <p>
+            <strong>18.2</strong>
+            The term &&apos;force majeure events&&apos; in this agreement refers
+            to any event that is beyond the reasonable control of Herogram and
+            cannot be avoided despite reasonable care, including but not limited
+            to acts of God, riots, insurrections, war, interruptions in
+            communication, infrastructure and internet network failures, power
+            failures, mobilization, strikes, fire, explosion, terrorism, cyber
+            attacks, prolonged power outages, internet outages, computer
+            viruses, legislative amendments, and adverse weather conditions.
+          </p>
+          <p>
+            <strong>18.3</strong>
+            In the event of a force majeure event, Herogram shall not be liable
+            for any failure to perform its obligations under this Agreement, or
+            for any delayed, incomplete, or faulty performance. The User shall
+            not be entitled to claim default interest or indemnification from
+            Herogram for any delayed, incomplete, or non-performance of any
+            provision in this Agreement due to force majeure events.
+          </p>
+          <p>
+            <strong>18.4</strong>
+            This Agreement and legal relations arising hereunder shall be
+            governed and construed as per laws in Dubai Free Zone, Dubai, United
+            Arab Emirates. Emirati Courts (Dubai, United Arab Emirates Courts
+            and Execution Offices)) shall have jurisdiction over any actual or
+            potential dispute arising from this Agreement. To the maximum extent
+            permitted by law, you hereby consent to the jurisdiction and venue
+            of such courts and waive any objections to such jurisdiction and
+            venue.
+          </p>
+          <h3 className="pt-4 font-bold">
+            19. FORCE MAJOR EVENT AND APPLICABLE LAW
+          </h3>
+          <p>
+            <strong>19.1</strong>
+            This Agreement governs your use of the Ask Brain2 App and Services,
+            and constitutes the entire agreement between you and Herogram
+            regarding this subject matter, replacing any prior or
+            contemporaneous understandings.
+          </p>
+          <p>
+            <strong>19.2</strong>
+            Any changes to this Agreement must be made in writing and signed by
+            Herogram to be valid. Herogram&&apos;s failure to enforce any rights
+            granted or take action against a breach of this Agreement by either
+            party does not constitute a waiver of its right to enforce such
+            rights or take future actions in case of breaches.
+          </p>
+          <p>
+            <strong>19.3</strong>
+            This Agreement may be translated for local requirements, but in case
+            of a conflict between the English version and any non-English
+            version, the English version shall prevail to the extent not
+            prohibited by law.
+          </p>
+          <p>
+            <strong>19.4</strong>
+            If any provision of this Agreement is declared void or unenforceable
+            in a particular situation by any judicial or administrative
+            authority, the remaining provisions shall remain valid and
+            enforceable to the fullest extent permitted by law, and the
+            provision in question shall be interpreted and enforced to the
+            maximum extent legally permissible in order to effectuate the
+            original intent. If no such interpretation or enforcement is legally
+            permissible, the offending provision shall be deemed severed from
+            this Agreement.
+          </p>
         </section>
       </Card>
     </div>
