@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'config/firebase';
-import CharacterCard from '@/components/Charecter/CharacterCard';
+import CharacterCard from '@/components/Character/CharacterCard';
 import Navbar from '@/components/Navbar';
 
 export default function UserProfile() {
@@ -13,6 +13,7 @@ export default function UserProfile() {
     async function isLoggedIn() {
       try {
         const unsubscribe = await onAuthStateChanged(auth, (user) => {
+          // console.log('user', user);
           setIsAuthenticated(!!user);
         });
         return () => unsubscribe();

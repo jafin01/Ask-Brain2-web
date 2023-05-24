@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
+import { auth } from 'config/firebase';
 import { characterData } from '@/services/characters';
 import CharecterForm from '.';
 
@@ -12,7 +13,7 @@ export default function CharacterCard() {
     async function getCharacterData() {
       try {
         setIsLoading(true);
-        const response: any = await characterData();
+        const response: any = await characterData(auth.currentUser?.uid);
         console.log('response', response);
         setCharacters(response);
       } catch (error: any) {
@@ -23,7 +24,7 @@ export default function CharacterCard() {
     }
 
     getCharacterData();
-  }, []);
+  }, [auth.currentUser?.uid]);
 
   return (
     <div className="px-8">

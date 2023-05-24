@@ -1,19 +1,21 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { addDoc, collection } from '@firebase/firestore';
-import { db, storage } from 'config/firebase';
+import { auth, db, storage } from 'config/firebase';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-// import {
-//   characterData,
-//   removeCharacter,
-//   updateCharacter,
-// } from '@/services/characters';
+import { User } from 'firebase/auth';
 
-export default function CharecterForm() {
+export default function CharacterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File | undefined>();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    setCurrentUser(auth.currentUser);
+  }, []);
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -24,6 +26,8 @@ export default function CharecterForm() {
       const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
 
       const docRef = await addDoc(collection(db, 'characters'), {
+        // add Id
+        userId: currentUser?.uid,
         name: values.name,
         avatar: downloadedAvatarUrl,
         description: values.description,

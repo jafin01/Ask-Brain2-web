@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { auth } from 'config/firebase';
 import {
   GoogleAuthProvider,
+  browserSessionPersistence,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -30,8 +32,8 @@ function LoginForm() {
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       setIsLoading(true);
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      // setIsLoading(false);
       push('/');
     } catch (error) {
       setIsLoading(false);

@@ -7,12 +7,13 @@ import {
 } from '@firebase/firestore';
 import { db } from 'config/firebase';
 
-export async function characterData() {
+export async function characterData(userId: string | undefined) {
   const characters = await getDocs(collection(db, 'characters'));
   const characterArray: any[] = [];
 
   characters.forEach((docId: any) => {
-    characterArray.push({ id: docId.id, data: docId.data() });
+    if (userId === docId.data().userId)
+      characterArray.push({ id: docId.id, data: docId.data() });
   });
 
   return characterArray;
