@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { auth, db } from "config/firebase";
-import Link from "next/link";
-import { deleteDoc, doc } from "@firebase/firestore";
-import { characterData } from "@/services/characters";
+import React, { useEffect, useState } from 'react';
+import { auth, db } from 'config/firebase';
+import Link from 'next/link';
+import { deleteDoc, doc } from '@firebase/firestore';
+import { characterData } from '@/services/characters';
 
 export default function CharacterCard() {
   const [characters, setCharacters] = useState([]);
@@ -29,7 +29,7 @@ export default function CharacterCard() {
   const deleteCharacter = async (characterId: string) => {
     try {
       if (characterId) {
-        await deleteDoc(doc(db, "characters", characterId));
+        await deleteDoc(doc(db, 'characters', characterId));
         setCharacters((prevCharacters) =>
           prevCharacters.filter(
             (character: any) => character.id !== characterId
@@ -37,13 +37,13 @@ export default function CharacterCard() {
         );
       }
     } catch (error: any) {
-      console.error("Error deleting document: ", error);
+      console.error('Error deleting document: ', error);
     }
   };
 
   const generateCharacterLink = (characterId: string) => {
     // crete a link to the app with the character id
-    console.log("characterId", characterId);
+    console.log('characterId', characterId);
     // show toast with message
   };
 
@@ -101,7 +101,8 @@ export default function CharacterCard() {
                   </div>
                 </div>
                 <div className="flex justify-around my-2">
-                  <div
+                  <button
+                    type="button"
                     className="flex gap-1 cursor-pointer text-grad-green"
                     onClick={() => generateCharacterLink(character.id)}
                   >
@@ -121,7 +122,7 @@ export default function CharacterCard() {
                       />
                     </svg>
                     <h4 className="">Get link</h4>
-                  </div>
+                  </button>
                   <Link
                     href={`/user/character/${character.id}`}
                     className="flex gap-1 text-yellow-500 cursor-pointer"
