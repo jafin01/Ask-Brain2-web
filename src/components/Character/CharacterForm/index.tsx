@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { addDoc, collection, doc, getDoc } from '@firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+} from '@firebase/firestore';
 import { auth, db, storage } from 'config/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -13,6 +19,7 @@ import * as Yup from 'yup';
 export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File | undefined>();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
     avatar: '',
@@ -34,6 +41,9 @@ export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           avatar: docSnap.data().avatar,
           description,
         });
+
+        console.log(docSnap.data().avatar);
+        setAvatar(docSnap.data().avatar);
       }
     } catch (error) {
       console.log('Error getting document:', error);
@@ -49,13 +59,20 @@ export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       setIsLoading(true);
-      if (!isUpdate) {
-        const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
-        await uploadBytes(uploadAvatar, avatar!);
-        const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
 
+      const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
+      await uploadBytes(uploadAvatar, avatar!);
+      const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
+
+      if (!isUpdate) {
         await addDoc(collection(db, 'characters'), {
           userId: auth.currentUser?.uid,
+          name: values.name,
+          avatar: downloadedAvatarUrl,
+          description: values.description,
+        });
+      } else {
+        updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           avatar: downloadedAvatarUrl,
           description: values.description,
@@ -72,7 +89,9 @@ export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   };
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isUpdate) setIsEditing(true);
     const file = e.target.files?.[0];
+    console.log('file', file);
     setAvatar(file);
   };
 
@@ -89,12 +108,13 @@ export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         </h1>
 
         <Formik
+          enableReinitialize
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          <Form className="flex flex-col items-center gap-5 bg-app-bg text-gray-300 w-1/3 rounded-2xl p-4">
-            <div className="relativ">
+          <Form className="flex flex-col items-center gap-5 bg-app-bg text-gray-600 w-1/3 rounded-2xl p-4">
+            <div className="relative">
               <input
                 type="file"
                 id="avatar"
@@ -106,13 +126,37 @@ export default function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 htmlFor="avatar"
                 className="block h-36 w-36 rounded-full border-4 border-grad-green overflow-hidden cursor-pointer"
               >
-                {avatar ? (
+                {!isUpdate && avatar && (
                   <img
                     src={URL.createObjectURL(avatar)}
                     alt="Avatar Preview"
                     className="h-full w-full object-cover"
                   />
-                ) : (
+                )}
+
+                {!isUpdate && !avatar && (
+                  <span className="h-full w-full flex items-center justify-center text-grad-green text-6xl">
+                    +
+                  </span>
+                )}
+
+                {isUpdate && avatar && !isEditing && (
+                  <img
+                    src={avatar.toString()}
+                    alt="Avatar Preview"
+                    className="h-full w-full object-cover"
+                  />
+                )}
+
+                {isUpdate && avatar && isEditing && (
+                  <img
+                    src={URL.createObjectURL(avatar)}
+                    alt="Avatar Preview"
+                    className="h-full w-full object-cover"
+                  />
+                )}
+
+                {isUpdate && !avatar && (
                   <span className="h-full w-full flex items-center justify-center text-grad-green text-6xl">
                     +
                   </span>

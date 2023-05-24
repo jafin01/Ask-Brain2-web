@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { auth } from 'config/firebase';
+import { auth, db } from 'config/firebase';
 import Link from 'next/link';
+import { deleteDoc, doc } from '@firebase/firestore';
 import { characterData } from '@/services/characters';
 
 export default function CharacterCard() {
@@ -24,6 +25,32 @@ export default function CharacterCard() {
 
     getCharacterData();
   }, [auth.currentUser?.uid]);
+
+  // const handleDelete = async (characterId: string) => {
+  //   try {
+  //     await deleteDoc(doc(db, 'characters', characterId));
+  //     setCharacters((prevCharacters) =>
+  //       prevCharacters.filter((character: any) => character.id !== characterId)
+  //     );
+  //   } catch (error: any) {
+  //     console.error('Error deleting document: ', error);
+  //   }
+  // };
+
+  const deleteCharacter = async (characterId: string) => {
+    try {
+      if (characterId) {
+        await deleteDoc(doc(db, 'characters', characterId));
+        setCharacters((prevCharacters) =>
+          prevCharacters.filter(
+            (character: any) => character.id !== characterId
+          )
+        );
+      }
+    } catch (error: any) {
+      console.error('Error deleting document: ', error);
+    }
+  };
 
   return (
     <div className="px-8">
@@ -129,7 +156,13 @@ export default function CharacterCard() {
                     </svg>
                     <h4 className="">Edit</h4>
                   </Link>
-                  <div className="text-red-500 flex gap-1 cursor-pointer">
+                  <button
+                    type="button"
+                    className="text-red-500 flex gap-1 cursor-pointer"
+                    onClick={() => {
+                      deleteCharacter(character.id);
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -145,8 +178,8 @@ export default function CharacterCard() {
                       />
                     </svg>
 
-                    <h4 className="">Delete</h4>
-                  </div>
+                    <h4>Delete</h4>
+                  </button>
                 </div>
               </div>
             ))}
