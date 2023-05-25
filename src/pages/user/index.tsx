@@ -1,15 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from 'config/firebase';
+import { auth, db } from 'config/firebase';
 import { useRouter } from 'next/router';
+import { deleteDoc, doc } from '@firebase/firestore';
 import CharacterCard from '@/components/Character/CharacterCard';
 import Navbar from '@/components/Navbar';
+import ConfirmDelete from '@/components/DeleteModal';
 
 export default function UserProfile() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [characters, setCharacters] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [characterToDelete, setCharacterToDelete] = useState('');
+  const [confirmDeleteInput, setConfirmDeleteInput] = useState('');
+  const [selectedCharacterName, setSelectedCharacterName] = useState('');
+
   const { push } = useRouter();
+
+  const handleDelete = async (characterId: any) => {
+    // Check if the input matches the character's name
+    if (confirmDeleteInput === selectedCharacterName) {
+      try {
+        setIsLoading(true);
+        await deleteDoc(doc(db, 'characters', characterId));
+        setCharacters((prevCharacters) =>
+          prevCharacters.filter(
+            (character: any) => character.id !== characterId
+          )
+        );
+      } catch (error) {
+        console.error('Error deleting document: ', error);
+      } finally {
+        setIsLoading(false);
+        setShowDeleteModal(false);
+        setCharacterToDelete('');
+        setConfirmDeleteInput('');
+        setSelectedCharacterName('');
+      }
+    } else {
+      console.log('Incorrect input. Please enter the character name exactly.');
+    }
+  };
 
   useEffect(() => {
     async function isLoggedIn() {
@@ -29,6 +63,10 @@ export default function UserProfile() {
 
     isLoggedIn();
   }, []);
+
+  useEffect(() => {
+    console.log(confirmDeleteInput);
+  }, [confirmDeleteInput]);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -66,8 +104,24 @@ export default function UserProfile() {
         />
       </div>
       <div className="py-32">
-        <CharacterCard />
+        <CharacterCard
+          setCharacterToDelete={setCharacterToDelete}
+          setShowModal={setShowDeleteModal}
+          setSelectedCharacterName={setSelectedCharacterName}
+          updatedCharacters={characters}
+        />
       </div>
+      {showDeleteModal && (
+        <ConfirmDelete
+          confirmDeleteInput={confirmDeleteInput}
+          setConfirmDeleteInput={setConfirmDeleteInput}
+          setShowDeleteModal={setShowDeleteModal}
+          handleDelete={handleDelete}
+          characterToDelete={characterToDelete}
+          selectedCharacterName={selectedCharacterName}
+          isLoading={isLoading}
+        />
+      )}
     </div>
   );
 }
