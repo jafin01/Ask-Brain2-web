@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'config/firebase';
+import { useRouter } from 'next/router';
 import CharacterCard from '@/components/Character/CharacterCard';
 import Navbar from '@/components/Navbar';
 
@@ -8,6 +9,7 @@ export default function UserProfile() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { push } = useRouter();
 
   useEffect(() => {
     async function isLoggedIn() {
@@ -15,6 +17,9 @@ export default function UserProfile() {
         const unsubscribe = await onAuthStateChanged(auth, (user) => {
           // console.log('user', user);
           setIsAuthenticated(!!user);
+          if (!user) {
+            push('/login');
+          }
         });
         return () => unsubscribe();
       } catch (error) {
@@ -34,6 +39,8 @@ export default function UserProfile() {
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  if (!isAuthenticated) return null;
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault(); // prevent the default behavior

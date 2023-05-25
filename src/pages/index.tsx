@@ -16,26 +16,44 @@ function Home() {
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    async function isLoggedIn() {
-      const unsubscribe = await onAuthStateChanged(auth, (user) => {
-        setIsAuthenticated(!!user);
-      });
-      return () => unsubscribe();
-    }
+  const isLoggedIn = async () => {
+    const unsubscribe = await onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      // if (!user) {
+      //   push('/login');
+      // }
+    });
+    return unsubscribe; // Return the unsubscribe function
+  };
 
-    isLoggedIn();
+  useEffect(() => {
+    const unsubscribePromise = isLoggedIn(); // Store the promise
+
+    return () => {
+      unsubscribePromise.then((unsubscribe) => {
+        unsubscribe(); // Call the unsubscribe function when the promise resolves
+      });
+    };
   }, []);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
       setIsScrolling(window.scrollY > 100);
-    });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  // if (!isAuthenticated) return null;
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault(); // prevent the default behavior
