@@ -83,15 +83,15 @@ function Home() {
               <p className="md:py-5 text-transparent">Your Intelligent</p>
               <p className="text-transparent">Chat Companion</p>
             </div>
-            <div className="md:flex md:justify-center">
+            <div className="md:flex md:justify-center lg:justify-between">
               <h3 className="font-poppins text-xl lg:text-2xl text-left text-gray-400 pt-5 pb-10 flex justify-center leading-relaxed lg:leading-relaxed font-extralight max-w-xl">
                 Customizable settings allow you to adjust tone, formality, and
                 language style. Get advice or pass the time with your virtual
                 friend.
               </h3>
             </div>
-            <div className="md:flex md:justify-center lg:justify-between md:py-8">
-              <section className="md:flex md:gap-10 md:w-2/3 lg:w-full lg:flex lg:max-w-md">
+            <div className="md:flex md:justify-center lg:justify-between md:py-8 lg:py-0">
+              <section className="md:flex md:gap-10 md:w-2/3 lg:w-full lg:flex lg:gap-0 lg:max-w-md">
                 <button
                   type="button"
                   className="block w-full mb-5 md:mb-0 lg:mb-0 rounded-full bg-blue-500 lg:mr-10 py-3 md:py-4 lg:py-3 text-lg font-lato font-medium shadow-lg"
