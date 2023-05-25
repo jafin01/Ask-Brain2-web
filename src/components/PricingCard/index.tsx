@@ -3,8 +3,8 @@ import Card from '../Card';
 
 export default function PricingCard() {
   return (
-    <div className="md:flex gap-8 justify-center">
-      <Card className="w-full m-0 mb-8 md:mb-0 md:w-1/4 p-14 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
+    <div className="md:flex md:flex-col lg:flex lg:flex-row gap-8 justify-center">
+      <Card className="w-full m-0 mb-8 md:mb-0 md:w-2/3 md:m-auto lg:w-1/4 p-14 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
         <h3 className="text-lg w-1/3 mb-8 text-center flex justify-center bg-gray-300 py-1 px-12 rounded-md text-app-bg">
           BASIC
         </h3>
@@ -63,7 +63,7 @@ export default function PricingCard() {
           <h3>Answers from GPT 3.5</h3>
         </div>
       </Card>
-      <Card className="relative w-full mb-8 md:mb-0 md:w-1/4 p-14 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins bg-gradient-to-br from-app-bg via-grad-purple to-grad-green">
+      <Card className="relative w-full mb-8 md:mb-0 md:w-2/3 md:m-auto lg:w-1/4 p-14 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins bg-gradient-to-br from-app-bg via-grad-purple to-grad-green">
         <svg
           width="93"
           height="68"
@@ -162,7 +162,7 @@ export default function PricingCard() {
           <h3>No Limits</h3>
         </div>
       </Card>
-      <Card className="relative w-full mb-8 md:mb-0 md:w-1/4 p-14 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
+      <Card className="relative w-full mb-8 md:mb-0 md:w-2/3 md:m-auto lg:w-1/4 p-14 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer font-poppins">
         <h3 className="text-lg w-1/4 mb-8 text-center flex justify-center bg-gradient-to-r from-white to-yellow-300 py-1 px-12 rounded-md text-app-bg">
           PRO
         </h3>

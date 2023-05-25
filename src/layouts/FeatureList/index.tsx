@@ -3,8 +3,8 @@ import Card from '../../components/Card';
 
 export default function FeatureList() {
   return (
-    <div className="flex flex-col md:flex-row gap-7">
-      <Card className="w-full md:w-1/4 p-6 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
+    <div className="flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row gap-7">
+      <Card className="w-full lg:w-1/4 p-6 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
           <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
@@ -31,7 +31,7 @@ export default function FeatureList() {
           at your fingertips.
         </p>
       </Card>
-      <Card className="w-full md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
+      <Card className="w-full lg:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
           <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
@@ -58,7 +58,7 @@ export default function FeatureList() {
           instant feedback for all your academic needs.
         </p>
       </Card>
-      <Card className="w-full md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
+      <Card className="w-full lg:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
           <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
@@ -87,7 +87,7 @@ export default function FeatureList() {
           Brain 2.
         </p>
       </Card>
-      <Card className="w-full md:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
+      <Card className="w-full lg:w-1/4 p-6 pb-10 rounded-3xl bg-transparent shadow-2xl border border-grad-purple cursor-pointer">
         <div className="h-1/5">
           <div className="rounded-full h-16 w-16 my-4 p-3 bg-gradient-to-br from-transparent to-grad-purple shadow-lg opacity-70">
             <svg
