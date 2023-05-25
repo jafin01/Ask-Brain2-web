@@ -58,9 +58,9 @@ function Home() {
         isScrolling={isScrolling}
         isAuthenticated={isAuthenticated}
       />
-      <section className="px-10 pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
-        <aside className="w-full md:w-1/2 text-white">
-          <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
+      <section className="px-10 pt-24 md:pt-32 lg:pt-0 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center">
+        <aside className="w-full lg:w-1/2 text-white">
+          <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-5xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
             <p className="md:py-5 text-transparent">Your Intelligent</p>
             <p className="text-transparent">Chat Companion</p>
           </div>
@@ -69,26 +69,26 @@ function Home() {
             language style. Get advice or pass the time with your virtual
             friend.
           </h3>
-          <section className="lg:flex max-w-md">
+          <section className="md:flex md:gap-10 lg:flex lg:max-w-md">
             <button
               type="button"
-              className="block w-full mb-5 lg:mb-0 rounded-full bg-blue-500 lg:mr-10 py-3 text-lg font-lato font-medium shadow-lg"
+              className="block w-full mb-5 md:mb-0 lg:mb-0 rounded-full bg-blue-500 lg:mr-10 py-3 md:py-4 lg:py-3 text-lg font-lato font-medium shadow-lg"
             >
               DOWNLOAD
             </button>
             <button
               type="button"
-              className="block w-full rounded-full bg-grad-purple py-3 text-lg font-lato font-medium shadow-lg"
+              className="block w-full rounded-full bg-grad-purple py-3 md:py-4 lg:py-3 text-lg font-lato font-medium shadow-lg"
             >
               SHOW VIDEO
             </button>
           </section>
         </aside>
-        <aside className="hidden md:flex w-full md:flex-1 justify-center text-white">
+        <aside className="hidden md:flex w-full md:w-3/4 md:m-auto md:py-14 lg:w-full lg:flex-1 justify-center items-center text-white">
           <img
             src="../../../assets/askbrain2-mockup.png"
             alt="ask-brain2-mockup"
-            className="h-3/4 w-full object-cover"
+            className="h-3/4 md:h-3/4 w-full object-cover"
           />
         </aside>
       </section>
