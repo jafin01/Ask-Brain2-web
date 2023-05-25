@@ -15,16 +15,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import Chat from '@/components/Chat/Chat';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
     avatar: '',
     prompts: [{ role: 'system', content: '' }],
+    firstMessage: '',
   });
   const router = useRouter();
   const { push } = router;
@@ -36,11 +39,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { name, prompts } = docSnap.data()!;
+        const { name, prompts, firstMessage } = docSnap.data()!;
         setInitialValues({
           name,
           avatar: docSnap.data().avatar,
           prompts,
+          firstMessage,
         });
 
         console.log(docSnap.data().avatar);
@@ -81,6 +85,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           name: values.name,
           avatar: downloadedAvatarUrl,
           prompts: values.prompts,
+          firstMessage: values.firstMessage,
         });
       } else {
         updateDoc(doc(db, 'characters', router.query.id as string), {
@@ -88,6 +93,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           prompts: values.prompts,
           avatar: isEditing ? downloadedAvatarUrl : avatar,
           description: values.description,
+          firstMessage: values.firstMessage,
         });
       }
 
@@ -123,7 +129,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
           {!isUpdate ? 'Create your character' : 'Update your character'}
         </h1>
-
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -216,6 +221,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
               </div> */}
 
               <label className="flex flex-col gap-2" htmlFor="prompts">
+                First message
+              </label>
+              <Field
+                name="firstMessage"
+                id="firstMessage"
+                type="text"
+                className="p-2 border border-grad-green rounded"
+              />
+
+              <label className="flex flex-col gap-2" htmlFor="prompts">
                 Prompt
               </label>
               {/* Prompt field array */}
@@ -239,7 +254,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               className="p-2 border border-grad-green rounded flex-grow"
                             >
                               <option value="system">
-                                Character description
+                                Character instructions
                               </option>
                               <option value="user">User</option>
                               <option value="assistant">Character</option>
@@ -310,12 +325,35 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   <p className="text-grad-green underline">Cancel</p>
                 </Link>
                 <button
+                  disabled={isLoading}
+                  onClick={() => setTryingOut(!tryingOut)}
+                  type="button"
+                  className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
+                >
+                  {tryingOut ? 'Hide chat' : 'Try out'}
+                </button>
+
+                <button
                   type="submit"
                   disabled={isLoading}
                   className="bg-grad-purple hover:bg-grad-purple-dark text-white font-bold py-2 px-4 rounded"
                 >
                   {isLoading ? 'Saving...' : 'Save'}
                 </button>
+              </div>
+              <div
+                className="relative"
+                style={{
+                  width: '100%',
+                  height: '500px',
+                  position: 'relative',
+                  display: tryingOut ? 'block' : 'none',
+                }}
+              >
+                <Chat
+                  firstMessage={formikProps.values.firstMessage}
+                  prompts={formikProps.values.prompts}
+                />
               </div>
             </Form>
           )}
