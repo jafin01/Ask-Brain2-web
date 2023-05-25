@@ -26,7 +26,12 @@ function Chat({
     ]);
     setMessage('');
 
-    const response = await sendMessage([...prompts, ...conversation]);
+    const messagesToSend = [
+      ...prompts,
+      ...conversation,
+      { content: message, role: 'user' },
+    ];
+    const response = await sendMessage(messagesToSend);
 
     setConversation((prevConversation = []) => [
       ...prevConversation.slice(0, -1),

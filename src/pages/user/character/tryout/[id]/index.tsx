@@ -7,7 +7,7 @@ import { db } from 'config/firebase';
 import { useRouter } from 'next/router';
 import Chat from '@/components/Chat/Chat';
 
-function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
+function CharacterForm() {
   const router = useRouter();
 
   const [firstMessage, setFirstMessage] = useState('');
@@ -33,14 +33,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   }
 
   useEffect(() => {
-    if (isUpdate) {
-      getSelectedData();
-    }
-  }, [isUpdate]);
+    getSelectedData();
+  }, []);
 
   return (
     <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
-      <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
+      <div className="w-full max-w-md bg-app-bg text-gray-600 rounded-2xl">
         <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
           Test your character
         </h1>
