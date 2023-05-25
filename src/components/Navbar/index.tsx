@@ -26,7 +26,11 @@ function Navbar({
     >
       <div className="w-full flex justify-between items-center">
         <aside className="w-full md:w-1/4">
-          <div className="flex items-center gap-4 cursor-pointer font-poppins text-xl">
+          <Link
+            href="#home"
+            onClick={handleScroll}
+            className="flex items-center gap-4 cursor-pointer font-poppins text-xl"
+          >
             <svg
               width="30"
               height="30"
@@ -44,7 +48,7 @@ function Navbar({
               />
             </svg>
             Ask Brain 2
-          </div>
+          </Link>
         </aside>
         <aside className="hidden md:flex w-1/2 justify-around">
           <Link href="#features" onClick={handleScroll}>
