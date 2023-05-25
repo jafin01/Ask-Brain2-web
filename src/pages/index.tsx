@@ -19,19 +19,16 @@ function Home() {
   const isLoggedIn = async () => {
     const unsubscribe = await onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
-      // if (!user) {
-      //   push('/login');
-      // }
     });
-    return unsubscribe; // Return the unsubscribe function
+    return unsubscribe;
   };
 
   useEffect(() => {
-    const unsubscribePromise = isLoggedIn(); // Store the promise
+    const unsubscribePromise = isLoggedIn();
 
     return () => {
       unsubscribePromise.then((unsubscribe) => {
-        unsubscribe(); // Call the unsubscribe function when the promise resolves
+        unsubscribe();
       });
     };
   }, []);
@@ -76,7 +73,10 @@ function Home() {
         isScrolling={isScrolling}
         isAuthenticated={isAuthenticated}
       />
-      <section className="px-10 pt-24 md:pt-32 lg:pt-0 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center">
+      <section
+        id="home"
+        className="px-10 pt-24 md:pt-32 lg:pt-0 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center"
+      >
         <aside className="w-full lg:w-1/2 text-white">
           <div className="md:flex md:flex-col md:justify-center ">
             <div className="text-5xl md:text-center lg:text-left leading-snug md:py-3 font-poppins font-bold md:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
@@ -159,7 +159,7 @@ function Home() {
       </section>
 
       <section className="bg-app-bg md:mt-12">
-        <Footer />
+        <Footer handleScroll={handleScroll} />
       </section>
     </div>
   );
