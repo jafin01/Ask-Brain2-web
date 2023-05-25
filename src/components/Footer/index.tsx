@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 
-export default function Footer() {
+export default function Footer({
+  handleScroll,
+}: {
+  handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+}) {
   return (
     <div className="container flex flex-col items-center px-8 py-8 mx-auto max-w-full sm:flex-row">
       <Link
@@ -13,34 +17,58 @@ export default function Footer() {
       <p className="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">
         © 2023 Ask Brain 2
       </p>
-      <div className="flex flex-1 justify-center gap-8">
-        <Link href="/" className="ml-4 text-gray-400 hover:text-gray-500">
-          Home
-        </Link>
-        <Link
-          href="#features"
-          className="ml-4 text-gray-400 hover:text-gray-500"
-        >
-          Features
-        </Link>
-        <Link href="#faq" className="text-gray-400 hover:text-gray-500">
-          FAQ
-        </Link>
-        <Link href="/terms" className="ml-4 text-gray-400 hover:text-gray-500">
-          Terms
-        </Link>
-        <Link
-          href="/privacy"
-          className="ml-4 text-gray-400 hover:text-gray-500"
-        >
-          Privacy
-        </Link>
-        <Link
-          href="/community"
-          className="ml-4 text-gray-400 hover:text-gray-500"
-        >
-          Community
-        </Link>
+      <div className="md:flex md:flex-1 justify-center gap-8 text-center">
+        <div className="py-4">
+          <Link
+            href="#home"
+            onClick={handleScroll}
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            Home
+          </Link>
+        </div>
+        <div className="py-4">
+          <Link
+            href="#features"
+            onClick={handleScroll}
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            Features
+          </Link>
+        </div>
+        <div className="py-4">
+          <Link
+            href="#faq"
+            onClick={handleScroll}
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            FAQ
+          </Link>
+        </div>
+        <div className="py-4">
+          <Link
+            href="/terms"
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            Terms
+          </Link>
+        </div>
+        <div className="py-4">
+          <Link
+            href="/privacy"
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            Privacy
+          </Link>
+        </div>
+        <div className="py-4">
+          <Link
+            href="/community"
+            className="ml-4 text-gray-400 hover:text-gray-500"
+          >
+            Community
+          </Link>
+        </div>
       </div>
       <span className="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
         <Link
