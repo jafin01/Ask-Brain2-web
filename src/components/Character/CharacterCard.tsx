@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { auth, db } from 'config/firebase';
+import { auth } from 'config/firebase';
 import Link from 'next/link';
-import { deleteDoc, doc } from '@firebase/firestore';
 import { characterData } from '@/services/characters';
 
-export default function CharacterCard() {
+export default function CharacterCard({
+  setCharacterToDelete,
+  setShowModal,
+  setSelectedCharacterName,
+  updatedCharacters,
+}: any) {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // const [showForm, setShowForm] = useState(false);
@@ -24,33 +28,7 @@ export default function CharacterCard() {
     }
 
     getCharacterData();
-  }, [auth.currentUser?.uid]);
-
-  // const handleDelete = async (characterId: string) => {
-  //   try {
-  //     await deleteDoc(doc(db, 'characters', characterId));
-  //     setCharacters((prevCharacters) =>
-  //       prevCharacters.filter((character: any) => character.id !== characterId)
-  //     );
-  //   } catch (error: any) {
-  //     console.error('Error deleting document: ', error);
-  //   }
-  // };
-
-  const deleteCharacter = async (characterId: string) => {
-    try {
-      if (characterId) {
-        await deleteDoc(doc(db, 'characters', characterId));
-        setCharacters((prevCharacters) =>
-          prevCharacters.filter(
-            (character: any) => character.id !== characterId
-          )
-        );
-      }
-    } catch (error: any) {
-      console.error('Error deleting document: ', error);
-    }
-  };
+  }, [auth.currentUser?.uid, updatedCharacters]);
 
   return (
     <div className="px-8">
@@ -160,7 +138,10 @@ export default function CharacterCard() {
                     type="button"
                     className="text-red-500 flex gap-1 cursor-pointer"
                     onClick={() => {
-                      deleteCharacter(character.id);
+                      setShowModal(true);
+                      setCharacterToDelete(character.id);
+                      setSelectedCharacterName(character.data.name);
+                      // deleteCharacter(character.id);
                     }}
                   >
                     <svg
