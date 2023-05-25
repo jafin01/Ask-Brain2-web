@@ -30,6 +30,12 @@ export default function CharacterCard({
     getCharacterData();
   }, [auth.currentUser?.uid, updatedCharacters]);
 
+  const generateCharacterLink = (characterId: string) => {
+    // crete a link to the app with the character id
+    console.log('characterId', characterId);
+    // show toast with message
+  };
+
   return (
     <div className="px-8">
       <div className="py-16 m-auto">
@@ -60,12 +66,12 @@ export default function CharacterCard({
             </span>
           </Link>
         </div>
-        <div className="border w-full p-8 grid grid-cols-4 gap-4">
+        <div className="border w-full p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {isLoading && <p className="text-white">Loading...</p>}
           {!isLoading &&
             characters.map((character: any) => (
               <div className="min-h-[100px]">
-                <div className="flex gap-4 border px-4 py-4 rounded-lg cursor-all-scroll">
+                <div className="flex gap-4 border px-4 py-4 rounded-lg cursor-all-scroll items-center">
                   <div>
                     <div className="w-12 h-12 rounded-full bg-gray-200 flex justify-center items-center">
                       <img
@@ -77,21 +83,18 @@ export default function CharacterCard({
                   </div>
                   <div>
                     <p>
-                      <span className="font-semibold text-gray-50">Name: </span>
                       <span className="font-medium text-lg text-gray-400">
                         {character.data.name}
-                      </span>
-                    </p>
-                    <p>
-                      <span className="font-semibold text-gray-50">Desc: </span>
-                      <span className="font-medium text-gray-400">
-                        {character.data.description}
                       </span>
                     </p>
                   </div>
                 </div>
                 <div className="flex justify-around my-2">
-                  <div className="flex gap-1 cursor-pointer text-grad-green">
+                  <button
+                    type="button"
+                    className="flex gap-1 cursor-pointer text-grad-green"
+                    onClick={() => generateCharacterLink(character.id)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -103,17 +106,12 @@ export default function CharacterCard({
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        // app link icon
+                        d="M12 4.5v15m7.5-7.5h-15"
                       />
                     </svg>
-
-                    <h4 className="">View</h4>
-                  </div>
+                    <h4 className="">Get link</h4>
+                  </button>
                   <Link
                     href={`/user/character/${character.id}`}
                     className="flex gap-1 text-yellow-500 cursor-pointer"
