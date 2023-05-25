@@ -16,26 +16,44 @@ function Home() {
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    async function isLoggedIn() {
-      const unsubscribe = await onAuthStateChanged(auth, (user) => {
-        setIsAuthenticated(!!user);
-      });
-      return () => unsubscribe();
-    }
+  const isLoggedIn = async () => {
+    const unsubscribe = await onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      // if (!user) {
+      //   push('/login');
+      // }
+    });
+    return unsubscribe; // Return the unsubscribe function
+  };
 
-    isLoggedIn();
+  useEffect(() => {
+    const unsubscribePromise = isLoggedIn(); // Store the promise
+
+    return () => {
+      unsubscribePromise.then((unsubscribe) => {
+        unsubscribe(); // Call the unsubscribe function when the promise resolves
+      });
+    };
   }, []);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
       setIsScrolling(window.scrollY > 100);
-    });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  // if (!isAuthenticated) return null;
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault(); // prevent the default behavior
@@ -58,37 +76,43 @@ function Home() {
         isScrolling={isScrolling}
         isAuthenticated={isAuthenticated}
       />
-      <section className="px-10 pt-24 md:pt-0 md:flex w-full md:min-h-screen md:justify-center md:items-center">
-        <aside className="w-full md:w-1/2 text-white">
-          <div className="text-5xl leading-snug md:py-3 font-poppins font-bold md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
-            <p className="md:py-5 text-transparent">Your Intelligent</p>
-            <p className="text-transparent">Chat Companion</p>
+      <section className="px-10 pt-24 md:pt-32 lg:pt-0 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center">
+        <aside className="w-full lg:w-1/2 text-white">
+          <div className="md:flex md:flex-col md:justify-center ">
+            <div className="text-5xl md:text-center lg:text-left leading-snug md:py-3 font-poppins font-bold md:text-7xl bg-clip-text bg-gradient-to-r from-white via-grad-purple to-grad-green md:tracking-tight">
+              <p className="md:py-5 text-transparent">Your Intelligent</p>
+              <p className="text-transparent">Chat Companion</p>
+            </div>
+            <div className="md:flex md:justify-center">
+              <h3 className="font-poppins text-xl lg:text-2xl text-left text-gray-400 pt-5 pb-10 flex justify-center leading-relaxed lg:leading-relaxed font-extralight max-w-xl">
+                Customizable settings allow you to adjust tone, formality, and
+                language style. Get advice or pass the time with your virtual
+                friend.
+              </h3>
+            </div>
+            <div className="md:flex md:justify-center lg:justify-between md:py-8">
+              <section className="md:flex md:gap-10 md:w-2/3 lg:w-full lg:flex lg:max-w-md">
+                <button
+                  type="button"
+                  className="block w-full mb-5 md:mb-0 lg:mb-0 rounded-full bg-blue-500 lg:mr-10 py-3 md:py-4 lg:py-3 text-lg font-lato font-medium shadow-lg"
+                >
+                  DOWNLOAD
+                </button>
+                <button
+                  type="button"
+                  className="block w-full rounded-full bg-grad-purple py-3 md:py-4 lg:py-3 text-lg font-lato font-medium shadow-lg"
+                >
+                  SHOW VIDEO
+                </button>
+              </section>
+            </div>
           </div>
-          <h3 className="font-poppins text-xl lg:text-2xl text-left text-gray-400 pt-5 pb-10 flex justify-center leading-relaxed lg:leading-relaxed font-extralight max-w-xl">
-            Customizable settings allow you to adjust tone, formality, and
-            language style. Get advice or pass the time with your virtual
-            friend.
-          </h3>
-          <section className="lg:flex max-w-md">
-            <button
-              type="button"
-              className="block w-full mb-5 lg:mb-0 rounded-full bg-blue-500 lg:mr-10 py-3 text-lg font-lato font-medium shadow-lg"
-            >
-              DOWNLOAD
-            </button>
-            <button
-              type="button"
-              className="block w-full rounded-full bg-grad-purple py-3 text-lg font-lato font-medium shadow-lg"
-            >
-              SHOW VIDEO
-            </button>
-          </section>
         </aside>
-        <aside className="hidden md:flex w-full md:flex-1 justify-center text-white">
+        <aside className="hidden md:flex w-full md:w-3/4 md:m-auto md:py-14 lg:w-full lg:flex-1 justify-center items-center text-white">
           <img
             src="../../../assets/askbrain2-mockup.png"
             alt="ask-brain2-mockup"
-            className="h-3/4 w-full object-cover"
+            className="h-3/4 md:h-3/4 w-full object-cover"
           />
         </aside>
       </section>
