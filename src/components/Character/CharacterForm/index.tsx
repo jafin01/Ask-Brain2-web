@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [avatar, setAvatar] = useState<File | undefined>();
+  const [avatar, setAvatar] = useState<File>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
@@ -85,8 +85,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       } else {
         updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
-          avatar: downloadedAvatarUrl,
           prompts: values.prompts,
+          avatar: isEditing ? downloadedAvatarUrl : avatar,
+          description: values.description,
         });
       }
 

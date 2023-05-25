@@ -39,7 +39,7 @@ function LoginForm() {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-app-bg to-grad-purple text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-app-bg via-app-bg to-grad-purple text-white">
       <h1 className="text-5xl lg:text-6xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-grad-green py-5">
         Register
       </h1>

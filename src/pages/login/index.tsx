@@ -12,6 +12,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import '../../../public/assets/googleLogo.png';
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -219,8 +220,15 @@ function LoginForm() {
       <button
         type="button"
         onClick={handleGoogleSignUp}
-        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+        className="bg-white flex gap-4 justify-center items-center hover:bg-gray-300 text-app-bg font-poppins font-medium py-2 px-4 rounded"
       >
+        <span>
+          <img
+            src="../../../assets/googleLogo.png"
+            alt="googleLogo"
+            className="w-7 h-7"
+          />
+        </span>
         Sign in with Google
       </button>
     </div>
