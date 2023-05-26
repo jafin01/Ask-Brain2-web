@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Lottie from 'react-lottie';
 import sendMessage from '@/services/openai';
+import loadingData from '../../../public/assets/loading-dots.json';
 
 function Chat({
   firstMessage = '',
@@ -54,7 +56,7 @@ function Chat({
       >
         <div className="mt-auto flex flex-col gap-1 justify-end">
           {[{ content: firstMessage, role: 'assistant' }, ...conversation]
-            ?.filter((m) => m.content)
+            ?.filter((m) => m.content || m.loading)
             ?.map((m) => (
               <div
                 className={`${
@@ -63,9 +65,21 @@ function Chat({
                   m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
                 } ${m.role === 'user' ? 'self-end' : 'self-start'}`}
               >
-                <p className="text-sm whitespace-pre-line">
-                  {m?.content?.trim()}
-                </p>
+                {m.loading ? (
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: loadingData,
+                    }}
+                    height={40}
+                    width={50}
+                  />
+                ) : (
+                  <p className="text-sm whitespace-pre-line">
+                    {m?.content?.trim()}
+                  </p>
+                )}
               </div>
             ))}
         </div>
