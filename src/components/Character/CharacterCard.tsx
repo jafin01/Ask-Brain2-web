@@ -113,6 +113,22 @@ export default function CharacterCard({
                     <h4 className="">Get link</h4>
                   </button>
                   <Link
+                    href={`/user/character/tryout/${character.id}`}
+                    className="flex gap-1 text-blue-500 cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path d="M20.625 2H3.375C2.48828 2 1.78125 2.70703 1.78125 3.59375V16.4062C1.78125 17.2929 2.48828 18 3.375 18H5.0625V21.625L9.46875 18H20.625C21.5117 18 22.2188 17.2929 22.2188 16.4062V3.59375C22.2188 2.70703 21.5117 2 20.625 2Z" />
+                    </svg>
+                    <h4 className="">Try out</h4>
+                  </Link>
+                  <Link
                     href={`/user/character/${character.id}`}
                     className="flex gap-1 text-yellow-500 cursor-pointer"
                   >
