@@ -89,7 +89,7 @@ export default function CharacterCard({
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row justify-around my-2 md: flex-col items-center gap-2">
+                <div className="flex flex-col justify-around my-2 items-center gap-2 md:flex-row">
                   <button
                     type="button"
                     className="flex gap-1 cursor-pointer text-grad-green"
