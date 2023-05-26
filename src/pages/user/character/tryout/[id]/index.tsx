@@ -34,7 +34,7 @@ function CharacterForm() {
 
   useEffect(() => {
     getSelectedData();
-  }, []);
+  }, [router.query.id]);
 
   return (
     <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
