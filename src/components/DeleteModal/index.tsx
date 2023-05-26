@@ -12,7 +12,7 @@ export default function ConfirmDelete({
 }: IProps) {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75">
-      <div className="bg-white w-1/3 p-6 rounded-md">
+      <div className="bg-white p-6 rounded-md">
         <h2 className="text-lg font-bold mb-4">Confirm Deletion</h2>
         <p>
           Enter <strong>{selectedCharacterName}</strong> to confirm deletion:

@@ -93,7 +93,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen">
+    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen">
       <div>
         <Navbar
           isOpen={isOpen}

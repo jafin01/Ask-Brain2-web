@@ -21,7 +21,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
@@ -60,16 +59,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       getSelectedData();
     }
   }, [isUpdate]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
-    };
-
-    handleResize(); // Check on initial render
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -240,13 +229,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     {formikProps.values?.prompts?.map(
                       (_: unknown, index: number) => (
                         <div>
-                          <div
-                            className={`flex ${
-                              isMobile ? 'flex-col' : 'flex-row'
-                            } gap-3 justify-end ${
-                              isMobile ? 'items-stretch' : 'items-start'
-                            }`}
-                          >
+                          <div className="flex gap-3 justify-end flex-col items-stretch md: flex-row items-start">
                             <Field
                               as="select"
                               name={`prompts.${index}.role`}

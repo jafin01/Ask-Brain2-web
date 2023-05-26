@@ -42,7 +42,7 @@ export default function CharacterCard({
         <h1 className="text-center font-bold text-2xl pb-4 text-white">
           Characters
         </h1>
-        <div className="w-full flex justify-end mb-4 text-app-bg">
+        <div className="w-full flex justify-center mb-4 text-app-bg md: justify-end">
           <Link
             href="/user/character"
             className="rounded px-2 py-2 bg-gradient-to-r from-grad-green to-white"
@@ -89,7 +89,7 @@ export default function CharacterCard({
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-around my-2">
+                <div className="flex flex-col justify-around my-2 items-center gap-2 md:flex-row">
                   <button
                     type="button"
                     className="flex gap-1 cursor-pointer text-grad-green"
