@@ -1,10 +1,8 @@
-import React, { useRef, useState } from 'react';
-import Lottie from 'react-lottie';
-import loadingDots from 'public/assets/loading-dots.json';
-import sendMessage from '@/services/openai';
+import sendMessage from "@/services/openai";
+import { useRef, useState } from "react";
 
 function Chat({
-  firstMessage = '',
+  firstMessage = "",
   prompts,
 }: {
   firstMessage: string;
@@ -12,7 +10,7 @@ function Chat({
 }) {
   const chatRef = useRef(null);
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
 
@@ -21,21 +19,21 @@ function Chat({
   const handleSendMessage = async () => {
     setConversation((prevConversation = []) => [
       ...prevConversation,
-      { content: message, role: 'user' },
-      { loading: true, role: '', content: '' },
+      { content: message, role: "user" },
+      { loading: true, role: "", content: "" },
     ]);
-    setMessage('');
+    setMessage("");
 
     const messagesToSend = [
       ...prompts,
       ...conversation,
-      { content: message, role: 'user' },
+      { content: message, role: "user" },
     ];
     const response = await sendMessage(messagesToSend);
 
     setConversation((prevConversation = []) => [
       ...prevConversation.slice(0, -1),
-      { content: response, role: 'assistant' },
+      { content: response, role: "assistant" },
     ]);
     setResponseFinished(true);
   };
@@ -47,41 +45,26 @@ function Chat({
         className="absolute right-0 left-0 bottom-16 px-4 pb-4 pt-40 overflow-hidden flex flex-col gap-1"
         ref={chatRef}
       >
-        {[{ content: firstMessage, role: 'assistant' }, ...conversation]
+        {[{ content: firstMessage, role: "assistant" }, ...conversation]
           ?.filter((m) => m.content)
           ?.map((m) => (
             <div
               className={`${
-                m.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-              } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
-                m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
-              } ${m.role === 'user' ? 'self-end' : 'self-start'}`}
+                m.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200"
+              } ${m.loading ? "p-0" : "p-2.5"} rounded-2xl ${
+                m.role === "user" ? "rounded-br-none" : "rounded-bl-none"
+              } ${m.role === "user" ? "self-end" : "self-start"}`}
             >
-              {m.loading ? (
-                <Lottie
-                  options={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: loadingDots,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidYMid slice',
-                    },
-                  }}
-                  height={30}
-                  width={50}
-                />
-              ) : (
-                <p className="text-sm whitespace-pre-line">
-                  {m?.content?.trim()}
-                </p>
-              )}
+              <p className="text-sm whitespace-pre-line">
+                {m?.content?.trim()}
+              </p>
             </div>
           ))}
       </div>
       <div className="mt-1 absolute flex bottom-2 right-2 left-2">
         <input
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey && message) {
+            if (e.key === "Enter" && !e.shiftKey && message) {
               handleSendMessage();
               e.preventDefault();
             }
@@ -95,7 +78,7 @@ function Chat({
           type="button"
           onClick={handleSendMessage}
           className={`${
-            message && responseFinished ? '' : 'opacity-50'
+            message && responseFinished ? "" : "opacity-50"
           } absolute top-3 right-4`}
         >
           <svg
