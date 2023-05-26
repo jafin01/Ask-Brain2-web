@@ -113,7 +113,7 @@ export default function CharacterCard({
                     <h4 className="">Get link</h4>
                   </button>
                   <Link
-                    href={`/user/character/tryout/${character.id}`}
+                    href={`/character/${character.id}`}
                     className="flex gap-1 text-blue-500 cursor-pointer"
                   >
                     <svg
@@ -129,7 +129,7 @@ export default function CharacterCard({
                     <h4 className="">Try out</h4>
                   </Link>
                   <Link
-                    href={`/user/character/${character.id}`}
+                    href={`/character/${character.id}`}
                     className="flex gap-1 text-yellow-500 cursor-pointer"
                   >
                     <svg

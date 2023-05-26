@@ -7,7 +7,7 @@ import { db } from 'config/firebase';
 import { useRouter } from 'next/router';
 import Chat from '@/components/Chat/Chat';
 
-function CharacterForm() {
+function Character() {
   const router = useRouter();
 
   const [firstMessage, setFirstMessage] = useState('');
@@ -84,4 +84,4 @@ function CharacterForm() {
   );
 }
 
-export default CharacterForm;
+export default Character;
