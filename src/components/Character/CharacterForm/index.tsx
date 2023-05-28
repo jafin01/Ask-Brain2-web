@@ -77,11 +77,10 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
         });
       } else {
-        updateDoc(doc(db, 'characters', router.query.id as string), {
+        await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
           avatar: isEditing ? downloadedAvatarUrl : avatar,
-          description: values.description,
           firstMessage: values.firstMessage,
         });
       }
