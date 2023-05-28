@@ -3,6 +3,8 @@ import Lottie from 'react-lottie';
 import sendMessage from '@/services/openai';
 import loadingData from '../../../public/assets/loading-dots.json';
 
+const MAX_MESSAGE_COUNT = 10;
+
 function Chat({
   firstMessage = '',
   prompts,
@@ -50,9 +52,10 @@ function Chat({
   return (
     //  position modal on top of the chat
     <div className="bg-gray-100 absolute rounded-2xl bottom-0 right-0 left-0 top-0 overflow-scroll">
+      {/* modal */}
       <div
         ref={chatRef}
-        className="absolute right-0 left-0 bottom-16 px-4 pb-4 top-0 pt-0 overflow-scroll flex flex-col"
+        className="absolute right-0 left-0 bottom-16 px-4 pb-4 top-0 pt-4 overflow-scroll flex flex-col"
       >
         <div className="mt-auto flex flex-col gap-1 justify-end">
           {[{ content: firstMessage, role: 'assistant' }, ...conversation]
@@ -82,6 +85,40 @@ function Chat({
                 )}
               </div>
             ))}
+          {conversation.length >= MAX_MESSAGE_COUNT && (
+            <div className="bg-green-500 text-white p-2.5 rounded-2xl self-start mt-2">
+              <p className="text-sm whitespace-pre-line">
+                You&apos;ve reached the maximum number of messages. To continue,
+                please download the app from the App Store or Play Store.
+                <div className="flex gap-12 p-4">
+                  <a
+                    href="https://apps.apple.com/app/ask-brain2-chat-with-chatbot/id6448963886"
+                    target="_blank"
+                    className="underline"
+                    rel="noreferrer"
+                  >
+                    <img
+                      alt="app store"
+                      src="/assets/app-store.png"
+                      className="w-30"
+                    />
+                  </a>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.askbrain2.app"
+                    target="_blank"
+                    className="underline"
+                    rel="noreferrer"
+                  >
+                    <img
+                      alt="play store"
+                      src="/assets/google-play.png"
+                      className="w-30"
+                    />
+                  </a>
+                </div>
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-1 absolute flex bottom-2 right-2 left-2">
@@ -91,7 +128,8 @@ function Chat({
               e.key === 'Enter' &&
               !e.shiftKey &&
               message &&
-              responseFinished
+              responseFinished &&
+              conversation.length < MAX_MESSAGE_COUNT
             ) {
               handleSendMessage();
               e.preventDefault();
@@ -105,9 +143,14 @@ function Chat({
         <button
           type="button"
           onClick={handleSendMessage}
-          disabled={!responseFinished}
+          disabled={
+            !responseFinished || conversation.length >= MAX_MESSAGE_COUNT
+          }
           className={`${
-            message && responseFinished ? '' : 'opacity-50'
+            message &&
+            (!responseFinished || conversation.length >= MAX_MESSAGE_COUNT)
+              ? 'opacity-50'
+              : ''
           } absolute top-3 right-4`}
         >
           <svg

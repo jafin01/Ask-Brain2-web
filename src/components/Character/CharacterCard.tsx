@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { auth } from 'config/firebase';
 import Link from 'next/link';
+import { ToastContainer, toast } from 'react-toastify';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { characterData } from '@/services/characters';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CharacterCard({
   setCharacterToDelete,
@@ -30,17 +33,23 @@ export default function CharacterCard({
     getCharacterData();
   }, [auth.currentUser?.uid, updatedCharacters]);
 
-  const generateCharacterLink = (characterId: string) => {
-    // crete a link to the app with the character id
-    console.log('characterId', characterId);
-    // show toast with message
-  };
-
   return (
     <div className="px-8">
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="py-16 m-auto">
         <h1 className="text-center font-bold text-2xl pb-4 text-white">
-          Characters
+          Experiences
         </h1>
         <div className="w-full flex justify-center mb-4 text-app-bg md: justify-end">
           <Link
@@ -62,7 +71,7 @@ export default function CharacterCard({
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Create Character
+              Create an experience
             </span>
           </Link>
         </div>
@@ -90,28 +99,32 @@ export default function CharacterCard({
                   </div>
                 </div>
                 <div className="flex flex-col justify-around my-2 items-center gap-2 md:flex-row">
-                  <button
-                    type="button"
-                    className="flex gap-1 cursor-pointer text-grad-green"
-                    onClick={() => generateCharacterLink(character.id)}
+                  <CopyToClipboard
+                    text={`${window.location.origin}/character/${character.id}`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                    <button
+                      type="button"
+                      className="flex gap-1 cursor-pointer text-grad-green"
+                      onClick={() => toast('Link copied to clipboard!')}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        // app link icon
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                    <h4 className="">Get link</h4>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          // app link icon
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                      <h4 className="">Get link</h4>
+                    </button>
+                  </CopyToClipboard>
                   <Link
                     href={`/character/${character.id}`}
                     className="flex gap-1 text-blue-500 cursor-pointer"
