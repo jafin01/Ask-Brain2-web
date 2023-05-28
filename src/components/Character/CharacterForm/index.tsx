@@ -279,7 +279,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     )}
                     <button
                       type="button"
-                      onClick={() => innerPush({ role: '', content: '' })}
+                      onClick={() => innerPush({ role: 'user', content: '' })}
                       className="flex flex-row gap-2 items-center border border-grad-green rounded p-2 items-center justify-center"
                     >
                       Add Prompt

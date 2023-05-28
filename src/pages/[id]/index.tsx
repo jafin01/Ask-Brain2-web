@@ -123,7 +123,7 @@ export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
   const docRef = doc(db, 'chats', params.id);
   const docSnap = await getDoc(docRef);
-  const chat = docSnap.data();
+  const chat = JSON.stringify(docSnap.data());
 
   return { props: { chat } };
 }

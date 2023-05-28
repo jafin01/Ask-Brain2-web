@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
-import sendMessage from '@/services/openai';
+import { logEvent } from 'firebase/analytics';
+import { analytics, auth, db } from 'config/firebase';
+import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
+import sendMessage from '@/services/openai';
 
-const MAX_MESSAGE_COUNT = 100;
+const MAX_MESSAGE_COUNT = 2;
 
 function Chat({
   firstMessage = '',
@@ -14,6 +17,7 @@ function Chat({
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
+  const [conversationId, setConversationId] = useState('');
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
 
@@ -43,11 +47,33 @@ function Chat({
   };
 
   useEffect(() => {
-    chatRef.current?.scrollTo({
-      top: chatRef.current?.scrollHeight,
-      behavior: 'smooth',
-    });
-  }, [conversation]);
+    const update = async () => {
+      chatRef.current?.scrollTo({
+        top: chatRef.current?.scrollHeight,
+        behavior: 'smooth',
+      });
+      try {
+        if (!conversationId) {
+          await addDoc(collection(db, 'chats'), {
+            messages: [],
+            user_id: auth.currentUser?.uid,
+            createdAt: new Date().toISOString(),
+            title: 'Web ask Brain2 Conversation',
+          }).then((docRef) => {
+            setConversationId(docRef.id);
+          });
+        } else {
+          await updateDoc(doc(db, 'chats', conversationId), {
+            messages: conversation,
+          });
+        }
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
+
+    update();
+  }, [conversation, auth.currentUser?.uid, conversationId]);
 
   return (
     //  position modal on top of the chat
@@ -96,6 +122,18 @@ function Chat({
                     target="_blank"
                     className="underline"
                     rel="noreferrer"
+                    onClick={async () => {
+                      try {
+                        const resolvedAnalytics = await analytics;
+                        if (resolvedAnalytics !== null) {
+                          logEvent(resolvedAnalytics, 'app_click', {
+                            app: 'ios',
+                          });
+                        }
+                      } catch (error) {
+                        console.error(error);
+                      }
+                    }}
                   >
                     <img
                       alt="app store"
@@ -108,6 +146,14 @@ function Chat({
                     target="_blank"
                     className="underline"
                     rel="noreferrer"
+                    onClick={async () => {
+                      const resolvedAnalytics = await analytics;
+                      if (resolvedAnalytics !== null) {
+                        logEvent(resolvedAnalytics, 'app_click', {
+                          app: 'android',
+                        });
+                      }
+                    }}
                   >
                     <img
                       alt="play store"
