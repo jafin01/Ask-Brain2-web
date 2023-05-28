@@ -3,7 +3,7 @@ import Lottie from 'react-lottie';
 import sendMessage from '@/services/openai';
 import loadingData from '../../../public/assets/loading-dots.json';
 
-const MAX_MESSAGE_COUNT = 10;
+const MAX_MESSAGE_COUNT = 100;
 
 function Chat({
   firstMessage = '',
