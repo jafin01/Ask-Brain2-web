@@ -3,7 +3,9 @@ import Lottie from "react-lottie";
 import sendMessage from "@/services/openai";
 import loadingData from "../../../public/assets/loading-dots.json";
 import { logEvent } from "firebase/analytics";
-import { analytics } from "config/firebase";
+import { analytics, auth, db } from "config/firebase";
+import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
+import uuid from "react-uuid";
 
 const MAX_MESSAGE_COUNT = 100;
 
@@ -16,6 +18,7 @@ function Chat({
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
 
@@ -45,11 +48,33 @@ function Chat({
   };
 
   useEffect(() => {
-    chatRef.current?.scrollTo({
-      top: chatRef.current?.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [conversation]);
+    const update = async () => {
+      chatRef.current?.scrollTo({
+        top: chatRef.current?.scrollHeight,
+        behavior: "smooth",
+      });
+      try {
+        if (!conversationId) {
+          await addDoc(collection(db, "chats"), {
+            messages: [],
+            user_id: auth.currentUser?.uid,
+            createdAt: new Date(),
+            title: "Web ask Brain2 Conversation",
+          }).then((docRef) => {
+            setConversationId(docRef.id);
+          });
+        } else {
+          await updateDoc(doc(db, "chats", conversationId), {
+            messages: conversation,
+          });
+        }
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    };
+
+    update();
+  }, [conversation, auth.currentUser?.uid, conversationId]);
 
   return (
     //  position modal on top of the chat
