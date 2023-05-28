@@ -9,6 +9,7 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
+    "@firebase/analytics": "^0.10.0",
     "@firebase/app": "^0.9.9",
     "@firebase/firestore": "^3.11.0",
     "@next/font": "13.1.6",
