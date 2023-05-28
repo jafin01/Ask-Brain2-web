@@ -6,7 +6,7 @@ import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
 
-const MAX_MESSAGE_COUNT = 100;
+const MAX_MESSAGE_COUNT = 2;
 
 function Chat({
   firstMessage = '',
@@ -57,7 +57,7 @@ function Chat({
           await addDoc(collection(db, 'chats'), {
             messages: [],
             user_id: auth.currentUser?.uid,
-            createdAt: new Date(),
+            createdAt: new Date().toISOString(),
             title: 'Web ask Brain2 Conversation',
           }).then((docRef) => {
             setConversationId(docRef.id);
@@ -123,11 +123,15 @@ function Chat({
                     className="underline"
                     rel="noreferrer"
                     onClick={async () => {
-                      const resolvedAnalytics = await analytics;
-                      if (resolvedAnalytics !== null) {
-                        logEvent(resolvedAnalytics, 'app_click', {
-                          app: 'ios',
-                        });
+                      try {
+                        const resolvedAnalytics = await analytics;
+                        if (resolvedAnalytics !== null) {
+                          logEvent(resolvedAnalytics, 'app_click', {
+                            app: 'ios',
+                          });
+                        }
+                      } catch (error) {
+                        console.error(error);
                       }
                     }}
                   >
