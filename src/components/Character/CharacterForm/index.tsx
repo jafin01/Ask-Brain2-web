@@ -7,15 +7,15 @@ import {
   doc,
   getDoc,
   updateDoc,
-} from "@firebase/firestore";
-import { auth, db, storage } from "config/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import * as Yup from "yup";
-import Chat from "@/components/Chat/Chat";
+} from '@firebase/firestore';
+import { auth, db, storage } from 'config/firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import Chat from '@/components/Chat/Chat';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,10 +23,10 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
-    name: "",
-    avatar: "",
-    prompts: [{ role: "system", content: "" }],
-    firstMessage: "",
+    name: '',
+    avatar: '',
+    prompts: [{ role: 'system', content: '' }],
+    firstMessage: '',
   });
   const router = useRouter();
   const { push } = router;
@@ -35,7 +35,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     const { id } = router.query;
 
     try {
-      const docRef = doc(db, "characters", id as string);
+      const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const { name, prompts, firstMessage } = docSnap.data()!;
@@ -50,7 +50,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         setAvatar(docSnap.data().avatar);
       }
     } catch (error) {
-      console.log("Error getting document:", error);
+      console.log('Error getting document:', error);
     }
   }
 
@@ -69,7 +69,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
 
       if (!isUpdate) {
-        await addDoc(collection(db, "characters"), {
+        await addDoc(collection(db, 'characters'), {
           userId: auth.currentUser?.uid,
           name: values.name,
           avatar: downloadedAvatarUrl,
@@ -77,7 +77,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
         });
       } else {
-        await updateDoc(doc(db, "characters", router.query.id as string), {
+        await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
           avatar: isEditing ? downloadedAvatarUrl : avatar,
@@ -85,9 +85,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         });
       }
 
-      push("/user");
+      push('/user');
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error('Error adding document: ', error);
     } finally {
       setSubmitting(false);
       setIsLoading(false);
@@ -97,16 +97,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isUpdate) setIsEditing(true);
     const file = e.target.files?.[0];
-    console.log("file", file);
+    console.log('file', file);
     setAvatar(file);
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    name: Yup.string().required('Name is required'),
     prompts: Yup.array().of(
       Yup.object().shape({
-        role: Yup.string().required("Role is required"),
-        content: Yup.string().required("Content is required"),
+        role: Yup.string().required('Role is required'),
+        content: Yup.string().required('Content is required'),
       })
     ),
   });
@@ -115,7 +115,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
       <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
         <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
-          {!isUpdate ? "Create your character" : "Update your character"}
+          {!isUpdate ? 'Create your character' : 'Update your character'}
         </h1>
         <Formik
           enableReinitialize
@@ -279,7 +279,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     )}
                     <button
                       type="button"
-                      onClick={() => innerPush({ role: "user", content: "" })}
+                      onClick={() => innerPush({ role: 'user', content: '' })}
                       className="flex flex-row gap-2 items-center border border-grad-green rounded p-2 items-center justify-center"
                     >
                       Add Prompt
@@ -312,7 +312,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   type="button"
                   className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
                 >
-                  {tryingOut ? "Hide chat" : "Try out"}
+                  {tryingOut ? 'Hide chat' : 'Try out'}
                 </button>
 
                 <button
@@ -320,16 +320,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   disabled={isLoading}
                   className="bg-grad-purple hover:bg-grad-purple-dark text-white font-bold py-2 px-4 rounded"
                 >
-                  {isLoading ? "Saving..." : "Save"}
+                  {isLoading ? 'Saving...' : 'Save'}
                 </button>
               </div>
               <div
                 className="relative"
                 style={{
-                  width: "100%",
-                  height: "500px",
-                  position: "relative",
-                  display: tryingOut ? "block" : "none",
+                  width: '100%',
+                  height: '500px',
+                  position: 'relative',
+                  display: tryingOut ? 'block' : 'none',
                 }}
               >
                 <Chat

@@ -1,24 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
-import Lottie from "react-lottie";
-import sendMessage from "@/services/openai";
-import loadingData from "../../../public/assets/loading-dots.json";
-import { logEvent } from "firebase/analytics";
-import { analytics, auth, db } from "config/firebase";
-import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
-import uuid from "react-uuid";
+import React, { useEffect, useRef, useState } from 'react';
+import Lottie from 'react-lottie';
+import { logEvent } from 'firebase/analytics';
+import { analytics, auth, db } from 'config/firebase';
+import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import loadingData from '../../../public/assets/loading-dots.json';
+import sendMessage from '@/services/openai';
 
 const MAX_MESSAGE_COUNT = 100;
 
 function Chat({
-  firstMessage = "",
+  firstMessage = '',
   prompts,
 }: {
   firstMessage: string;
   prompts: { content: string; role: string }[];
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
-  const [message, setMessage] = useState("");
-  const [conversationId, setConversationId] = useState("");
+  const [message, setMessage] = useState('');
+  const [conversationId, setConversationId] = useState('');
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
 
@@ -28,21 +27,21 @@ function Chat({
     setResponseFinished(false);
     setConversation((prevConversation = []) => [
       ...prevConversation,
-      { content: message, role: "user" },
-      { loading: true, role: "", content: "" },
+      { content: message, role: 'user' },
+      { loading: true, role: '', content: '' },
     ]);
-    setMessage("");
+    setMessage('');
 
     const messagesToSend = [
       ...prompts,
       ...conversation,
-      { content: message, role: "user" },
+      { content: message, role: 'user' },
     ];
     const response = await sendMessage(messagesToSend);
 
     setConversation((prevConversation = []) => [
       ...prevConversation.slice(0, -1),
-      { content: response, role: "assistant" },
+      { content: response, role: 'assistant' },
     ]);
     setResponseFinished(true);
   };
@@ -51,25 +50,25 @@ function Chat({
     const update = async () => {
       chatRef.current?.scrollTo({
         top: chatRef.current?.scrollHeight,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
       try {
         if (!conversationId) {
-          await addDoc(collection(db, "chats"), {
+          await addDoc(collection(db, 'chats'), {
             messages: [],
             user_id: auth.currentUser?.uid,
             createdAt: new Date(),
-            title: "Web ask Brain2 Conversation",
+            title: 'Web ask Brain2 Conversation',
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
         } else {
-          await updateDoc(doc(db, "chats", conversationId), {
+          await updateDoc(doc(db, 'chats', conversationId), {
             messages: conversation,
           });
         }
       } catch (error) {
-        console.error("Error adding document: ", error);
+        console.error('Error adding document: ', error);
       }
     };
 
@@ -85,15 +84,15 @@ function Chat({
         className="absolute right-0 left-0 bottom-16 px-4 pb-4 top-0 pt-4 overflow-scroll flex flex-col"
       >
         <div className="mt-auto flex flex-col gap-1 justify-end">
-          {[{ content: firstMessage, role: "assistant" }, ...conversation]
+          {[{ content: firstMessage, role: 'assistant' }, ...conversation]
             ?.filter((m) => m.content || m.loading)
             ?.map((m) => (
               <div
                 className={`${
-                  m.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200"
-                } ${m.loading ? "p-0" : "p-2.5"} rounded-2xl ${
-                  m.role === "user" ? "rounded-br-none" : "rounded-bl-none"
-                } ${m.role === "user" ? "self-end" : "self-start"}`}
+                  m.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
+                  m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
+                } ${m.role === 'user' ? 'self-end' : 'self-start'}`}
               >
                 {m.loading ? (
                   <Lottie
@@ -126,8 +125,8 @@ function Chat({
                     onClick={async () => {
                       const resolvedAnalytics = await analytics;
                       if (resolvedAnalytics !== null) {
-                        logEvent(resolvedAnalytics, "app_click", {
-                          app: "ios",
+                        logEvent(resolvedAnalytics, 'app_click', {
+                          app: 'ios',
                         });
                       }
                     }}
@@ -146,8 +145,8 @@ function Chat({
                     onClick={async () => {
                       const resolvedAnalytics = await analytics;
                       if (resolvedAnalytics !== null) {
-                        logEvent(resolvedAnalytics, "app_click", {
-                          app: "android",
+                        logEvent(resolvedAnalytics, 'app_click', {
+                          app: 'android',
                         });
                       }
                     }}
@@ -168,7 +167,7 @@ function Chat({
         <input
           onKeyDown={(e) => {
             if (
-              e.key === "Enter" &&
+              e.key === 'Enter' &&
               !e.shiftKey &&
               message &&
               responseFinished &&
@@ -192,8 +191,8 @@ function Chat({
           className={`${
             message &&
             (!responseFinished || conversation.length >= MAX_MESSAGE_COUNT)
-              ? "opacity-50"
-              : ""
+              ? 'opacity-50'
+              : ''
           } absolute top-3 right-4`}
         >
           <svg
