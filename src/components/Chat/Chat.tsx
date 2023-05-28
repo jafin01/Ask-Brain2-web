@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
-import { logEvent } from 'firebase/analytics';
-import { analytics } from 'config/firebase';
 import sendMessage from '@/services/openai';
 import loadingData from '../../../public/assets/loading-dots.json';
 
@@ -49,8 +47,6 @@ function Chat({
       top: chatRef.current?.scrollHeight,
       behavior: 'smooth',
     });
-
-
   }, [conversation]);
 
   return (
