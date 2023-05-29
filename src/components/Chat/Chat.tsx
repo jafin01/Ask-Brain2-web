@@ -14,7 +14,7 @@ function Chat({
 }: {
   firstMessage: string;
   prompts: { content: string; role: string }[];
-  id: string;
+  id?: string;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -227,3 +227,7 @@ function Chat({
 }
 
 export default Chat;
+
+Chat.defaultProps = {
+  id: '',
+};
