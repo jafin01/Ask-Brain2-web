@@ -76,7 +76,11 @@ function Character() {
               position: 'relative',
             }}
           >
-            <Chat firstMessage={firstMessage} prompts={prompts} />
+            <Chat
+              firstMessage={firstMessage}
+              prompts={prompts}
+              id={router.query.id as string}
+            />
           </div>
         </div>
       </div>
