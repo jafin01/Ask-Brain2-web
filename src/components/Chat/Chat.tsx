@@ -5,7 +5,7 @@ import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
 
-const MAX_MESSAGE_COUNT = 2;
+const MAX_MESSAGE_COUNT = 100;
 
 function Chat({
   firstMessage = '',
