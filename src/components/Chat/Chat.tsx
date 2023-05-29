@@ -8,11 +8,13 @@ import sendMessage from '@/services/openai';
 const MAX_MESSAGE_COUNT = 100;
 
 function Chat({
+  id = '',
   firstMessage = '',
   prompts,
 }: {
   firstMessage: string;
   prompts: { content: string; role: string }[];
+  id?: string;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -58,6 +60,7 @@ function Chat({
             user_id: auth.currentUser?.uid,
             createdAt: new Date().toISOString(),
             title: 'Web ask Brain2 Conversation',
+            characterId: id,
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
@@ -127,6 +130,7 @@ function Chat({
                           app: 'ios',
                           user_id: auth.currentUser?.uid,
                           createdAt: new Date().toISOString(),
+                          characterId: id,
                         });
                       } catch (error) {
                         console.error(error);
@@ -150,6 +154,7 @@ function Chat({
                           app: 'ios',
                           user_id: auth.currentUser?.uid,
                           createdAt: new Date().toISOString(),
+                          characterId: id,
                         });
                       } catch (error) {
                         console.error(error);
@@ -222,3 +227,7 @@ function Chat({
 }
 
 export default Chat;
+
+Chat.defaultProps = {
+  id: '',
+};
