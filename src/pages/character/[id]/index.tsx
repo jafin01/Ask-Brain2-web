@@ -14,6 +14,7 @@ function Character() {
   const [prompts, setPrompts] = useState<
     { content: string; role: string; loading?: boolean }[]
   >([]);
+  const [judge, setJudge] = useState(null);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -22,10 +23,14 @@ function Character() {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { prompts: docPrompts, firstMessage: docFirstMessage } =
-          docSnap.data()!;
+        const {
+          prompts: docPrompts,
+          firstMessage: docFirstMessage,
+          judge: docJudge,
+        } = docSnap.data()!;
         setFirstMessage(docFirstMessage);
         setPrompts(docPrompts);
+        setJudge(docJudge);
       }
     } catch (error) {
       console.log('Error getting document:', error);
@@ -80,6 +85,8 @@ function Character() {
               firstMessage={firstMessage}
               prompts={prompts}
               id={router.query.id as string}
+              characterName={router.query.characterName as string}
+              judge={judge}
             />
           </div>
         </div>
