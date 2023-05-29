@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
-import { logEvent } from 'firebase/analytics';
-import { analytics, auth, db } from 'config/firebase';
+import { auth, db } from 'config/firebase';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
@@ -124,12 +123,11 @@ function Chat({
                     rel="noreferrer"
                     onClick={async () => {
                       try {
-                        const resolvedAnalytics = await analytics;
-                        if (resolvedAnalytics !== null) {
-                          logEvent(resolvedAnalytics, 'app_click', {
-                            app: 'ios',
-                          });
-                        }
+                        await addDoc(collection(db, 'clicks'), {
+                          app: 'ios',
+                          user_id: auth.currentUser?.uid,
+                          createdAt: new Date().toISOString(),
+                        });
                       } catch (error) {
                         console.error(error);
                       }
@@ -147,11 +145,14 @@ function Chat({
                     className="underline"
                     rel="noreferrer"
                     onClick={async () => {
-                      const resolvedAnalytics = await analytics;
-                      if (resolvedAnalytics !== null) {
-                        logEvent(resolvedAnalytics, 'app_click', {
-                          app: 'android',
+                      try {
+                        await addDoc(collection(db, 'clicks'), {
+                          app: 'ios',
+                          user_id: auth.currentUser?.uid,
+                          createdAt: new Date().toISOString(),
                         });
+                      } catch (error) {
+                        console.error(error);
                       }
                     }}
                   >
