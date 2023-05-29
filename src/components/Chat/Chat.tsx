@@ -17,7 +17,7 @@ function Chat({
   firstMessage: string;
   characterName: string;
   prompts: { content: string; role: string }[];
-  judge?: { condition: string; numMessages: number; message: string };
+  judge?: { condition: string; numMessages: number; message: string } | null;
   id?: string;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
