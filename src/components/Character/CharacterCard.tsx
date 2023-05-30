@@ -217,7 +217,7 @@ export default function CharacterCard({
                         });
                       }}
                     >
-                      {characterStats.loading
+                      {characterStats.loading && characterId === character.id
                         ? 'Loading...'
                         : (characterId === character.id && 'Hide stats') ||
                           'Show stats'}
