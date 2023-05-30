@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import '../../../public/assets/googleLogo.png';
+import Button from '@/components/Button';
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -112,11 +113,7 @@ function LoginForm() {
                         : 'border border-gray-200'
                     }`}
                   />
-                  {/* <span className="material-symbols-outlined absolute left-2 transition-all duration-200 ease-in-out group-focus-within:text-blue-400">
-                  <FaLock />
-                </span> */}
-                  <button
-                    type="button"
+                  <Button
                     className="material-symbols-outlined absolute right-2 transition-all duration-200 ease-in-out group-focus-within:text-blue-400 cursor-pointer"
                     onClick={() => setShowPassword(!showPassword)}
                   >
@@ -156,7 +153,7 @@ function LoginForm() {
                         />
                       </svg>
                     )}
-                  </button>
+                  </Button>
                 </div>
               </label>
               <ErrorMessage
@@ -175,7 +172,7 @@ function LoginForm() {
             </div>
 
             <div className="flex text-center justify-between mb-4">
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading}
                 className={`outline-gray-50 bg-gradient-to-r text-app-bg from-grad-green to-white text-center w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-1000 ease-in-out ${
@@ -202,7 +199,7 @@ function LoginForm() {
                 ) : (
                   'Login'
                 )}
-              </button>
+              </Button>
             </div>
 
             <div className="text-center">
@@ -217,7 +214,7 @@ function LoginForm() {
         )}
       </Formik>
 
-      <button
+      <Button
         type="button"
         onClick={handleGoogleSignUp}
         className="bg-white flex gap-4 justify-center items-center hover:bg-gray-300 text-app-bg font-poppins font-medium py-2 px-4 rounded"
@@ -230,7 +227,7 @@ function LoginForm() {
           />
         </span>
         Sign in with Google
-      </button>
+      </Button>
     </div>
   );
 }

@@ -106,8 +106,8 @@ function Chat({
             challengeCompleted,
           });
         }
-      } catch (error: any) {
-        throw new Error('Error adding document: ', error);
+      } catch (error) {
+        console.log('Error adding document: ', error);
       }
     };
 
@@ -173,8 +173,8 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
-                        } catch (error: any) {
-                          throw new Error(error);
+                        } catch (error) {
+                          console.log(error);
                         }
                       }}
                     >

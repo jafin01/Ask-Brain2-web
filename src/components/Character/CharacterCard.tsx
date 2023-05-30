@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { characterData } from '@/services/characters';
 import 'react-toastify/dist/ReactToastify.css';
+import Button from '../Button';
 
 export default function CharacterCard({
   setCharacterToDelete,
@@ -51,7 +52,7 @@ export default function CharacterCard({
         <h1 className="text-center font-bold text-2xl pb-4 text-white">
           Experiences
         </h1>
-        <div className="w-full flex justify-center mb-4 text-app-bg md: justify-end">
+        <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
           <Link
             href="/user/character"
             className="rounded px-2 py-2 bg-gradient-to-r from-grad-green to-white"
@@ -102,8 +103,7 @@ export default function CharacterCard({
                   <CopyToClipboard
                     text={`${window.location.origin}/character/${character.id}`}
                   >
-                    <button
-                      type="button"
+                    <Button
                       className="flex gap-1 cursor-pointer text-grad-green"
                       onClick={() => toast('Link copied to clipboard!')}
                     >
@@ -123,7 +123,7 @@ export default function CharacterCard({
                         />
                       </svg>
                       <h4 className="">Get link</h4>
-                    </button>
+                    </Button>
                   </CopyToClipboard>
                   <Link
                     href={`/character/${character.id}`}
@@ -161,8 +161,7 @@ export default function CharacterCard({
                     </svg>
                     <h4 className="">Edit</h4>
                   </Link>
-                  <button
-                    type="button"
+                  <Button
                     className="text-red-500 flex gap-1 cursor-pointer"
                     onClick={() => {
                       setShowModal(true);
@@ -187,7 +186,7 @@ export default function CharacterCard({
                     </svg>
 
                     <h4>Delete</h4>
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

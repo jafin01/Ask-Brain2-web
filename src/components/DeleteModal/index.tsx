@@ -1,5 +1,6 @@
 import React from 'react';
 import { IProps } from './types';
+import Button from '../Button';
 
 export default function ConfirmDelete({
   confirmDeleteInput,
@@ -25,8 +26,7 @@ export default function ConfirmDelete({
           className="border w-full rounded-md px-4 py-1 mt-2"
         />
         <div className="flex justify-end mt-4">
-          <button
-            type="button"
+          <Button
             className="px-4 py-2 bg-gray-500 text-white rounded-md"
             onClick={() => {
               setShowDeleteModal(false);
@@ -34,15 +34,15 @@ export default function ConfirmDelete({
             }}
           >
             Cancel
-          </button>
-          <button
-            type="button"
+          </Button>
+
+          <Button
             disabled={isLoading}
             className="px-4 py-2 bg-red-700 text-white rounded-md ml-2"
             onClick={() => handleDelete(characterToDelete)}
           >
             {isLoading ? 'Deleting...' : 'Delete'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

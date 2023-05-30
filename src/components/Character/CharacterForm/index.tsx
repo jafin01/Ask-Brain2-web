@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import Chat from '@/components/Chat/Chat';
+import Button from '@/components/Button';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -212,23 +213,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 />
               </div>
 
-              {/* <div className="flex flex-col gap-2">
-                <label htmlFor="description">Description</label>
-                <Field
-                  as="textarea"
-                  id="description"
-                  name="description"
-                  rows={3}
-                  placeholder="Enter description"
-                  className="p-2 border border-grad-green rounded"
-                />
-                <ErrorMessage
-                  name="description"
-                  component="span"
-                  className="text-red-500"
-                />
-              </div> */}
-
               <label className="flex flex-col gap-2" htmlFor="prompts">
                 First message
               </label>
@@ -238,9 +222,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 type="text"
                 className="p-2 border border-grad-green rounded"
               />
-              <button
+              <Button
                 type="button"
-                className={`flex flex-row gap-2 items-center border rounded p-2 items-center justify-center ${
+                className={`flex flex-row gap-2 border rounded p-2 items-center justify-center ${
                   !formikProps.values?.showJudge
                     ? 'border-grad-green'
                     : 'border-gray-300'
@@ -287,7 +271,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     }
                   />
                 </svg>
-              </button>
+              </Button>
               {formikProps.values?.showJudge && (
                 <div className="flex flex-col gap-2">
                   <label htmlFor="judge">Judge number of messages</label>
@@ -360,7 +344,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               placeholder="Enter content"
                               className="p-2 border border-grad-green rounded flex-grow"
                             />
-                            <button type="button" onClick={() => remove(index)}>
+                            <Button type="button" onClick={() => remove(index)}>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 text-red-500 hover:text-red-600"
@@ -375,7 +359,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                                   d="M6 18L18 6M6 6l12 12"
                                 />
                               </svg>
-                            </button>
+                            </Button>
                           </div>
                           <div className="flex flex-col gap-2 items-center justify-center">
                             <ErrorMessage
@@ -388,10 +372,10 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                         </div>
                       )
                     )}
-                    <button
+                    <Button
                       type="button"
                       onClick={() => innerPush({ role: 'user', content: '' })}
-                      className="flex flex-row gap-2 items-center border border-grad-green rounded p-2 items-center justify-center"
+                      className="flex flex-row gap-2 border border-grad-green rounded p-2 items-center justify-center"
                     >
                       Add Prompt
                       <svg
@@ -408,7 +392,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                           d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         />
                       </svg>
-                    </button>
+                    </Button>
                   </div>
                 )}
               </FieldArray>
@@ -417,22 +401,22 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 <Link href="/user">
                   <p className="text-grad-green underline">Cancel</p>
                 </Link>
-                <button
+                <Button
                   disabled={isLoading}
                   onClick={() => setTryingOut(!tryingOut)}
                   type="button"
                   className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
                 >
                   {tryingOut ? 'Hide chat' : 'Try out'}
-                </button>
+                </Button>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
                   className="bg-grad-purple hover:bg-grad-purple-dark text-white font-bold py-2 px-4 rounded"
                 >
                   {isLoading ? 'Saving...' : 'Save'}
-                </button>
+                </Button>
               </div>
               <div
                 className="relative"

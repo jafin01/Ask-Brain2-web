@@ -169,9 +169,6 @@ function LoginForm() {
                         : 'border border-gray-200'
                     }`}
                   />
-                  {/* <span className="material-symbols-outlined absolute left-2 transition-all duration-200 ease-in-out group-focus-within:text-blue-400">
-                  <FaLock />
-                </span> */}
                   <button
                     type="button"
                     className="material-symbols-outlined absolute right-2 transition-all duration-200 ease-in-out group-focus-within:text-blue-400 cursor-pointer"
@@ -241,7 +238,6 @@ function LoginForm() {
                 }`}
               >
                 {isLoading ? (
-                  // <FiLoader className="animate-spin my-1 mx-auto" />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
