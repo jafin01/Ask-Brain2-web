@@ -3,7 +3,9 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from '@firebase/firestore';
 import { db } from 'config/firebase';
 
@@ -31,4 +33,49 @@ export async function updateCharacter() {
 export async function removeCharacter() {
   const docRef = doc(db, 'characters', 'sdgdJGK3TRc4QjwUuYII');
   await deleteDoc(docRef);
+}
+
+export async function getCharacterStats(characterId: string) {
+  // query the stats collection for the characterId and return the data
+  const collectionRef = collection(db, 'clicks');
+
+  const iOSQuery = query(
+    collectionRef,
+    where('app', '==', 'ios'),
+    where('characterId', '==', characterId)
+  );
+  const androidQuery = query(
+    collectionRef,
+    where('app', '==', 'android'),
+    where('characterId', '==', characterId)
+  );
+
+  const getClicksCount = async (clicksCountQuery: any) => {
+    const snapshot = await getDocs(clicksCountQuery);
+    return snapshot.size;
+  };
+
+  const iosClicksCount = await getClicksCount(iOSQuery);
+  const androidClicksCount = await getClicksCount(androidQuery);
+
+  const averageMessagesPerConversation = await getDocs(
+    query(collection(db, 'chats'), where('characterId', '==', characterId))
+  ).then((querySnapshot) => {
+    let totalMessages = 0;
+    let totalConversations = 0;
+
+    querySnapshot.forEach((docSnapshot) => {
+      totalMessages += docSnapshot.data()?.messages?.length || 0;
+      totalConversations += 1;
+    });
+
+    return totalMessages / totalConversations;
+  });
+
+  return {
+    iosClicksCount,
+    androidClicksCount,
+    totalClicks: iosClicksCount + androidClicksCount,
+    averageMessagesPerConversation,
+  };
 }
