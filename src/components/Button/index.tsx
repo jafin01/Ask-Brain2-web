@@ -2,8 +2,8 @@ import React from 'react';
 
 type props = {
   children: React.ReactNode;
-  onClick: () => void;
-  disabled: boolean;
+  onClick?: () => void;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -30,4 +30,6 @@ export default function Button({
 
 Button.defaultProps = {
   className: '',
+  onClick: undefined,
+  disabled: false,
 };
