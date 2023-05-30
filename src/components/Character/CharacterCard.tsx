@@ -227,11 +227,9 @@ export default function CharacterCard({
                         <div className="flex flex-col justify-around my-2 items-center gap-2 text-white">
                           <p>
                             Total clicks: {characterStats?.data?.totalClicks}
-                            &nbsp;
                           </p>
                           <p>
                             iOs clicks: {characterStats?.data?.iosClicksCount}
-                            &nbsp;
                           </p>
                           <p>
                             Android clicks:{' '}
@@ -242,6 +240,13 @@ export default function CharacterCard({
                             {characterStats?.data?.averageMessagesPerConversation?.toFixed(
                               2
                             )}
+                          </p>
+                          <p>
+                            Total conversations:{' '}
+                            {characterStats?.data?.totalConversations}
+                          </p>
+                          <p>
+                            Unique users: {characterStats?.data?.uniqueUsers}
                           </p>
                         </div>
                       )}
