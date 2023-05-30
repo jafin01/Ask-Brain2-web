@@ -191,7 +191,7 @@ function Chat({
                       onClick={async () => {
                         try {
                           await addDoc(collection(db, 'clicks'), {
-                            app: 'ios',
+                            app: 'android',
                             user_id: auth.currentUser?.uid,
                             createdAt: new Date().toISOString(),
                             characterId: id,
