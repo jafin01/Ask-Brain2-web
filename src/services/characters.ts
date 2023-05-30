@@ -41,7 +41,6 @@ export async function removeCharacter() {
 }
 
 export async function getCharacterStats(characterId: string) {
-  // query the stats collection for the characterId and return the data
   const collectionRef = collection(db, 'clicks');
 
   const iOSQuery = query(
@@ -60,27 +59,48 @@ export async function getCharacterStats(characterId: string) {
     return snapshot.size;
   };
 
-  const iosClicksCount = await getClicksCount(iOSQuery);
-  const androidClicksCount = await getClicksCount(androidQuery);
+  const [iosClicksCount, androidClicksCount] = await Promise.all([
+    getClicksCount(iOSQuery),
+    getClicksCount(androidQuery),
+  ]);
 
-  const averageMessagesPerConversation = await getDocs(
-    query(collection(db, 'chats'), where('characterId', '==', characterId))
-  ).then((querySnapshot) => {
-    let totalMessages = 0;
-    let totalConversations = 0;
+  const [averageMessagesPerConversation, totalConversations, uniqueUsers] =
+    await Promise.all([
+      getDocs(
+        query(collection(db, 'chats'), where('characterId', '==', characterId))
+      ).then((querySnapshot) => {
+        let totalMessages = 0;
+        let totalConversationsCount = 0;
 
-    querySnapshot.forEach((docSnapshot) => {
-      totalMessages += docSnapshot.data()?.messages?.length || 0;
-      totalConversations += 1;
-    });
+        querySnapshot.forEach((docSnapshot) => {
+          totalMessages += docSnapshot.data()?.messages?.length || 0;
+          totalConversationsCount += 1;
+        });
 
-    return totalMessages / totalConversations;
-  });
+        return totalMessages / totalConversationsCount;
+      }),
+
+      getDocs(
+        query(collection(db, 'chats'), where('characterId', '==', characterId))
+      ).then((querySnapshot) => querySnapshot.size),
+
+      getDocs(
+        query(collection(db, 'chats'), where('characterId', '==', characterId))
+      ).then((querySnapshot) => {
+        const users = new Set();
+        querySnapshot.forEach((docSnapshot) => {
+          users.add(docSnapshot.data()?.userId);
+        });
+        return users.size;
+      }),
+    ]);
 
   return {
     iosClicksCount,
     androidClicksCount,
     totalClicks: iosClicksCount + androidClicksCount,
     averageMessagesPerConversation,
+    totalConversations,
+    uniqueUsers,
   };
 }
