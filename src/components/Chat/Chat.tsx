@@ -4,6 +4,7 @@ import { auth, db } from 'config/firebase';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
+import Button from '../Button';
 
 const MAX_MESSAGE_COUNT = 100;
 
@@ -105,8 +106,8 @@ function Chat({
             challengeCompleted,
           });
         }
-      } catch (error) {
-        console.error('Error adding document: ', error);
+      } catch (error: any) {
+        throw new Error('Error adding document: ', error);
       }
     };
 
@@ -172,8 +173,8 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
-                        } catch (error) {
-                          console.error(error);
+                        } catch (error: any) {
+                          throw new Error(error);
                         }
                       }}
                     >
@@ -196,8 +197,8 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
-                        } catch (error) {
-                          console.error(error);
+                        } catch (error: any) {
+                          throw new Error(error);
                         }
                       }}
                     >
@@ -234,8 +235,7 @@ function Chat({
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message"
         />
-        <button
-          type="button"
+        <Button
           onClick={handleSendMessage}
           disabled={
             !responseFinished ||
@@ -266,7 +266,7 @@ function Chat({
               d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
             />
           </svg>
-        </button>
+        </Button>
       </div>
     </div>
   );
