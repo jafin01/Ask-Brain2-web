@@ -133,6 +133,21 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       .nullable(),
   });
 
+  function setFormikFields({ formikProps }: any) {
+    formikProps.setFieldValue('showJudge', !formikProps.values?.showJudge);
+
+    formikProps.setFieldValue(
+      'judge',
+      !formikProps.values?.showJudge
+        ? {
+            condition: '',
+            message: '',
+            numMessages: 1,
+          }
+        : null
+    );
+  }
+
   return (
     <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center py-10">
       <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
@@ -229,24 +244,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     ? 'border-grad-green'
                     : 'border-gray-300'
                 }`}
-                onClick={() => {
-                  // remove the showJudge field from the formik values
-                  formikProps.setFieldValue(
-                    'showJudge',
-                    !formikProps.values?.showJudge
-                  );
-
-                  formikProps.setFieldValue(
-                    'judge',
-                    !formikProps.values?.showJudge
-                      ? {
-                          condition: '',
-                          message: '',
-                          numMessages: 1,
-                        }
-                      : null
-                  );
-                }}
+                onClick={() => setFormikFields(formikProps)}
               >
                 {formikProps.values?.showJudge ? 'Hide Judge' : 'Add Judge'}
                 <svg
