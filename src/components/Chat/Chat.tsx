@@ -6,7 +6,7 @@ import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
 import Button from '../Button';
 
-const MAX_MESSAGE_COUNT = 100;
+const MAX_MESSAGE_COUNT = 10;
 
 function Chat({
   id = '',
