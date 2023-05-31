@@ -17,11 +17,6 @@ export async function characterData(userId: string | undefined) {
   });
 
   return characterArray;
-  // characters.forEach((docid) => {
-  //   console.log(docid.id, ' => ', docid.data());
-  // });
-
-  // return characters;
 }
 
 export async function updateCharacter() {

@@ -321,7 +321,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     {formikProps.values?.prompts?.map(
                       (_: unknown, index: number) => (
                         <div>
-                          <div className="flex gap-2 justify-end flex-col items-stretch md: flex-row items-start">
+                          <div className="flex gap-2 justify-end flex-col items-stretch">
                             <Field
                               as="select"
                               name={`prompts.${index}.role`}
