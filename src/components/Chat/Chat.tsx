@@ -29,6 +29,23 @@ function Chat({
   const [responseFinished, setResponseFinished] = useState(true);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
+  const [userUid, setUserUid] = useState('');
+
+  useEffect(() => {
+    if (auth.currentUser?.uid) {
+      setUserUid(auth.currentUser?.uid);
+    } else {
+      const localStorageUserUid = localStorage.getItem('userUid');
+      if (localStorageUserUid) {
+        setUserUid(localStorageUserUid);
+      } else {
+        const tmpUid = Math.random().toString(36).substring(7);
+        localStorage.setItem('userUid', tmpUid);
+        setUserUid(localStorage.getItem('userUid') || '');
+      }
+    }
+  }, [auth.currentUser?.uid]);
+
   const handleSendMessage = async () => {
     setResponseFinished(false);
     setConversation((prevConversation = []) => [
@@ -92,7 +109,7 @@ function Chat({
         if (!conversationId) {
           await addDoc(collection(db, 'chats'), {
             messages: [],
-            user_id: auth.currentUser?.uid,
+            user_id: userUid,
             createdAt: new Date().toISOString(),
             title: 'Web ask Brain2 Conversation',
             characterId: id,
@@ -168,7 +185,7 @@ function Chat({
                         try {
                           await addDoc(collection(db, 'clicks'), {
                             app: 'ios',
-                            user_id: auth.currentUser?.uid,
+                            user_id: userUid,
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
@@ -192,7 +209,7 @@ function Chat({
                         try {
                           await addDoc(collection(db, 'clicks'), {
                             app: 'android',
-                            user_id: auth.currentUser?.uid,
+                            user_id: userUid,
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
