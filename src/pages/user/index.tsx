@@ -3,6 +3,7 @@ import { auth, db } from 'config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Navbar from '@/components/Navbar';
 import ConfirmDelete from '@/components/DeleteModal';
 import CharacterCard from '@/components/Character/CharacterCard';
@@ -31,8 +32,8 @@ export default function UserProfile() {
             (character: any) => character.id !== characterId
           )
         );
-      } catch (error) {
-        console.error('Error deleting document: ', error);
+      } catch (error: any) {
+        toast.error(error?.message);
       } finally {
         setIsLoading(false);
         setShowDeleteModal(false);
@@ -41,7 +42,7 @@ export default function UserProfile() {
         setSelectedCharacterName('');
       }
     } else {
-      console.log('Incorrect input. Please enter the character name exactly.');
+      toast.error('Incorrect input. Please enter the character name exactly.');
     }
   };
 

@@ -27,6 +27,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     name: '',
     avatar: '',
     prompts: [{ role: 'system', content: '' }],
+    judge: {
+      condition: '',
+      message: '',
+      numMessages: '',
+    },
     firstMessage: '',
   });
   const router = useRouter();
@@ -133,7 +138,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       .nullable(),
   });
 
-  function setFormikFields({ formikProps }: any) {
+  function setFormikFields(formikProps: any) {
     formikProps.setFieldValue('showJudge', !formikProps.values?.showJudge);
 
     formikProps.setFieldValue(
