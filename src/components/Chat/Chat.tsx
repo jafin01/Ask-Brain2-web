@@ -36,9 +36,9 @@ function Chat({
     if (auth.currentUser?.uid) {
       setUserUid(auth.currentUser?.uid);
     } else {
-      const userId = localStorage.getItem('userUid');
-      if (userId) {
-        setUserUid(userId);
+      const localStorageUserUid = localStorage.getItem('userUid');
+      if (localStorageUserUid) {
+        setUserUid(localStorageUserUid);
       } else {
         const tmpUid = Math.random().toString(36).substring(7);
         localStorage.setItem('userUid', tmpUid);
