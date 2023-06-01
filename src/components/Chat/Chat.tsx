@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
 import { auth, db } from 'config/firebase';
@@ -5,15 +6,23 @@ import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
 import Button from '../Button';
+=======
+import React, { useEffect, useRef, useState } from "react";
+import Lottie from "react-lottie";
+import { auth, db } from "config/firebase";
+import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
+import loadingData from "../../../public/assets/loading-dots.json";
+import sendMessage from "@/services/openai";
+>>>>>>> 95c3cf9 (Add user uid)
 
 const MAX_MESSAGE_COUNT = 10;
 
 function Chat({
-  id = '',
-  firstMessage = '',
+  id = "",
+  firstMessage = "",
   prompts,
   judge,
-  characterName = 'Assistant',
+  characterName = "Assistant",
 }: {
   firstMessage: string;
   characterName: string;
@@ -22,40 +31,57 @@ function Chat({
   id?: string;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
-  const [message, setMessage] = useState('');
-  const [conversationId, setConversationId] = useState('');
+  const [message, setMessage] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
 
   const [responseFinished, setResponseFinished] = useState(true);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
+  const [userUid, setUserUid] = useState("");
+
+  useEffect(() => {
+    if (auth.currentUser?.uid) {
+      setUserUid(auth.currentUser?.uid);
+    } else {
+      const userUid = localStorage.getItem("userUid");
+      if (userUid) {
+        setUserUid(userUid);
+      } else {
+        const tmpUid = Math.random().toString(36).substring(7);
+        localStorage.setItem("userUid", tmpUid);
+        setUserUid(localStorage.getItem("userUid") || "");
+      }
+    }
+  }, [auth.currentUser?.uid]);
+
   const handleSendMessage = async () => {
     setResponseFinished(false);
     setConversation((prevConversation = []) => [
       ...prevConversation,
-      { content: message, role: 'user' },
-      { loading: true, role: '', content: '' },
+      { content: message, role: "user" },
+      { loading: true, role: "", content: "" },
     ]);
-    setMessage('');
+    setMessage("");
 
     const messagesToSend = [
       ...prompts,
       ...conversation,
-      { content: message, role: 'user' },
+      { content: message, role: "user" },
     ];
     const response = await sendMessage(messagesToSend);
 
     setConversation((prevConversation = []) => [
       ...prevConversation.slice(0, -1),
-      { content: response, role: 'assistant' },
+      { content: response, role: "assistant" },
     ]);
     setResponseFinished(true);
   };
 
   useEffect(() => {
     const update = async () => {
-      if (judge && conversation?.slice(-1)?.[0]?.role === 'assistant') {
+      if (judge && conversation?.slice(-1)?.[0]?.role === "assistant") {
         // get last judge.numMessages messages
         const judgeMessages = conversation.slice(-judge.numMessages);
 
@@ -68,14 +94,14 @@ function Chat({
         Messages:
         ${judgeMessages
           .map((m) =>
-            m.role === 'user' ? 'User' : `${characterName}: ${m.content}`
+            m.role === "user" ? "User" : `${characterName}: ${m.content}`
           )
-          .join('\n')}`,
-            role: 'user',
+          .join("\n")}`,
+            role: "user",
           },
         ]);
 
-        if (judgeResponse.toLowerCase().includes('true')) {
+        if (judgeResponse.toLowerCase().includes("true")) {
           setChallengeCompleted(true);
         }
       }
@@ -87,27 +113,31 @@ function Chat({
     const update = async () => {
       chatRef.current?.scrollTo({
         top: chatRef.current?.scrollHeight,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
       try {
         if (!conversationId) {
-          await addDoc(collection(db, 'chats'), {
+          await addDoc(collection(db, "chats"), {
             messages: [],
-            user_id: auth.currentUser?.uid,
+            user_id: userUid,
             createdAt: new Date().toISOString(),
-            title: 'Web ask Brain2 Conversation',
+            title: "Web ask Brain2 Conversation",
             characterId: id,
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
         } else {
-          await updateDoc(doc(db, 'chats', conversationId), {
+          await updateDoc(doc(db, "chats", conversationId), {
             messages: conversation,
             challengeCompleted,
           });
         }
       } catch (error) {
+<<<<<<< HEAD
         console.log('Error adding document: ', error);
+=======
+        console.error("Error adding document: ", error);
+>>>>>>> 95c3cf9 (Add user uid)
       }
     };
 
@@ -123,15 +153,15 @@ function Chat({
         className="absolute right-0 left-0 bottom-16 px-4 pb-4 top-0 pt-4 overflow-scroll flex flex-col"
       >
         <div className="mt-auto flex flex-col gap-1 justify-end">
-          {[{ content: firstMessage, role: 'assistant' }, ...conversation]
+          {[{ content: firstMessage, role: "assistant" }, ...conversation]
             ?.filter((m) => m.content || m.loading)
             ?.map((m) => (
               <div
                 className={`${
-                  m.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
-                  m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
-                } ${m.role === 'user' ? 'self-end' : 'self-start'}`}
+                  m.role === "user" ? "bg-blue-500 text-white" : "bg-gray-200"
+                } ${m.loading ? "p-0" : "p-2.5"} rounded-2xl ${
+                  m.role === "user" ? "rounded-br-none" : "rounded-bl-none"
+                } ${m.role === "user" ? "self-end" : "self-start"}`}
               >
                 {m.loading ? (
                   <Lottie
@@ -167,9 +197,9 @@ function Chat({
                       rel="noreferrer"
                       onClick={async () => {
                         try {
-                          await addDoc(collection(db, 'clicks'), {
-                            app: 'ios',
-                            user_id: auth.currentUser?.uid,
+                          await addDoc(collection(db, "clicks"), {
+                            app: "ios",
+                            user_id: userUid,
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
@@ -191,9 +221,9 @@ function Chat({
                       rel="noreferrer"
                       onClick={async () => {
                         try {
-                          await addDoc(collection(db, 'clicks'), {
-                            app: 'android',
-                            user_id: auth.currentUser?.uid,
+                          await addDoc(collection(db, "clicks"), {
+                            app: "android",
+                            user_id: userUid,
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
@@ -219,7 +249,7 @@ function Chat({
         <input
           onKeyDown={(e) => {
             if (
-              e.key === 'Enter' &&
+              e.key === "Enter" &&
               !e.shiftKey &&
               message &&
               responseFinished &&
@@ -247,8 +277,8 @@ function Chat({
             (!responseFinished ||
               conversation.length >= MAX_MESSAGE_COUNT ||
               challengeCompleted)
-              ? 'opacity-50'
-              : ''
+              ? "opacity-50"
+              : ""
           } absolute top-3 right-4`}
         >
           <svg
@@ -275,6 +305,6 @@ function Chat({
 export default Chat;
 
 Chat.defaultProps = {
-  id: '',
+  id: "",
   judge: null,
 };
