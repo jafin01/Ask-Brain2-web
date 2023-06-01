@@ -15,6 +15,7 @@ function Character() {
     { content: string; role: string; loading?: boolean }[]
   >([]);
   const [judge, setJudge] = useState(null);
+  const [image, setImage] = useState(null);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -27,10 +28,12 @@ function Character() {
           prompts: docPrompts,
           firstMessage: docFirstMessage,
           judge: docJudge,
+          avatar: docAvatar,
         } = docSnap.data()!;
         setFirstMessage(docFirstMessage);
         setPrompts(docPrompts);
         setJudge(docJudge);
+        setImage(docAvatar);
       }
     } catch (error) {
       console.log('Error getting document:', error);
@@ -42,54 +45,16 @@ function Character() {
   }, [router.query.id]);
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
-      {/* <div className="absolute top-0 left-0">
-        <button
-          type="button"
-          className="bg-transparent text-white text-2xl font-bold py-2 px-4 rounded"
-          onClick={() => router.back()}
-        >
-          <span className="flex gap-2 font-bold items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back
-          </span>
-        </button>
-      </div> */}
-      <div className="w-full max-w-md bg-app-bg text-gray-600 rounded-2xl">
-        {/* <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
-          
-        </h1> */}
-        <div className="flex flex-col gap-5">
-          <div
-            className="relative"
-            style={{
-              width: '100%',
-              height: '500px',
-              position: 'relative',
-            }}
-          >
-            <Chat
-              firstMessage={firstMessage}
-              prompts={prompts}
-              id={router.query.id as string}
-              characterName={router.query.characterName as string}
-              judge={judge}
-            />
-          </div>
-        </div>
+    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen flex flex-col items-center justify-center">
+      <div className="w-full h-full relative md:max-h-[calc(100vh-200px)] max-w-[800px]">
+        <Chat
+          firstMessage={firstMessage}
+          prompts={prompts}
+          id={router.query.id as string}
+          characterName={router.query.characterName as string}
+          judge={judge}
+          avatarImage={image}
+        />
       </div>
     </div>
   );

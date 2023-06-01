@@ -38,10 +38,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { name, prompts, firstMessage, judge } = docSnap.data()!;
+        const { name, prompts, firstMessage, judge, docAvatar } =
+          docSnap.data()!;
         setInitialValues({
           name,
-          avatar: docSnap.data().avatar,
+          avatar: docAvatar,
           prompts,
           firstMessage,
           judge,
