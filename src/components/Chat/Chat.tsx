@@ -13,12 +13,14 @@ function Chat({
   prompts,
   judge,
   characterName = 'Assistant',
+  avatarImage = null,
 }: {
   firstMessage: string;
   characterName: string;
   prompts: { content: string; role: string }[];
   judge?: { condition: string; numMessages: number; message: string } | null;
   id?: string;
+  avatarImage?: string | null;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -132,42 +134,58 @@ function Chat({
 
   return (
     //  position modal on top of the chat
-    <div className="bg-gray-100 absolute rounded-2xl bottom-0 right-0 left-0 top-0 overflow-scroll">
+    <div className="bg-white absolute bottom-0 right-0 left-0 top-0 overflow-scroll md:rounded-2xl">
       {/* modal */}
       <div
         ref={chatRef}
-        className="absolute right-0 left-0 bottom-16 px-4 pb-4 top-0 pt-4 overflow-scroll flex flex-col"
+        className="absolute right-0 left-0 bottom-16 px-6 pb-[50px] top-0 pt-4 overflow-scroll flex flex-col"
       >
-        <div className="mt-auto flex flex-col gap-1 justify-end">
+        <div className="mt-auto flex flex-col gap-3 justify-end">
           {[{ content: firstMessage, role: 'assistant' }, ...conversation]
             ?.filter((m) => m.content || m.loading)
             ?.map((m) => (
               <div
-                className={`${
-                  m.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
-                  m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
-                } ${m.role === 'user' ? 'self-end' : 'self-start'}`}
+                className={`flex gap-2 items-end ${
+                  m.role === 'user' ? 'self-end' : 'self-start'
+                }`}
+                key={m.content}
               >
-                {m.loading ? (
-                  <Lottie
-                    options={{
-                      loop: true,
-                      autoplay: true,
-                      animationData: loadingData,
-                    }}
-                    height={40}
-                    width={50}
+                {avatarImage && (m.role === 'assistant' || m.loading) && (
+                  <img
+                    src={avatarImage}
+                    alt="Avatar Preview"
+                    className="h-full w-full object-cover rounded-full w-9 h-9"
                   />
-                ) : (
-                  <p className="text-sm whitespace-pre-line">
-                    {m?.content?.trim()}
-                  </p>
                 )}
+                <div
+                  className={`${
+                    m.role === 'user'
+                      ? 'bg-[#000000de] text-white'
+                      : 'bg-[#ffefe0]'
+                  } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
+                    m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
+                  }`}
+                >
+                  {m.loading ? (
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoplay: true,
+                        animationData: loadingData,
+                      }}
+                      height={40}
+                      width={50}
+                    />
+                  ) : (
+                    <p className="whitespace-pre-line text-md">
+                      {m?.content?.trim()}
+                    </p>
+                  )}
+                </div>
               </div>
             ))}
           {(conversation.length >= MAX_MESSAGE_COUNT || challengeCompleted) && (
-            <div className="bg-green-500 text-white p-2.5 rounded-2xl self-start mt-2">
+            <div className="bg-green-500 text-white p-2.5 px-4 rounded-2xl self-start mt-2 mx-auto">
               {challengeCompleted ? (
                 judge?.message
               ) : (
@@ -231,7 +249,7 @@ function Chat({
           )}
         </div>
       </div>
-      <div className="mt-1 absolute flex bottom-2 right-2 left-2">
+      <div className="mt-4 absolute flex bottom-10 right-10 left-10">
         <input
           onKeyDown={(e) => {
             if (
@@ -246,10 +264,11 @@ function Chat({
               e.preventDefault();
             }
           }}
-          className="border border-gray-300 rounded-full px-5 py-3 flex-1 pr-10"
+          className="border border-gray-200
+           rounded-2xl px-5 py-3 flex-1 pr-10 shadow-2xl focus:outline-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message"
+          placeholder="Write your message"
         />
         <button
           type="button"
@@ -294,4 +313,5 @@ export default Chat;
 Chat.defaultProps = {
   id: '',
   judge: null,
+  avatarImage: null,
 };
