@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from 'config/firebase';
-import { useRouter } from 'next/router';
 import { deleteDoc, doc } from '@firebase/firestore';
-import CharacterCard from '@/components/Character/CharacterCard';
+import { auth, db } from 'config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import ConfirmDelete from '@/components/DeleteModal';
+import CharacterCard from '@/components/Character/CharacterCard';
 
 export default function UserProfile() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -93,7 +93,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen">
+    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen">
       <div>
         <Navbar
           isOpen={isOpen}

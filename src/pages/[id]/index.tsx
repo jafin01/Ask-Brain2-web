@@ -11,7 +11,7 @@ export default function Home({ chat }: any) {
           <h1 className="text-gray-100 text-xl font-mono">{chat.title}</h1>
         </div>
         <main className="flex-1 flex flex-col gap-1 overflow-y-auto">
-          {chat.messages.reverse().map((message: any) => {
+          {chat.messages?.reverse().map((message: any) => {
             return message.role === 'user' ? (
               <div className="px-4 font-lato">
                 <div className="relative">
@@ -123,7 +123,7 @@ export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
   const docRef = doc(db, 'chats', params.id);
   const docSnap = await getDoc(docRef);
-  const chat = docSnap.data();
+  const chat = JSON.stringify(docSnap.data());
 
   return { props: { chat } };
 }

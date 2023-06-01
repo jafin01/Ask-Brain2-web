@@ -15,16 +15,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import Chat from '@/components/Chat/Chat';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
     avatar: '',
     prompts: [{ role: 'system', content: '' }],
+    firstMessage: '',
   });
   const router = useRouter();
   const { push } = router;
@@ -36,11 +38,14 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { name, prompts } = docSnap.data()!;
+        const { name, prompts, firstMessage, judge } = docSnap.data()!;
         setInitialValues({
           name,
           avatar: docSnap.data().avatar,
           prompts,
+          firstMessage,
+          judge,
+          showJudge: !!judge,
         });
 
         console.log(docSnap.data().avatar);
@@ -57,16 +62,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     }
   }, [isUpdate]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust the breakpoint as needed
-    };
-
-    handleResize(); // Check on initial render
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       setIsLoading(true);
@@ -81,13 +76,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           name: values.name,
           avatar: downloadedAvatarUrl,
           prompts: values.prompts,
+          firstMessage: values.firstMessage,
+          judge: values.judge,
         });
       } else {
-        updateDoc(doc(db, 'characters', router.query.id as string), {
+        await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
           avatar: isEditing ? downloadedAvatarUrl : avatar,
-          description: values.description,
+          firstMessage: values.firstMessage,
+          judge: values.judge,
         });
       }
 
@@ -115,15 +113,31 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         content: Yup.string().required('Content is required'),
       })
     ),
+    judge: Yup.object()
+      .when('$showJudge', {
+        is: true,
+        then: (schema) =>
+          schema.shape({
+            condition: Yup.string().required('Condition is required'),
+            maxMessages: Yup.number().required('Max Messages is required'),
+            message: Yup.string().required('Message is required'),
+          }),
+        otherwise: (schema) =>
+          schema.shape({
+            condition: Yup.string(),
+            maxMessages: Yup.number(),
+            message: Yup.string(),
+          }),
+      })
+      .nullable(),
   });
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
+    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center py-10">
       <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
         <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
           {!isUpdate ? 'Create your character' : 'Update your character'}
         </h1>
-
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -131,7 +145,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           onSubmit={handleSubmit}
         >
           {(formikProps) => (
-            <Form className="flex flex-col gap-5">
+            <Form className="flex flex-col gap-2">
               <div className="relative">
                 <input
                   type="file"
@@ -216,6 +230,106 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
               </div> */}
 
               <label className="flex flex-col gap-2" htmlFor="prompts">
+                First message
+              </label>
+              <Field
+                name="firstMessage"
+                id="firstMessage"
+                type="text"
+                className="p-2 border border-grad-green rounded"
+              />
+              <button
+                type="button"
+                className={`flex flex-row gap-2 items-center border rounded p-2 items-center justify-center ${
+                  !formikProps.values?.showJudge
+                    ? 'border-grad-green'
+                    : 'border-gray-300'
+                }`}
+                onClick={() => {
+                  // remove the showJudge field from the formik values
+                  formikProps.setFieldValue(
+                    'showJudge',
+                    !formikProps.values?.showJudge
+                  );
+
+                  formikProps.setFieldValue(
+                    'judge',
+                    !formikProps.values?.showJudge
+                      ? {
+                          condition: '',
+                          message: '',
+                          numMessages: 1,
+                        }
+                      : null
+                  );
+                }}
+              >
+                {formikProps.values?.showJudge ? 'Hide Judge' : 'Add Judge'}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-6 w-6 ${
+                    !formikProps.values?.showJudge
+                      ? 'text-grad-green hover:text-grad-green-dark'
+                      : 'text-gray-300 hover:text-gray-500'
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    d={
+                      !formikProps.values?.showJudge
+                        ? 'M12 6v6m0 0v6m0-6h6m-6 0H6'
+                        : 'M6 18L18 6M6 6l12 12'
+                    }
+                  />
+                </svg>
+              </button>
+              {formikProps.values?.showJudge && (
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="judge">Judge number of messages</label>
+                  <Field
+                    name="judge.numMessages"
+                    id="judge.numMessages"
+                    type="number"
+                    min={1}
+                    className="p-2 border border-grad-green rounded"
+                  />
+                  <ErrorMessage
+                    name="judge.numMessages"
+                    component="span"
+                    className="text-red-500"
+                  />
+                  <label htmlFor="judge">Judge condition</label>
+                  <Field
+                    name="judge.condition"
+                    id="judge.condition"
+                    type="text"
+                    className="p-2 border border-grad-green rounded"
+                  />
+                  <ErrorMessage
+                    name="judge.condition"
+                    component="span"
+                    className="text-red-500"
+                  />
+                  <label htmlFor="judge">Judge message</label>
+                  <Field
+                    name="judge.message"
+                    id="judge.message"
+                    type="text"
+                    className="p-2 border border-grad-green rounded"
+                  />
+                  <ErrorMessage
+                    name="judge.message"
+                    component="span"
+                    className="text-red-500"
+                  />
+                </div>
+              )}
+              <label className="flex flex-col gap-2" htmlFor="prompts">
                 Prompt
               </label>
               {/* Prompt field array */}
@@ -225,13 +339,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     {formikProps.values?.prompts?.map(
                       (_: unknown, index: number) => (
                         <div>
-                          <div
-                            className={`flex ${
-                              isMobile ? 'flex-col' : 'flex-row'
-                            } gap-3 justify-end ${
-                              isMobile ? 'items-stretch' : 'items-start'
-                            }`}
-                          >
+                          <div className="flex gap-2 justify-end flex-col items-stretch md: flex-row items-start">
                             <Field
                               as="select"
                               name={`prompts.${index}.role`}
@@ -239,7 +347,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               className="p-2 border border-grad-green rounded flex-grow"
                             >
                               <option value="system">
-                                Character description
+                                Character instructions
                               </option>
                               <option value="user">User</option>
                               <option value="assistant">Character</option>
@@ -282,7 +390,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     )}
                     <button
                       type="button"
-                      onClick={() => innerPush({ role: '', content: '' })}
+                      onClick={() => innerPush({ role: 'user', content: '' })}
                       className="flex flex-row gap-2 items-center border border-grad-green rounded p-2 items-center justify-center"
                     >
                       Add Prompt
@@ -305,10 +413,19 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 )}
               </FieldArray>
 
-              <div className="flex flex-row gap-3 justify-end items-center">
+              <div className="flex flex-row gap-2 justify-end items-center">
                 <Link href="/user">
                   <p className="text-grad-green underline">Cancel</p>
                 </Link>
+                <button
+                  disabled={isLoading}
+                  onClick={() => setTryingOut(!tryingOut)}
+                  type="button"
+                  className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
+                >
+                  {tryingOut ? 'Hide chat' : 'Try out'}
+                </button>
+
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -316,6 +433,22 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 >
                   {isLoading ? 'Saving...' : 'Save'}
                 </button>
+              </div>
+              <div
+                className="relative"
+                style={{
+                  width: '100%',
+                  height: '500px',
+                  position: 'relative',
+                  display: tryingOut ? 'block' : 'none',
+                }}
+              >
+                <Chat
+                  firstMessage={formikProps.values.firstMessage}
+                  prompts={formikProps.values.prompts}
+                  judge={formikProps.values.judge}
+                  characterName={formikProps.values.name}
+                />
               </div>
             </Form>
           )}

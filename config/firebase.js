@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 import { getStorage } from 'firebase/storage';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAZiIXwcWWjcHOewcy-PMkGzPXTSsb7ASM',
@@ -19,5 +20,6 @@ const db = getFirestore(app);
 const functions = getFunctions(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
+const analytics = isSupported().then((yes) => (yes ? getAnalytics(app) : null));
 
-export { db, functions, auth, storage };
+export { db, functions, auth, storage, analytics };
