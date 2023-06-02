@@ -19,7 +19,7 @@ function Character() {
 
   async function getSelectedData() {
     const { id } = router.query;
-
+    console.log(image);
     try {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
@@ -45,16 +45,26 @@ function Character() {
   }, [router.query.id]);
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple h-screen flex flex-col items-center justify-center">
-      <div className="w-full h-full relative md:max-h-[calc(100vh-200px)] max-w-[800px]">
-        <Chat
-          firstMessage={firstMessage}
-          prompts={prompts}
-          id={router.query.id as string}
-          characterName={router.query.characterName as string}
-          judge={judge}
-          avatarImage={image}
-        />
+    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center">
+      <div className="w-full max-w-md bg-app-bg text-gray-600 rounded-2xl">
+        <div className="flex flex-col gap-5">
+          <div
+            className="relative"
+            style={{
+              width: '100%',
+              height: '500px',
+              position: 'relative',
+            }}
+          >
+            <Chat
+              firstMessage={firstMessage}
+              prompts={prompts}
+              id={router.query.id as string}
+              characterName={router.query.characterName as string}
+              judge={judge}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { auth } from 'config/firebase';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import React from 'react';
+import Button from '../Button';
 
 type Props = {
   isOpen: boolean;
@@ -80,22 +81,18 @@ function Navbar({
                   />
                 </svg>
               </Link>
-              <button
-                type="button"
+              <Button
                 onClick={() => signOut(auth)}
                 className="bg-app-bg text-white px-4 py-2 rounded-md border"
               >
                 Logout
-              </button>
+              </Button>
             </div>
           ) : (
             <Link href="/login">
-              <button
-                type="button"
-                className="bg-app-bg text-white px-4 py-2 rounded-md border"
-              >
+              <Button className="bg-app-bg text-white px-4 py-2 rounded-md border">
                 Login
-              </button>
+              </Button>
             </Link>
           )}
         </aside>

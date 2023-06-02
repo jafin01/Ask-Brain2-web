@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
 import { auth, db } from 'config/firebase';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import { toast } from 'react-toastify';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
+import Button from '../Button';
 
 const MAX_MESSAGE_COUNT = 10;
 
@@ -37,9 +39,9 @@ function Chat({
     if (auth.currentUser?.uid) {
       setUserUid(auth.currentUser?.uid);
     } else {
-      const localStorageUserUid = localStorage.getItem('userUid');
-      if (localStorageUserUid) {
-        setUserUid(localStorageUserUid);
+      const userId = localStorage.getItem('userUid');
+      if (userId) {
+        setUserUid(userId);
       } else {
         const tmpUid = Math.random().toString(36).substring(7);
         localStorage.setItem('userUid', tmpUid);
@@ -124,8 +126,8 @@ function Chat({
             challengeCompleted,
           });
         }
-      } catch (error) {
-        console.error('Error adding document: ', error);
+      } catch (error: any) {
+        toast.error('Error adding document: ', error);
       }
     };
 
@@ -208,7 +210,7 @@ function Chat({
                             characterId: id,
                           });
                         } catch (error) {
-                          console.error(error);
+                          console.log(error);
                         }
                       }}
                     >
@@ -231,8 +233,8 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
-                        } catch (error) {
-                          console.error(error);
+                        } catch (error: any) {
+                          throw new Error(error);
                         }
                       }}
                     >
@@ -270,8 +272,7 @@ function Chat({
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Write your message"
         />
-        <button
-          type="button"
+        <Button
           onClick={handleSendMessage}
           disabled={
             !responseFinished ||
@@ -302,7 +303,7 @@ function Chat({
               d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
             />
           </svg>
-        </button>
+        </Button>
       </div>
     </div>
   );

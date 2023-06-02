@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
 import { characterData, getCharacterStats } from '@/services/characters';
 import 'react-toastify/dist/ReactToastify.css';
+import Button from '../Button';
 
 export default function CharacterCard({
   setCharacterToDelete,
@@ -66,7 +67,7 @@ export default function CharacterCard({
         <h1 className="text-center font-bold text-2xl pb-4 text-white">
           Experiences
         </h1>
-        <div className="w-full flex justify-center mb-4 text-app-bg md: justify-end">
+        <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
           <Link
             href="/user/character"
             className="rounded px-2 py-2 bg-gradient-to-r from-grad-green to-white"
@@ -118,7 +119,7 @@ export default function CharacterCard({
                     <CopyToClipboard
                       text={`${window.location.origin}/character/${character.id}`}
                     >
-                      <button
+                      <Button
                         type="button"
                         className="flex gap-1 cursor-pointer text-grad-green"
                         onClick={() => toast('Link copied to clipboard!')}
@@ -139,7 +140,7 @@ export default function CharacterCard({
                           />
                         </svg>
                         <h4 className="">Get link</h4>
-                      </button>
+                      </Button>
                     </CopyToClipboard>
                     <Link
                       href={`/character/${character.id}`}
@@ -177,7 +178,7 @@ export default function CharacterCard({
                       </svg>
                       <h4 className="">Edit</h4>
                     </Link>
-                    <button
+                    <Button
                       type="button"
                       className="text-red-500 flex gap-1 cursor-pointer"
                       onClick={() => {
@@ -203,10 +204,10 @@ export default function CharacterCard({
                       </svg>
 
                       <h4>Delete</h4>
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex flex-col justify-around my-2 items-center gap-2">
-                    <button
+                    <Button
                       type="button"
                       className="text-blue-500 cursor-pointer full-width"
                       onClick={() => {
@@ -221,7 +222,7 @@ export default function CharacterCard({
                         ? 'Loading...'
                         : (characterId === character.id && 'Hide stats') ||
                           'Show stats'}
-                    </button>
+                    </Button>
                     {characterId === character.id &&
                       !characterStats.loading && (
                         <div className="flex flex-col justify-around my-2 items-center gap-2 text-white">

@@ -2,6 +2,7 @@
 import React from 'react';
 import { db } from 'config/firebase';
 import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
+import Button from '../../components/Button/index';
 
 export default function Home({ chat }: any) {
   return (
@@ -85,28 +86,14 @@ export default function Home({ chat }: any) {
         </main>
 
         <div className="w-full py-4 px-4">
-          <button
-            type="button"
-            className="bg-grad-purple rounded-[23px] text-lg w-full h-20 text-white font-lato font-bold"
-          >
+          <Button className="bg-grad-purple rounded-[23px] text-lg w-full h-20 text-white font-lato font-bold">
             Download Ask Brain 2
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
 }
-
-// export async function getStaticProps() {
-//   const querySnapshot = await getDocs(collection(db, 'categories'));
-//   const categories = querySnapshot.docs.map((doc) => doc.data());
-
-//   return {
-//     props: {
-//       categories,
-//     },
-//   };
-// }
 
 export async function getStaticPaths() {
   // fetch the IDs of all products from Firebase
