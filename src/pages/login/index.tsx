@@ -13,6 +13,8 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import '../../../public/assets/googleLogo.png';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Button from '@/components/Button';
 
 function LoginForm() {
@@ -28,6 +30,7 @@ function LoginForm() {
       push('/');
     } catch (error) {
       push('/register');
+      toast.error('registeration failed');
     }
   };
 
@@ -37,8 +40,9 @@ function LoginForm() {
       await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, values.email, values.password);
       push('/');
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
+      toast.error('Sign In failed', error);
     } finally {
       setSubmitting(false);
     }
@@ -58,6 +62,7 @@ function LoginForm() {
       <h1 className="text-5xl lg:text-6xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-grad-green py-5">
         Login
       </h1>
+      <ToastContainer autoClose={2000} closeOnClick position="bottom-left" />
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={validationSchema}

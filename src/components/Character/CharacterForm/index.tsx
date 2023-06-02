@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import Chat from '@/components/Chat/Chat';
 import Button from '@/components/Button';
 
@@ -58,8 +59,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         console.log(docSnap.data().avatar);
         setAvatar(docSnap.data().avatar);
       }
-    } catch (error) {
-      console.log('Error getting document:', error);
+    } catch (error: any) {
+      toast.error('Error getting document:', error);
     }
   }
 
@@ -86,6 +87,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
           judge: values.judge,
         });
+        toast.success('character added successfully');
       } else {
         await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
@@ -94,11 +96,13 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
           judge: values.judge,
         });
+
+        toast.success('character updated successfully');
       }
 
       push('/user');
-    } catch (error) {
-      console.error('Error adding document: ', error);
+    } catch (error: any) {
+      toast.error('Error adding document: ', error);
     } finally {
       setSubmitting(false);
       setIsLoading(false);

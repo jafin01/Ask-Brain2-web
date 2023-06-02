@@ -19,7 +19,7 @@ function Character() {
 
   async function getSelectedData() {
     const { id } = router.query;
-
+    console.log(image);
     try {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);

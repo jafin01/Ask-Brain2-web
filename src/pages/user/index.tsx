@@ -32,6 +32,7 @@ export default function UserProfile() {
             (character: any) => character.id !== characterId
           )
         );
+        toast.success('Deleted Character successfully');
       } catch (error: any) {
         toast.error(error?.message);
       } finally {

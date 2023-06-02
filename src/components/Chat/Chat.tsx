@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
 import { auth, db } from 'config/firebase';
 import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import { toast } from 'react-toastify';
 import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
 import Button from '../Button';
@@ -125,8 +126,8 @@ function Chat({
             challengeCompleted,
           });
         }
-      } catch (error) {
-        console.error('Error adding document: ', error);
+      } catch (error: any) {
+        toast.error('Error adding document: ', error);
       }
     };
 

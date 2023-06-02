@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { auth } from 'config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,12 +19,12 @@ function LoginForm() {
       setIsLoading(true);
       // const user = await signInWithEmailAndPassword(
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-    } finally {
-      setSubmitting(false);
       push('/login');
+    } catch (error: any) {
+      toast.error('registration failed', error);
+    } finally {
+      setIsLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -43,6 +45,7 @@ function LoginForm() {
       <h1 className="text-5xl lg:text-6xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-grad-green py-5">
         Register
       </h1>
+      <ToastContainer position="bottom-left" autoClose={2000} />
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={validationSchema}
@@ -253,7 +256,7 @@ function LoginForm() {
                     />
                   </svg>
                 ) : (
-                  'Login'
+                  'Register'
                 )}
               </button>
             </div>
