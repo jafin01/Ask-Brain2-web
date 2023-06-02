@@ -15,6 +15,7 @@ function Character() {
     { content: string; role: string; loading?: boolean }[]
   >([]);
   const [judge, setJudge] = useState(null);
+  const [image, setImage] = useState(null);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -27,10 +28,12 @@ function Character() {
           prompts: docPrompts,
           firstMessage: docFirstMessage,
           judge: docJudge,
+          avatar: docAvatar,
         } = docSnap.data()!;
         setFirstMessage(docFirstMessage);
         setPrompts(docPrompts);
         setJudge(docJudge);
+        setImage(docAvatar);
       }
     } catch (error) {
       console.log('Error getting document:', error);
