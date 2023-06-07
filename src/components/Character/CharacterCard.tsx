@@ -92,7 +92,13 @@ export default function CharacterCard({
           className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 
         2xl:grid-cols-4 gap-4"
         >
-          {isLoading && <p className="text-white">Loading...</p>}
+          {isLoading &&
+            [1, 2, 3, 4, 5].map(() => (
+              <div
+                className="min-h-[200px] w-full bg-white rounded-lg animate-pulse
+              shadow-2xl border border-gray-100"
+              />
+            ))}
           {!isLoading &&
             characters.map((character: any) => (
               <div className="min-h-[100px]">
