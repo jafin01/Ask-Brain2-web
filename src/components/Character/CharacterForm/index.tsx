@@ -7,17 +7,17 @@ import {
   doc,
   getDoc,
   updateDoc,
-} from '@firebase/firestore';
-import { auth, db, storage } from 'config/firebase';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import Chat from '@/components/Chat/Chat';
-import Button from '@/components/Button';
+} from "@firebase/firestore";
+import { auth, db, storage } from "config/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import Chat from "@/components/Chat/Chat";
+import Button from "@/components/Button";
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,15 +25,15 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>({
-    name: '',
-    avatar: '',
-    prompts: [{ role: 'system', content: '' }],
+    name: "",
+    avatar: "",
+    prompts: [{ role: "system", content: "" }],
     judge: {
-      condition: '',
-      message: '',
-      numMessages: '',
+      condition: "",
+      message: "",
+      numMessages: "",
     },
-    firstMessage: '',
+    firstMessage: "",
   });
   const router = useRouter();
   const { push } = router;
@@ -42,7 +42,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     const { id } = router.query;
 
     try {
-      const docRef = doc(db, 'characters', id as string);
+      const docRef = doc(db, "characters", id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const { name, prompts, firstMessage, judge, docAvatar } =
@@ -60,7 +60,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         setAvatar(docSnap.data().avatar);
       }
     } catch (error: any) {
-      toast.error('Error getting document:', error);
+      toast.error("Error getting document:", error);
     }
   }
 
@@ -79,7 +79,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
 
       if (!isUpdate) {
-        await addDoc(collection(db, 'characters'), {
+        await addDoc(collection(db, "characters"), {
           userId: auth.currentUser?.uid,
           name: values.name,
           avatar: downloadedAvatarUrl,
@@ -87,9 +87,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
           judge: values.judge,
         });
-        toast.success('character added successfully');
+        toast.success("character added successfully");
       } else {
-        await updateDoc(doc(db, 'characters', router.query.id as string), {
+        await updateDoc(doc(db, "characters", router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
           avatar: isEditing ? downloadedAvatarUrl : avatar,
@@ -97,12 +97,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           judge: values.judge,
         });
 
-        toast.success('character updated successfully');
+        toast.success("character updated successfully");
       }
 
-      push('/user');
+      push("/user");
     } catch (error: any) {
-      toast.error('Error adding document: ', error);
+      toast.error("Error adding document: ", error);
     } finally {
       setSubmitting(false);
       setIsLoading(false);
@@ -112,26 +112,26 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isUpdate) setIsEditing(true);
     const file = e.target.files?.[0];
-    console.log('file', file);
+    console.log("file", file);
     setAvatar(file);
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required("Name is required"),
     prompts: Yup.array().of(
       Yup.object().shape({
-        role: Yup.string().required('Role is required'),
-        content: Yup.string().required('Content is required'),
+        role: Yup.string().required("Role is required"),
+        content: Yup.string().required("Content is required"),
       })
     ),
     judge: Yup.object()
-      .when('$showJudge', {
+      .when("$showJudge", {
         is: true,
         then: (schema) =>
           schema.shape({
-            condition: Yup.string().required('Condition is required'),
-            maxMessages: Yup.number().required('Max Messages is required'),
-            message: Yup.string().required('Message is required'),
+            condition: Yup.string().required("Condition is required"),
+            maxMessages: Yup.number().required("Max Messages is required"),
+            message: Yup.string().required("Message is required"),
           }),
         otherwise: (schema) =>
           schema.shape({
@@ -144,14 +144,14 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   });
 
   function setFormikFields(formikProps: any) {
-    formikProps.setFieldValue('showJudge', !formikProps.values?.showJudge);
+    formikProps.setFieldValue("showJudge", !formikProps.values?.showJudge);
 
     formikProps.setFieldValue(
-      'judge',
+      "judge",
       !formikProps.values?.showJudge
         ? {
-            condition: '',
-            message: '',
+            condition: "",
+            message: "",
             numMessages: 1,
           }
         : null
@@ -159,10 +159,10 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   }
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center py-10">
-      <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
-        <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
-          {!isUpdate ? 'Create your character' : 'Update your character'}
+    <div className="bg-[#FFFAF5] min-h-screen flex justify-center items-center py-10">
+      <div className="w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
+        <h1 className="text-4xl font-bold text-transparent text-center mb-8 text-black bg-clip-text">
+          {!isUpdate ? "Create your character" : "Update your character"}
         </h1>
         <Formik
           enableReinitialize
@@ -182,7 +182,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 />
                 <label
                   htmlFor="avatar"
-                  className="block h-36 w-36 rounded-full border-4 border-grad-green overflow-hidden cursor-pointer mx-auto"
+                  className="block h-36 w-36 rounded-full border-4 border-gray-200 overflow-hidden cursor-pointer mx-auto"
                 >
                   {!isUpdate && avatar && (
                     <img
@@ -229,7 +229,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   id="name"
                   name="name"
                   placeholder="Enter name"
-                  className="p-2 border border-grad-green rounded"
+                  className="p-2 border border-gray-200 rounded"
                 />
                 <ErrorMessage
                   name="name"
@@ -245,24 +245,24 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 name="firstMessage"
                 id="firstMessage"
                 type="text"
-                className="p-2 border border-grad-green rounded"
+                className="p-2 border border-gray-200 rounded"
               />
               <Button
                 type="button"
                 className={`flex flex-row gap-2 border rounded p-2 items-center justify-center ${
                   !formikProps.values?.showJudge
-                    ? 'border-grad-green'
-                    : 'border-gray-300'
+                    ? "border-gray-200"
+                    : "border-gray-300"
                 }`}
                 onClick={() => setFormikFields(formikProps)}
               >
-                {formikProps.values?.showJudge ? 'Hide Judge' : 'Add Judge'}
+                {formikProps.values?.showJudge ? "Hide Judge" : "Add Judge"}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-6 w-6 ${
                     !formikProps.values?.showJudge
-                      ? 'text-grad-green hover:text-grad-green-dark'
-                      : 'text-gray-300 hover:text-gray-500'
+                      ? "text-black hover:text-gray-500"
+                      : "text-gray-300 hover:text-gray-500"
                   }`}
                   fill="none"
                   viewBox="0 0 24 24"
@@ -274,8 +274,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     strokeWidth="2.5"
                     d={
                       !formikProps.values?.showJudge
-                        ? 'M12 6v6m0 0v6m0-6h6m-6 0H6'
-                        : 'M6 18L18 6M6 6l12 12'
+                        ? "M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        : "M6 18L18 6M6 6l12 12"
                     }
                   />
                 </svg>
@@ -288,7 +288,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     id="judge.numMessages"
                     type="number"
                     min={1}
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.numMessages"
@@ -300,7 +300,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     name="judge.condition"
                     id="judge.condition"
                     type="text"
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.condition"
@@ -312,7 +312,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     name="judge.message"
                     id="judge.message"
                     type="text"
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.message"
@@ -336,7 +336,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               as="select"
                               name={`prompts.${index}.role`}
                               id={`prompts.${index}.role`}
-                              className="p-2 border border-grad-green rounded flex-grow"
+                              className="p-2 border border-gray-200 rounded flex-grow"
                             >
                               <option value="system">
                                 Character instructions
@@ -350,7 +350,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               id={`prompts.${index}.content`}
                               rows={3}
                               placeholder="Enter content"
-                              className="p-2 border border-grad-green rounded flex-grow"
+                              className="p-2 border border-gray-200 rounded flex-grow"
                             />
                             <Button type="button" onClick={() => remove(index)}>
                               <svg
@@ -382,13 +382,13 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     )}
                     <Button
                       type="button"
-                      onClick={() => innerPush({ role: 'user', content: '' })}
-                      className="flex flex-row gap-2 border border-grad-green rounded p-2 items-center justify-center"
+                      onClick={() => innerPush({ role: "user", content: "" })}
+                      className="flex flex-row gap-2 border border-gray-200 rounded p-2 items-center justify-center"
                     >
                       Add Prompt
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-grad-green hover:text-grad-green-dark"
+                        className="h-6 w-6 text-black"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -405,34 +405,34 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 )}
               </FieldArray>
 
-              <div className="flex flex-row gap-2 justify-end items-center">
+              <div className="flex flex-row gap-3 justify-end items-center mt-4">
                 <Link href="/user">
-                  <p className="text-grad-green underline">Cancel</p>
+                  <p className="text-black underline">Cancel</p>
                 </Link>
                 <Button
                   disabled={isLoading}
                   onClick={() => setTryingOut(!tryingOut)}
                   type="button"
-                  className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
+                  className="font-bold py-2 px-4 rounded border border-gray-600"
                 >
-                  {tryingOut ? 'Hide chat' : 'Try out'}
+                  {tryingOut ? "Hide chat" : "Try out"}
                 </Button>
 
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-grad-purple hover:bg-grad-purple-dark text-white font-bold py-2 px-4 rounded"
+                  className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700"
                 >
-                  {isLoading ? 'Saving...' : 'Save'}
+                  {isLoading ? "Saving..." : "Save"}
                 </Button>
               </div>
               <div
                 className="relative"
                 style={{
-                  width: '100%',
-                  height: '500px',
-                  position: 'relative',
-                  display: tryingOut ? 'block' : 'none',
+                  width: "100%",
+                  height: "500px",
+                  position: "relative",
+                  display: tryingOut ? "block" : "none",
                 }}
               >
                 <Chat
