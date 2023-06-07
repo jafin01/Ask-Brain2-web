@@ -10,11 +10,11 @@ type Props = {
   handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   isScrolling: boolean;
   isAuthenticated: boolean | null;
-  theme: 'dark' | 'light';
+  theme?: 'dark' | 'light';
 };
 
 function Navbar({
-  theme = 'dark',
+  theme,
   isOpen,
   isScrolling,
   handleOpen,
@@ -175,5 +175,9 @@ function Navbar({
     </nav>
   );
 }
+
+Navbar.defaultProps = {
+  theme: 'dark',
+};
 
 export default Navbar;
