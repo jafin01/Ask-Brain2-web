@@ -95,9 +95,10 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen">
+    <div className="w-full bg-[#FFFAF5] min-h-screen">
       <div>
         <Navbar
+          theme="light"
           isOpen={isOpen}
           handleOpen={handleOpen}
           handleScroll={handleScroll}

@@ -39,10 +39,9 @@ export default function CharacterCard({
         setIsLoading(true);
         const response: any = await characterData(auth.currentUser?.uid);
         setCharacters(response);
+        setIsLoading(false);
       } catch (error: any) {
         throw new Error(error.message);
-      } finally {
-        setIsLoading(false);
       }
     }
 
@@ -61,18 +60,16 @@ export default function CharacterCard({
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
       />
       <div className="py-16 m-auto">
-        <h1 className="text-center font-bold text-2xl pb-4 text-white">
-          Experiences
-        </h1>
+        <h1 className="text-center font-bold text-2xl pb-4">Experiences</h1>
         <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
           <Link
             href="/user/character"
-            className="rounded px-2 py-2 bg-gradient-to-r from-grad-green to-white"
+            className="rounded px-2 py-2 bg-black text-white"
           >
-            <span className="flex gap-2 font-bold">
+            <span className="flex gap-2 font-bold mr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -91,13 +88,22 @@ export default function CharacterCard({
             </span>
           </Link>
         </div>
-        <div className="border w-full p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {isLoading && <p className="text-white">Loading...</p>}
+        <div
+          className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 
+        2xl:grid-cols-4 gap-4"
+        >
+          {isLoading &&
+            [1, 2, 3, 4, 5].map(() => (
+              <div
+                className="min-h-[200px] w-full bg-white rounded-lg animate-pulse
+              shadow-2xl border border-gray-100"
+              />
+            ))}
           {!isLoading &&
             characters.map((character: any) => (
               <div className="min-h-[100px]">
-                <div className="border rounded-lg">
-                  <div className="flex gap-4 px-4 py-4 cursor-all-scroll items-center">
+                <div className="border rounded-lg border-gray-100 bg-white shadow-xl">
+                  <div className="flex gap-4 px-4 py-4 items-center">
                     <div>
                       <div className="w-12 h-12 rounded-full bg-gray-200 flex justify-center items-center">
                         <img
@@ -109,19 +115,19 @@ export default function CharacterCard({
                     </div>
                     <div>
                       <p>
-                        <span className="font-medium text-lg text-gray-400">
+                        <span className="font-medium text-lg text-gray-800">
                           {character.data.name}
                         </span>
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-around my-2 items-center gap-2 md:flex-row">
+                  <div className="flex flex-col justify-around my-4 mx-4 items-center md:flex-row">
                     <CopyToClipboard
                       text={`${window.location.origin}/character/${character.id}`}
                     >
                       <Button
                         type="button"
-                        className="flex gap-1 cursor-pointer text-grad-green"
+                        className="flex gap-1 cursor-pointer text-grad-green hover:bg-grad-green hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
                         onClick={() => toast('Link copied to clipboard!')}
                       >
                         <svg
@@ -144,7 +150,7 @@ export default function CharacterCard({
                     </CopyToClipboard>
                     <Link
                       href={`/character/${character.id}`}
-                      className="flex gap-1 text-blue-500 cursor-pointer"
+                      className="flex gap-1 cursor-pointer text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +166,7 @@ export default function CharacterCard({
                     </Link>
                     <Link
                       href={`/user/character/${character.id}`}
-                      className="flex gap-1 text-yellow-500 cursor-pointer"
+                      className="flex gap-1 cursor-pointer text-yellow-500 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +186,7 @@ export default function CharacterCard({
                     </Link>
                     <Button
                       type="button"
-                      className="text-red-500 flex gap-1 cursor-pointer"
+                      className="flex gap-1 cursor-pointer text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
                       onClick={() => {
                         setShowModal(true);
                         setCharacterToDelete(character.id);
@@ -209,13 +215,21 @@ export default function CharacterCard({
                   <div className="flex flex-col justify-around my-2 items-center gap-2">
                     <Button
                       type="button"
-                      className="text-blue-500 cursor-pointer full-width"
+                      className="text-blue-500 cursor-pointer full-width hover:bg-blue-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out text-center"
                       onClick={() => {
-                        setCharacterId(character.id);
-                        setCharacterStats({
-                          loading: true,
-                          data: null,
-                        });
+                        if (characterId !== character.id) {
+                          setCharacterId(character.id);
+                          setCharacterStats({
+                            loading: true,
+                            data: null,
+                          });
+                        } else {
+                          setCharacterId('');
+                          setCharacterStats({
+                            loading: false,
+                            data: null,
+                          });
+                        }
                       }}
                     >
                       {characterStats.loading && characterId === character.id
@@ -225,7 +239,7 @@ export default function CharacterCard({
                     </Button>
                     {characterId === character.id &&
                       !characterStats.loading && (
-                        <div className="flex flex-col justify-around my-2 items-center gap-2 text-white">
+                        <div className="flex flex-col justify-around my-2 items-center gap-2">
                           <p>
                             Total clicks: {characterStats?.data?.totalClicks}
                           </p>

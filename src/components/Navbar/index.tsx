@@ -10,9 +10,11 @@ type Props = {
   handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   isScrolling: boolean;
   isAuthenticated: boolean | null;
+  theme?: 'dark' | 'light';
 };
 
 function Navbar({
+  theme,
   isOpen,
   isScrolling,
   handleOpen,
@@ -23,7 +25,9 @@ function Navbar({
     <nav
       className={`fixed w-full font-poppins ${
         isScrolling ? 'bg-app-bg' : 'bg-transparent'
-      } text-white h-16 flex justify-between px-10 items-center z-50`}
+      } ${
+        theme === 'dark' ? 'text-white' : 'text-app-bg'
+      } h-16 flex justify-between px-10 items-center z-50`}
     >
       <div className="w-full flex justify-between items-center">
         <aside className="w-full md:w-1/4">
@@ -171,5 +175,9 @@ function Navbar({
     </nav>
   );
 }
+
+Navbar.defaultProps = {
+  theme: 'dark',
+};
 
 export default Navbar;

@@ -1,11 +1,10 @@
+import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import { auth, db } from 'config/firebase';
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
-import { auth, db } from 'config/firebase';
-import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
 import { toast } from 'react-toastify';
-import loadingData from '../../../public/assets/loading-dots.json';
 import sendMessage from '@/services/openai';
-import Button from '../Button';
+import loadingData from '../../../public/assets/loading-dots.json';
 
 const MAX_MESSAGE_COUNT = 10;
 
@@ -136,7 +135,7 @@ function Chat({
 
   return (
     //  position modal on top of the chat
-    <div className="bg-white absolute bottom-0 right-0 left-0 top-0 overflow-scroll md:rounded-2xl">
+    <div className="bg-white absolute bottom-0 right-0 left-0 top-0 overflow-scroll md:rounded-2xl border border-[#EEEEEE]">
       {/* modal */}
       <div
         ref={chatRef}
@@ -156,7 +155,7 @@ function Chat({
                   <img
                     src={avatarImage}
                     alt="Avatar Preview"
-                    className="h-full w-full object-cover rounded-full w-9 h-9"
+                    className="object-cover rounded-full w-9 h-9"
                   />
                 )}
                 <div
@@ -210,7 +209,7 @@ function Chat({
                             characterId: id,
                           });
                         } catch (error) {
-                          console.log(error);
+                          console.error(error);
                         }
                       }}
                     >
@@ -233,8 +232,8 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             characterId: id,
                           });
-                        } catch (error: any) {
-                          throw new Error(error);
+                        } catch (error) {
+                          console.error(error);
                         }
                       }}
                     >
@@ -272,7 +271,8 @@ function Chat({
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Write your message"
         />
-        <Button
+        <button
+          type="button"
           onClick={handleSendMessage}
           disabled={
             !responseFinished ||
@@ -303,7 +303,7 @@ function Chat({
               d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
             />
           </svg>
-        </Button>
+        </button>
       </div>
     </div>
   );

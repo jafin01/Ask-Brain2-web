@@ -159,9 +159,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   }
 
   return (
-    <div className="bg-gradient-to-br from-app-bg via-app-bg to-grad-purple min-h-screen flex justify-center items-center py-10">
-      <div className="w-full max-w-md p-6 bg-app-bg text-gray-600 rounded-2xl">
-        <h1 className="text-4xl font-bold text-transparent bg-gradient-to-r from-grad-green to-white bg-clip-text text-center mb-8">
+    <div className="bg-[#FFFAF5] min-h-screen flex justify-center items-center py-10">
+      <div className="w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
+        <h1 className="text-4xl font-bold text-transparent text-center mb-8 text-black bg-clip-text">
           {!isUpdate ? 'Create your character' : 'Update your character'}
         </h1>
         <Formik
@@ -182,7 +182,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 />
                 <label
                   htmlFor="avatar"
-                  className="block h-36 w-36 rounded-full border-4 border-grad-green overflow-hidden cursor-pointer mx-auto"
+                  className="block h-36 w-36 rounded-full border-4 border-gray-200 overflow-hidden cursor-pointer mx-auto"
                 >
                   {!isUpdate && avatar && (
                     <img
@@ -229,7 +229,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   id="name"
                   name="name"
                   placeholder="Enter name"
-                  className="p-2 border border-grad-green rounded"
+                  className="p-2 border border-gray-200 rounded"
                 />
                 <ErrorMessage
                   name="name"
@@ -245,13 +245,13 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 name="firstMessage"
                 id="firstMessage"
                 type="text"
-                className="p-2 border border-grad-green rounded"
+                className="p-2 border border-gray-200 rounded"
               />
               <Button
                 type="button"
                 className={`flex flex-row gap-2 border rounded p-2 items-center justify-center ${
                   !formikProps.values?.showJudge
-                    ? 'border-grad-green'
+                    ? 'border-gray-200'
                     : 'border-gray-300'
                 }`}
                 onClick={() => setFormikFields(formikProps)}
@@ -261,7 +261,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-6 w-6 ${
                     !formikProps.values?.showJudge
-                      ? 'text-grad-green hover:text-grad-green-dark'
+                      ? 'text-black hover:text-gray-500'
                       : 'text-gray-300 hover:text-gray-500'
                   }`}
                   fill="none"
@@ -288,7 +288,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     id="judge.numMessages"
                     type="number"
                     min={1}
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.numMessages"
@@ -300,7 +300,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     name="judge.condition"
                     id="judge.condition"
                     type="text"
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.condition"
@@ -312,7 +312,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     name="judge.message"
                     id="judge.message"
                     type="text"
-                    className="p-2 border border-grad-green rounded"
+                    className="p-2 border border-gray-200 rounded"
                   />
                   <ErrorMessage
                     name="judge.message"
@@ -336,7 +336,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               as="select"
                               name={`prompts.${index}.role`}
                               id={`prompts.${index}.role`}
-                              className="p-2 border border-grad-green rounded flex-grow"
+                              className="p-2 border border-gray-200 rounded flex-grow"
                             >
                               <option value="system">
                                 Character instructions
@@ -350,7 +350,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                               id={`prompts.${index}.content`}
                               rows={3}
                               placeholder="Enter content"
-                              className="p-2 border border-grad-green rounded flex-grow"
+                              className="p-2 border border-gray-200 rounded flex-grow"
                             />
                             <Button type="button" onClick={() => remove(index)}>
                               <svg
@@ -383,12 +383,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     <Button
                       type="button"
                       onClick={() => innerPush({ role: 'user', content: '' })}
-                      className="flex flex-row gap-2 border border-grad-green rounded p-2 items-center justify-center"
+                      className="flex flex-row gap-2 border border-gray-200 rounded p-2 items-center justify-center"
                     >
                       Add Prompt
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-grad-green hover:text-grad-green-dark"
+                        className="h-6 w-6 text-black"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -405,15 +405,15 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 )}
               </FieldArray>
 
-              <div className="flex flex-row gap-2 justify-end items-center">
+              <div className="flex flex-row gap-3 justify-end items-center mt-4">
                 <Link href="/user">
-                  <p className="text-grad-green underline">Cancel</p>
+                  <p className="text-black underline">Cancel</p>
                 </Link>
                 <Button
                   disabled={isLoading}
                   onClick={() => setTryingOut(!tryingOut)}
                   type="button"
-                  className="bg-grad-green hover:bg-grad-green-dark text-white font-bold py-2 px-4 rounded"
+                  className="font-bold py-2 px-4 rounded border border-gray-600"
                 >
                   {tryingOut ? 'Hide chat' : 'Try out'}
                 </Button>
@@ -421,7 +421,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-grad-purple hover:bg-grad-purple-dark text-white font-bold py-2 px-4 rounded"
+                  className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700"
                 >
                   {isLoading ? 'Saving...' : 'Save'}
                 </Button>
