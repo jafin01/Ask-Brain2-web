@@ -45,8 +45,8 @@ function Character() {
   }, [router.query.id]);
 
   return (
-    <div className="bg-[#FFFAF5] h-screen flex flex-col items-center justify-center">
-      <div className="w-full h-full relative md:max-h-[calc(100vh-200px)] max-w-[1200px]">
+    <div className="bg-[#FFFAF5] flex flex-col items-center justify-center h-[100dvh]">
+      <div className="w-full relative md:max-h-[calc(100vh-200px)] max-w-[1200px] h-[100dvh]">
         <Chat
           firstMessage={firstMessage}
           prompts={prompts}
