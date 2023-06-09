@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "chat_app",
+      "package_name": "com.askbrain2.app",
+      "sha256_cert_fingerprints": [
+        "27:ED:92:53:49:9C:DB:2E:7A:23:8B:28:D7:B4:2D:5F:60:A2:FA:75:57:11:E2:16:9D:96:29:9B:26:A5:67:E7",
+        "0F:B9:F9:44:12:20:6D:51:14:79:1B:4A:A4:6F:AC:DC:BF:30:B4:CF:31:F7:57:5F:50:77:21:C2:A6:8E:A4:A1"
+      ]
+    }
+  }
+]
