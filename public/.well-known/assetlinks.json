@@ -2,10 +2,9 @@
   {
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
-      "namespace": "android_app",
+      "namespace": "chat_app",
       "package_name": "com.askbrain2.app",
       "sha256_cert_fingerprints": [
-        "A0:FB:7F:FD:37:F0:94:D6:49:8A:B5:42:9A:19:A1:C5:56:80:E9:E8:A6:8C:B1:3C:C0:CA:24:9C:85:C2:07:A6",
         "27:ED:92:53:49:9C:DB:2E:7A:23:8B:28:D7:B4:2D:5F:60:A2:FA:75:57:11:E2:16:9D:96:29:9B:26:A5:67:E7",
         "0F:B9:F9:44:12:20:6D:51:14:79:1B:4A:A4:6F:AC:DC:BF:30:B4:CF:31:F7:57:5F:50:77:21:C2:A6:8E:A4:A1"
       ]
