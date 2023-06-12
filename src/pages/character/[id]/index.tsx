@@ -11,10 +11,6 @@ function Character() {
   const router = useRouter();
 
   const [firstMessage, setFirstMessage] = useState('');
-  const [prompts, setPrompts] = useState<
-    { content: string; role: string; loading?: boolean }[]
-  >([]);
-  const [judge, setJudge] = useState(null);
   const [image, setImage] = useState(null);
 
   async function getSelectedData() {
@@ -24,15 +20,9 @@ function Character() {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const {
-          prompts: docPrompts,
-          firstMessage: docFirstMessage,
-          judge: docJudge,
-          avatar: docAvatar,
-        } = docSnap.data()!;
+        const { firstMessage: docFirstMessage, avatar: docAvatar } =
+          docSnap.data()!;
         setFirstMessage(docFirstMessage);
-        setPrompts(docPrompts);
-        setJudge(docJudge);
         setImage(docAvatar);
       }
     } catch (error) {
@@ -49,10 +39,7 @@ function Character() {
       <div className="w-full relative md:max-h-[calc(100vh-200px)] max-w-[1200px] h-[100dvh]">
         <ChatFirebase
           firstMessage={firstMessage}
-          prompts={prompts}
           id={router.query.id as string}
-          characterName={router.query.characterName as string}
-          judge={judge}
           avatarImage={image}
         />
       </div>
