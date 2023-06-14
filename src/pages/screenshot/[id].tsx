@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { db } from 'config/firebase';
-import { doc, getDoc } from '@firebase/firestore';
+import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
 
 export default function Screenshot({ chat }: any) {
   const updatedChat = JSON.parse(chat);

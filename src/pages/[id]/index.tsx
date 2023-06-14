@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { db } from 'config/firebase';
-import { doc, getDoc } from '@firebase/firestore';
+import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
 
 export default function Home({ chat }: any) {
   const updatedChat = JSON.parse(chat);
@@ -102,16 +102,16 @@ export default function Home({ chat }: any) {
   );
 }
 
-// export async function getStaticPaths() {
-//   // fetch the IDs of all products from Firebase
-//   const querySnapshot = await getDocs(collection(db, 'chats'));
-//   const products = querySnapshot.docs.map((document) => document.id);
+export async function getStaticPaths() {
+  // fetch the IDs of all products from Firebase
+  const querySnapshot = await getDocs(collection(db, 'chats'));
+  const products = querySnapshot.docs.map((document) => document.id);
 
-//   // generate an array of paths with the product IDs
-//   const paths = products.map((productId) => ({ params: { id: productId } }));
+  // generate an array of paths with the product IDs
+  const paths = products.map((productId) => ({ params: { id: productId } }));
 
-//   return { paths, fallback: false };
-// }
+  return { paths, fallback: false };
+}
 
 export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
