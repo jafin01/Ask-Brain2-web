@@ -2,10 +2,8 @@
 import React from 'react';
 import { db } from 'config/firebase';
 import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
-import { useRouter } from 'next/router';
 
 export default function Home({ chat }: any) {
-  const router = useRouter();
   const updatedChat = JSON.parse(chat);
   return (
     <div className="w-full bg-app-bg">
