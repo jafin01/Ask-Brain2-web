@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { db } from "config/firebase";
-import { collection, doc, getDoc, getDocs } from "@firebase/firestore";
-import Button from "../../components/Button/index";
+import React from 'react';
+import { db } from 'config/firebase';
+import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
+import Button from '../../components/Button/index';
 
 export default function Home({ chat }: any) {
   const updatedChat = JSON.parse(chat);
@@ -100,7 +100,7 @@ export default function Home({ chat }: any) {
 
 export async function getStaticPaths() {
   // fetch the IDs of all products from Firebase
-  const querySnapshot = await getDocs(collection(db, "chats"));
+  const querySnapshot = await getDocs(collection(db, 'chats'));
   const products = querySnapshot.docs.map((document) => document.id);
 
   // generate an array of paths with the product IDs
@@ -111,7 +111,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
-  const docRef = doc(db, "chats", params.id);
+  const docRef = doc(db, 'chats', params.id);
   const docSnap = await getDoc(docRef);
   const chat = JSON.stringify(docSnap.data());
 

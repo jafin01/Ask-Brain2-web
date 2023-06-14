@@ -19,7 +19,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
-    "prettier/prettier": ["error", { singleQuote: false }],
+    "prettier/prettier": ["error", { singleQuote: true }],
     "react/jsx-filename-extension": [1, { extensions: [".tsx"] }],
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
