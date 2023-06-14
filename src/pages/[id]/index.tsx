@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { db } from 'config/firebase';
-import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
+import { doc, getDoc } from '@firebase/firestore';
 import Button from '../../components/Button/index';
 
 export default function Home({ chat }: any) {
@@ -89,7 +89,7 @@ export default function Home({ chat }: any) {
         </main>
 
         <div className="w-full py-4 px-4">
-          <a href="https://askbrain2.page.link/app1" target="_blank" className="bg-grad-purple rounded-[23px] text-lg w-full h-20 text-white font-lato font-bold">
+          <a href="https://askbrain2.page.link/app1" rel="noreferrer" target="_blank" className="bg-grad-purple rounded-[23px] text-lg w-full h-20 text-white font-lato font-bold">
             Download Ask Brain 2
           </a>
         </div>
