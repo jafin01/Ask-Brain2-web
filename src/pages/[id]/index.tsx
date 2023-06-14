@@ -2,7 +2,6 @@
 import React from 'react';
 import { db } from 'config/firebase';
 import { doc, getDoc } from '@firebase/firestore';
-import Button from '../../components/Button/index';
 
 export default function Home({ chat }: any) {
   const updatedChat = JSON.parse(chat);
