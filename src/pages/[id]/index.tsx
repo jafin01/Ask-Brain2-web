@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import { db } from 'config/firebase';
-import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
-import Button from '../../components/Button/index';
+import React from "react";
+import { db } from "config/firebase";
+import { collection, doc, getDoc, getDocs } from "@firebase/firestore";
+import Button from "../../components/Button/index";
 
 export default function Home({ chat }: any) {
+  const updatedChat = JSON.parse(chat);
   return (
     <div className="w-full bg-app-bg">
       <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 h-screen flex flex-col border-r border-l border-white border-opacity-10">
         <div className="px-5 py-5 flex items-center justify-center h-16">
-          <h1 className="text-gray-100 text-xl font-mono">{chat.title}</h1>
+          <h1 className="text-gray-100 text-xl font-mono">
+            {updatedChat.title}
+          </h1>
         </div>
         <main className="flex-1 flex flex-col gap-1 overflow-y-auto">
-          {chat.messages?.reverse().map((message: any) => {
-            return message.role === 'user' ? (
+          {updatedChat.messages?.reverse().map((message: any) => {
+            return message.role === "user" ? (
               <div className="px-4 font-lato">
                 <div className="relative">
                   <div className="absolute inset-0 border opacity-10 rounded-3xl" />
@@ -97,7 +100,7 @@ export default function Home({ chat }: any) {
 
 export async function getStaticPaths() {
   // fetch the IDs of all products from Firebase
-  const querySnapshot = await getDocs(collection(db, 'chats'));
+  const querySnapshot = await getDocs(collection(db, "chats"));
   const products = querySnapshot.docs.map((document) => document.id);
 
   // generate an array of paths with the product IDs
@@ -108,7 +111,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
-  const docRef = doc(db, 'chats', params.id);
+  const docRef = doc(db, "chats", params.id);
   const docSnap = await getDoc(docRef);
   const chat = JSON.stringify(docSnap.data());
 

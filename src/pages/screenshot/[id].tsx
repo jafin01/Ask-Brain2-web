@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import { db } from 'config/firebase';
-import { collection, doc, getDoc, getDocs } from '@firebase/firestore';
+import React from "react";
+import { db } from "config/firebase";
+import { collection, doc, getDoc, getDocs } from "@firebase/firestore";
 
 export default function Screenshot({ chat }: any) {
+  const updatedChat = JSON.parse(chat);
   return (
     <div className="w-full bg-app-bg">
       <div className="bg-app-bg 2xl:w-1/3 m-auto 1g:w-1/2 xl:w-1/2 md:px-8 md:pt-2 md:pb-5 flex flex-col">
@@ -31,12 +32,12 @@ export default function Screenshot({ chat }: any) {
             </h1>
           </div>
           <h1 className="text-gray-100 text-right text-base lg:text-xl font-mono">
-            {chat.title}
+            {updatedChat.title}
           </h1>
         </div>
         <main className="flex-1 flex flex-col gap-1">
-          {chat.messages?.reverse().map((message: any) => {
-            return message.role === 'user' ? (
+          {updatedChat.messages?.reverse().map((message: any) => {
+            return message.role === "user" ? (
               <div className="px-4 font-lato">
                 <div className="relative">
                   <div className="absolute inset-0 border opacity-10 rounded-3xl" />
@@ -130,7 +131,7 @@ export default function Screenshot({ chat }: any) {
 
 export async function getStaticPaths() {
   // fetch the IDs of all products from Firebase
-  const querySnapshot = await getDocs(collection(db, 'chats'));
+  const querySnapshot = await getDocs(collection(db, "chats"));
   const products = querySnapshot.docs.map((document) => document.id);
 
   // generate an array of paths with the product IDs
@@ -141,7 +142,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   // fetch the data for a single product with the given ID from Firebase
-  const docRef = doc(db, 'chats', params.id);
+  const docRef = doc(db, "chats", params.id);
   const docSnap = await getDoc(docRef);
   const chat = JSON.stringify(docSnap.data());
 
