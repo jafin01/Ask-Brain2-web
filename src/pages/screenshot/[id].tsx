@@ -37,7 +37,7 @@ export default function Screenshot({ chat }: any) {
         </div>
         <main className="flex-1 flex flex-col gap-1">
           {updatedChat.messages?.reverse().map((message: any) => {
-            return message.role === "user" ? (
+            return message.role === 'user' ? (
               <div className="px-4 font-lato">
                 <div className="relative">
                   <div className="absolute inset-0 border opacity-10 rounded-3xl" />
