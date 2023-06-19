@@ -2,6 +2,7 @@ import { auth } from 'config/firebase';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import React from 'react';
+import Button from '../Button';
 
 type Props = {
   isOpen: boolean;
@@ -9,9 +10,11 @@ type Props = {
   handleScroll: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   isScrolling: boolean;
   isAuthenticated: boolean | null;
+  theme?: 'dark' | 'light';
 };
 
 function Navbar({
+  theme,
   isOpen,
   isScrolling,
   handleOpen,
@@ -22,7 +25,9 @@ function Navbar({
     <nav
       className={`fixed w-full font-poppins ${
         isScrolling ? 'bg-app-bg' : 'bg-transparent'
-      } text-white h-16 flex justify-between px-10 items-center z-50`}
+      } ${
+        theme === 'dark' ? 'text-white' : 'text-app-bg'
+      } h-16 flex justify-between px-10 items-center z-50`}
     >
       <div className="w-full flex justify-between items-center">
         <aside className="w-full md:w-1/4">
@@ -80,22 +85,18 @@ function Navbar({
                   />
                 </svg>
               </Link>
-              <button
-                type="button"
+              <Button
                 onClick={() => signOut(auth)}
                 className="bg-app-bg text-white px-4 py-2 rounded-md border"
               >
                 Logout
-              </button>
+              </Button>
             </div>
           ) : (
             <Link href="/login">
-              <button
-                type="button"
-                className="bg-app-bg text-white px-4 py-2 rounded-md border"
-              >
+              <Button className="bg-app-bg text-white px-4 py-2 rounded-md border">
                 Login
-              </button>
+              </Button>
             </Link>
           )}
         </aside>
@@ -174,5 +175,9 @@ function Navbar({
     </nav>
   );
 }
+
+Navbar.defaultProps = {
+  theme: 'dark',
+};
 
 export default Navbar;
