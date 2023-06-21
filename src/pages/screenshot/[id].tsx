@@ -57,7 +57,7 @@ export default function Screenshot() {
               Ask Brain2
             </h1>
           </div>
-          <h1 className="text-gray-100 text-right text-base lg:text-xl font-mono">
+          <h1 className="text-gray-100 text-right text-base lg:text-xl font-mono overflow-hidden whitespace-nowrap overflow-ellipsis">
             {updatedChat.title}
           </h1>
         </div>
