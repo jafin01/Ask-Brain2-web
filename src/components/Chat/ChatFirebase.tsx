@@ -36,7 +36,7 @@ function ChatFirebase({
 
   useEffect(() => {
     const update = async () => {
-      if (id && userUid) {
+      if (id && userUid && !conversationId) {
         await addDoc(collection(db, 'chats'), {
           user_id: userUid,
           createdAt: new Date().toISOString(),
@@ -44,11 +44,12 @@ function ChatFirebase({
           character: id,
         }).then((docRef) => {
           setConversationId(docRef.id);
+          console.log('Document written with ID: ', docRef.id);
         });
       }
     };
     update();
-  }, [id, userUid]);
+  }, [id, userUid, conversationId]);
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
@@ -74,7 +75,7 @@ function ChatFirebase({
         const chatData = snapshot.data();
         const messagesData = chatData?.messages?.reverse() || [];
 
-        console.log('Current data: ', messagesData);
+        console.log('Current data: ', chatData);
 
         setConversation(messagesData);
         if (chatData?.challengeCompleted) {
@@ -94,14 +95,16 @@ function ChatFirebase({
 
     const newConversation = [
       ...conversation,
-      { content: message, role: 'user' },
+      { content: message, role: 'user', createdAt: new Date().toISOString() },
     ];
     setConversation(newConversation);
     setMessage('');
 
-    await updateDoc(doc(db, 'chats', conversationId), {
+    const updatedDoc = await updateDoc(doc(db, 'chats', conversationId), {
       messages: newConversation.reverse(),
     });
+
+    console.log('Document updated with ID: ', updatedDoc);
   };
 
   useEffect(() => {

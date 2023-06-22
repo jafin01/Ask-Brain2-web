@@ -115,7 +115,7 @@ function Chat({
             user_id: userUid,
             createdAt: new Date().toISOString(),
             title: 'Web ask Brain2 Conversation',
-            characterId: id,
+            character: id,
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
@@ -206,7 +206,7 @@ function Chat({
                             app: 'ios',
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
-                            characterId: id,
+                            character: id,
                           });
                         } catch (error) {
                           console.error(error);
@@ -230,7 +230,7 @@ function Chat({
                             app: 'android',
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
-                            characterId: id,
+                            character: id,
                           });
                         } catch (error) {
                           console.error(error);

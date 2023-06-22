@@ -84,7 +84,7 @@ export async function getCharacterStats(characterId: string) {
       ).then((querySnapshot) => {
         const users = new Set();
         querySnapshot.forEach((docSnapshot) => {
-          users.add(docSnapshot.data()?.userId);
+          users.add(docSnapshot.data()?.user_id);
         });
         return users.size;
       }),
