@@ -109,7 +109,7 @@ function Chat({
         behavior: 'smooth',
       });
       try {
-        if (!conversationId) {
+        if (!conversationId && id && userUid) {
           await addDoc(collection(db, 'chats'), {
             messages: [],
             user_id: userUid,
@@ -131,7 +131,13 @@ function Chat({
     };
 
     update();
-  }, [conversation, auth.currentUser?.uid, conversationId, challengeCompleted]);
+  }, [
+    conversation,
+    auth.currentUser?.uid,
+    conversationId,
+    challengeCompleted,
+    userUid,
+  ]);
 
   return (
     //  position modal on top of the chat
