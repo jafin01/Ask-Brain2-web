@@ -21,7 +21,7 @@ import Button from '@/components/Button';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [avatar, setAvatar] = useState<File>();
+  const [avatar, setAvatar] = useState<File | string>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [gpt, setGpt] = useState<any>(null);
@@ -75,15 +75,20 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     try {
       setIsLoading(true);
 
-      const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
-      await uploadBytes(uploadAvatar, avatar!);
-      const downloadedAvatarUrl = await getDownloadURL(uploadAvatar);
+      let tmpAvatar = values.avatar;
+      if (typeof avatar === 'string') {
+        tmpAvatar = avatar;
+      } else {
+        const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
+        await uploadBytes(uploadAvatar, avatar!);
+        tmpAvatar = await getDownloadURL(uploadAvatar);
+      }
 
       if (!isUpdate) {
         await addDoc(collection(db, 'characters'), {
           userId: auth.currentUser?.uid,
           name: values.name,
-          avatar: downloadedAvatarUrl,
+          avatar: tmpAvatar,
           prompts: values.prompts,
           firstMessage: values.firstMessage,
           judge: values.judge,
@@ -93,7 +98,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
-          avatar: isEditing ? downloadedAvatarUrl : avatar,
+          avatar: tmpAvatar,
           firstMessage: values.firstMessage,
           judge: values.judge,
         });
@@ -161,17 +166,23 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
 
   const handleGptSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(
-        'http://localhost:8000/api/app-chat/generate-character',
+        'https://msa-stories.com/api/app-chat/generate-character',
         {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify({
             query: gpt,
           }),
         }
       );
+      setIsLoading(false);
+      setGpt(null);
       const data = await response.json();
-      console.log(data);
+      setAvatar(data.avatar);
       setInitialValues(data);
     } catch (error) {
       console.log(error);
@@ -215,7 +226,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
               onClick={handleGptSubmit}
               className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
             >
-              {isLoading ? 'Saving...' : 'Save'}
+              {isLoading ? 'Generating...' : 'Generate'}
             </Button>
           </div>
         )}
@@ -242,7 +253,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   >
                     {!isUpdate && avatar && (
                       <img
-                        src={URL.createObjectURL(avatar)}
+                        src={
+                          typeof avatar === 'string'
+                            ? avatar
+                            : URL.createObjectURL(avatar)
+                        }
                         alt="Avatar Preview"
                         className="h-full w-full object-cover"
                       />
@@ -264,7 +279,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
 
                     {isUpdate && avatar && isEditing && (
                       <img
-                        src={URL.createObjectURL(avatar)}
+                        src={URL.createObjectURL(avatar as Blob)}
                         alt="Avatar Preview"
                         className="h-full w-full object-cover"
                       />
