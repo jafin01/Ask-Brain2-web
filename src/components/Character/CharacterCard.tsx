@@ -263,6 +263,19 @@ export default function CharacterCard({
                           <p>
                             Unique users: {characterStats?.data?.uniqueUsers}
                           </p>
+                          <p>
+                            Clickthrough rate:{' '}
+                            {
+                              /* eslint-disable no-unsafe-optional-chaining */
+                              (
+                                (characterStats?.data?.totalClicks /
+                                  characterStats?.data?.totalConversations) *
+                                100
+                              ).toFixed(2)
+                              /* eslint-enable no-unsafe-optional-chaining */
+                            }
+                            %
+                          </p>
                         </div>
                       )}
                   </div>
