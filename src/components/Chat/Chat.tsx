@@ -1,4 +1,11 @@
-import { addDoc, collection, doc, updateDoc } from '@firebase/firestore';
+import {
+  DocumentData,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+} from '@firebase/firestore';
 import { auth, db } from 'config/firebase';
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'react-lottie';
@@ -15,6 +22,8 @@ function Chat({
   judge,
   characterName = 'Assistant',
   avatarImage = null,
+  limitMessage = null,
+  characterLimit = MAX_MESSAGE_COUNT,
 }: {
   firstMessage: string;
   characterName: string;
@@ -22,12 +31,15 @@ function Chat({
   judge?: { condition: string; numMessages: number; message: string } | null;
   id?: string;
   avatarImage?: string | null;
+  limitMessage?: DocumentData | null;
+  characterLimit?: number | null;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
   const [conversationId, setConversationId] = useState('');
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
+  const [docUpdated, setDocUpdated] = useState(false);
 
   const [responseFinished, setResponseFinished] = useState(true);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
@@ -48,6 +60,26 @@ function Chat({
       }
     }
   }, [auth.currentUser?.uid]);
+
+  useEffect(() => {
+    const update = async () => {
+      if (
+        limitMessage &&
+        conversation.length >= characterLimit &&
+        !docUpdated
+      ) {
+        const docRef = await getDoc(doc(db, 'limitMessages', limitMessage.id));
+        /* eslint-disable no-unsafe-optional-chaining */
+        await updateDoc(doc(db, 'limitMessages', limitMessage.id), {
+          displayed: docRef.data()?.displayed + 1,
+        });
+        /* eslint-enable no-unsafe-optional-chaining */
+
+        setDocUpdated(true);
+      }
+    };
+    update();
+  }, [limitMessage, conversation.length, docUpdated]);
 
   const handleSendMessage = async () => {
     setResponseFinished(false);
@@ -191,15 +223,12 @@ function Chat({
                 </div>
               </div>
             ))}
-          {(conversation.length >= MAX_MESSAGE_COUNT || challengeCompleted) && (
+          {(conversation.length >= characterLimit || challengeCompleted) && (
             <div className="bg-green-500 text-white p-2.5 px-4 rounded-2xl self-start mt-2 mx-auto">
               {challengeCompleted ? (
                 judge?.message
               ) : (
                 <p className="text-sm whitespace-pre-line">
-                  You&apos;ve reached the maximum number of messages. To
-                  continue, please download the app from the App Store or Play
-                  Store.`
                   <div className="flex gap-12 p-4">
                     <a
                       href="https://apps.apple.com/app/ask-brain2-chat-with-chatbot/id6448963886"
@@ -214,6 +243,21 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             character: id,
                           });
+
+                          if (limitMessage) {
+                            const docRef = await getDoc(
+                              doc(db, 'limitMessages', limitMessage.id)
+                            );
+
+                            /* eslint-disable no-unsafe-optional-chaining */
+                            await updateDoc(
+                              doc(db, 'limitMessages', limitMessage.id),
+                              {
+                                clicked: docRef.data()?.clicked + 1,
+                              }
+                            );
+                            /* eslint-enable no-unsafe-optional-chaining */
+                          }
                         } catch (error) {
                           console.error(error);
                         }
@@ -238,6 +282,20 @@ function Chat({
                             createdAt: new Date().toISOString(),
                             character: id,
                           });
+
+                          if (limitMessage) {
+                            const docRef = await getDoc(
+                              doc(db, 'limitMessages', limitMessage.id)
+                            );
+                            /* eslint-disable no-unsafe-optional-chaining */
+                            await updateDoc(
+                              doc(db, 'limitMessages', limitMessage.id),
+                              {
+                                clicked: docRef.data()?.clicked + 1,
+                              }
+                            );
+                            /* eslint-enable no-unsafe-optional-chaining */
+                          }
                         } catch (error) {
                           console.error(error);
                         }
@@ -264,7 +322,7 @@ function Chat({
               !e.shiftKey &&
               message &&
               responseFinished &&
-              conversation.length < MAX_MESSAGE_COUNT &&
+              conversation.length < characterLimit &&
               !challengeCompleted
             ) {
               handleSendMessage();
@@ -282,13 +340,13 @@ function Chat({
           onClick={handleSendMessage}
           disabled={
             !responseFinished ||
-            conversation.length >= MAX_MESSAGE_COUNT ||
+            conversation.length >= characterLimit ||
             challengeCompleted
           }
           className={`${
             message &&
             (!responseFinished ||
-              conversation.length >= MAX_MESSAGE_COUNT ||
+              conversation.length >= characterLimit ||
               challengeCompleted)
               ? 'opacity-50'
               : ''
@@ -321,4 +379,6 @@ Chat.defaultProps = {
   id: '',
   judge: null,
   avatarImage: null,
+  characterLimit: MAX_MESSAGE_COUNT,
+  limitMessage: null,
 };
