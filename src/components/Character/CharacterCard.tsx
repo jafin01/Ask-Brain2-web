@@ -13,6 +13,7 @@ export default function CharacterCard({
   setShowModal,
   setSelectedCharacterName,
   updatedCharacters,
+  handleDuplicate,
 }: any) {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -210,6 +211,15 @@ export default function CharacterCard({
                       </svg>
 
                       <h4>Delete</h4>
+                    </Button>
+                    <Button
+                      type="button"
+                      className="flex gap-1 cursor-pointer text-pink-500 hover:bg-pink-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
+                      onClick={() => {
+                        handleDuplicate(character.id);
+                      }}
+                    >
+                      <h4>Duplicate</h4>
                     </Button>
                   </div>
                   <div className="flex flex-col justify-around my-2 items-center gap-2">
