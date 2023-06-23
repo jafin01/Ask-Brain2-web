@@ -6,11 +6,11 @@ import {
   query,
   updateDoc,
   where,
-} from '@firebase/firestore';
-import { db } from 'config/firebase';
+} from "@firebase/firestore";
+import { db } from "config/firebase";
 
 export async function characterData(userId: string | undefined) {
-  const characters = await getDocs(collection(db, 'characters'));
+  const characters = await getDocs(collection(db, "characters"));
   const characterArray: any[] = [];
 
   characters.forEach((docId: any) => {
@@ -22,31 +22,31 @@ export async function characterData(userId: string | undefined) {
 }
 
 export async function updateCharacter() {
-  const docRef = doc(db, 'characters', 'sdgdJGK3TRc4QjwUuYII');
+  const docRef = doc(db, "characters", "sdgdJGK3TRc4QjwUuYII");
   await updateDoc(docRef, {
-    name: 'kusuma',
-    avatar: 'https://www.googlemap.com',
-    description: 'this is the updated character',
+    name: "kusuma",
+    avatar: "https://www.googlemap.com",
+    description: "this is the updated character",
   });
 }
 
 export async function removeCharacter() {
-  const docRef = doc(db, 'characters', 'sdgdJGK3TRc4QjwUuYII');
+  const docRef = doc(db, "characters", "sdgdJGK3TRc4QjwUuYII");
   await deleteDoc(docRef);
 }
 
 export async function getCharacterStats(characterId: string) {
-  const collectionRef = collection(db, 'clicks');
+  const collectionRef = collection(db, "clicks");
 
   const iOSQuery = query(
     collectionRef,
-    where('app', '==', 'ios'),
-    where('characterId', '==', characterId)
+    where("app", "==", "ios"),
+    where("character", "==", characterId)
   );
   const androidQuery = query(
     collectionRef,
-    where('app', '==', 'android'),
-    where('characterId', '==', characterId)
+    where("app", "==", "android"),
+    where("character", "==", characterId)
   );
 
   const getClicksCount = async (clicksCountQuery: any) => {
@@ -62,7 +62,7 @@ export async function getCharacterStats(characterId: string) {
   const [averageMessagesPerConversation, totalConversations, uniqueUsers] =
     await Promise.all([
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, "chats"), where("character", "==", characterId))
       ).then((querySnapshot) => {
         let totalMessages = 0;
         let totalConversationsCount = 0;
@@ -76,11 +76,11 @@ export async function getCharacterStats(characterId: string) {
       }),
 
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, "chats"), where("character", "==", characterId))
       ).then((querySnapshot) => querySnapshot.size),
 
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, "chats"), where("character", "==", characterId))
       ).then((querySnapshot) => {
         const users = new Set();
         querySnapshot.forEach((docSnapshot) => {
