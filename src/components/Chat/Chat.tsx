@@ -32,7 +32,7 @@ function Chat({
   id?: string;
   avatarImage?: string | null;
   limitMessage?: DocumentData | null;
-  characterLimit?: number | null;
+  characterLimit?: number;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');

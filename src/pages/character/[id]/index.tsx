@@ -23,7 +23,7 @@ function Character() {
   const [judge, setJudge] = useState(null);
   const [image, setImage] = useState(null);
   const [limitMessage, setLimitMessage] = useState<DocumentData | null>(null);
-  const [characterLimit, setCharacterLimit] = useState(null);
+  const [characterLimit, setCharacterLimit] = useState(undefined);
 
   async function getSelectedData() {
     const { id } = router.query;
