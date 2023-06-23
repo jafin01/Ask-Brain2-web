@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
-import { doc, getDoc } from '@firebase/firestore';
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+} from '@firebase/firestore';
 import { db } from 'config/firebase';
 import { useRouter } from 'next/router';
 import Chat from '@/components/Chat/Chat';
@@ -16,6 +22,8 @@ function Character() {
   >([]);
   const [judge, setJudge] = useState(null);
   const [image, setImage] = useState(null);
+  const [limitMessage, setLimitMessage] = useState<DocumentData | null>(null);
+  const [characterLimit, setCharacterLimit] = useState(undefined);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -29,12 +37,31 @@ function Character() {
           firstMessage: docFirstMessage,
           judge: docJudge,
           avatar: docAvatar,
+          messagesLimit,
         } = docSnap.data()!;
         setFirstMessage(docFirstMessage);
         setPrompts(docPrompts);
         setJudge(docJudge);
         setImage(docAvatar);
+        setCharacterLimit(messagesLimit);
       }
+
+      // get all docs for limitMessages collection
+      const querySnapshot = await getDocs(collection(db, 'limitMessages'));
+      const limitMessages = querySnapshot.docs
+        .map((docReference) => ({
+          id: docReference.id,
+          active: docReference.data().active,
+          ...docReference.data(),
+        }))
+        .filter((docReference) => docReference?.active);
+      console.log(limitMessages);
+
+      // get a random limit message
+      const randomLimitMessage =
+        limitMessages[Math.floor(Math.random() * limitMessages.length)];
+      console.log(randomLimitMessage);
+      setLimitMessage(randomLimitMessage);
     } catch (error) {
       console.log('Error getting document:', error);
     }
@@ -54,6 +81,8 @@ function Character() {
           characterName={router.query.characterName as string}
           judge={judge}
           avatarImage={image}
+          limitMessage={limitMessage}
+          characterLimit={characterLimit}
         />
       </div>
     </div>

@@ -35,6 +35,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       numMessages: '',
     },
     firstMessage: '',
+    messagesLimit: null,
   });
   const router = useRouter();
   const { push } = router;
@@ -46,7 +47,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { name, prompts, firstMessage, judge, docAvatar } =
+        const { name, prompts, firstMessage, judge, docAvatar, messagesLimit } =
           docSnap.data()!;
         setInitialValues({
           name,
@@ -55,6 +56,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage,
           judge,
           showJudge: !!judge,
+          messagesLimit,
         });
 
         console.log(docSnap.data().avatar);
@@ -92,6 +94,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           prompts: values.prompts,
           firstMessage: values.firstMessage,
           judge: values.judge,
+          messagesLimit: values.messagesLimit,
         });
         toast.success('character added successfully');
       } else {
@@ -101,6 +104,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           avatar: tmpAvatar,
           firstMessage: values.firstMessage,
           judge: values.judge,
+          messagesLimit: values.messagesLimit,
         });
 
         toast.success('character updated successfully');
@@ -308,6 +312,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     className="text-red-500"
                   />
                 </div>
+
+                <label className="flex flex-col gap-2" htmlFor="prompts">
+                  Limit number of messages
+                </label>
+                <Field
+                  name="messagesLimit"
+                  id="messagesLimit"
+                  type="number"
+                  className="p-2 border border-gray-200 rounded"
+                />
 
                 <label className="flex flex-col gap-2" htmlFor="prompts">
                   First message
