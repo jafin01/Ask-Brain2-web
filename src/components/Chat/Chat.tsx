@@ -5,22 +5,22 @@ import {
   doc,
   getDoc,
   updateDoc,
-} from '@firebase/firestore';
-import { auth, db } from 'config/firebase';
-import React, { useEffect, useRef, useState } from 'react';
-import Lottie from 'react-lottie';
-import { toast } from 'react-toastify';
-import sendMessage from '@/services/openai';
-import loadingData from '../../../public/assets/loading-dots.json';
+} from "@firebase/firestore";
+import { auth, db } from "config/firebase";
+import React, { useEffect, useRef, useState } from "react";
+import Lottie from "react-lottie";
+import { toast } from "react-toastify";
+import sendMessage from "@/services/openai";
+import loadingData from "../../../public/assets/loading-dots.json";
 
 const MAX_MESSAGE_COUNT = 10;
 
 function Chat({
-  id = '',
-  firstMessage = '',
+  id = "",
+  firstMessage = "",
   prompts,
   judge,
-  characterName = 'Assistant',
+  characterName = "Assistant",
   avatarImage = null,
   limitMessage = null,
   characterLimit = MAX_MESSAGE_COUNT,
@@ -35,8 +35,8 @@ function Chat({
   characterLimit?: number;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
-  const [message, setMessage] = useState('');
-  const [conversationId, setConversationId] = useState('');
+  const [message, setMessage] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const [conversation, setConversation] =
     useState<{ content: string; role: string; loading?: boolean }[]>(prompts);
   const [docUpdated, setDocUpdated] = useState(false);
@@ -44,19 +44,19 @@ function Chat({
   const [responseFinished, setResponseFinished] = useState(true);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
-  const [userUid, setUserUid] = useState('');
+  const [userUid, setUserUid] = useState("");
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
       setUserUid(auth.currentUser?.uid);
     } else {
-      const userId = localStorage.getItem('userUid');
+      const userId = localStorage.getItem("userUid");
       if (userId) {
         setUserUid(userId);
       } else {
         const tmpUid = Math.random().toString(36).substring(7);
-        localStorage.setItem('userUid', tmpUid);
-        setUserUid(localStorage.getItem('userUid') || '');
+        localStorage.setItem("userUid", tmpUid);
+        setUserUid(localStorage.getItem("userUid") || "");
       }
     }
   }, [auth.currentUser?.uid]);
@@ -68,9 +68,9 @@ function Chat({
         conversation.length >= characterLimit &&
         !docUpdated
       ) {
-        const docRef = await getDoc(doc(db, 'limitMessages', limitMessage.id));
+        const docRef = await getDoc(doc(db, "limitMessages", limitMessage.id));
         /* eslint-disable no-unsafe-optional-chaining */
-        await updateDoc(doc(db, 'limitMessages', limitMessage.id), {
+        await updateDoc(doc(db, "limitMessages", limitMessage.id), {
           displayed: docRef.data()?.displayed + 1,
         });
         /* eslint-enable no-unsafe-optional-chaining */
@@ -85,28 +85,28 @@ function Chat({
     setResponseFinished(false);
     setConversation((prevConversation = []) => [
       ...prevConversation,
-      { content: message, role: 'user' },
-      { loading: true, role: '', content: '' },
+      { content: message, role: "user" },
+      { loading: true, role: "", content: "" },
     ]);
-    setMessage('');
+    setMessage("");
 
     const messagesToSend = [
       ...prompts,
       ...conversation,
-      { content: message, role: 'user' },
+      { content: message, role: "user" },
     ];
     const response = await sendMessage(messagesToSend);
 
     setConversation((prevConversation = []) => [
       ...prevConversation.slice(0, -1),
-      { content: response, role: 'assistant' },
+      { content: response, role: "assistant" },
     ]);
     setResponseFinished(true);
   };
 
   useEffect(() => {
     const update = async () => {
-      if (judge && conversation?.slice(-1)?.[0]?.role === 'assistant') {
+      if (judge && conversation?.slice(-1)?.[0]?.role === "assistant") {
         // get last judge.numMessages messages
         const judgeMessages = conversation.slice(-judge.numMessages);
 
@@ -119,14 +119,14 @@ function Chat({
         Messages:
         ${judgeMessages
           .map((m) =>
-            m.role === 'user' ? 'User' : `${characterName}: ${m.content}`
+            m.role === "user" ? "User" : `${characterName}: ${m.content}`
           )
-          .join('\n')}`,
-            role: 'user',
+          .join("\n")}`,
+            role: "user",
           },
         ]);
 
-        if (judgeResponse.toLowerCase().includes('true')) {
+        if (judgeResponse.toLowerCase().includes("true")) {
           setChallengeCompleted(true);
         }
       }
@@ -138,27 +138,27 @@ function Chat({
     const update = async () => {
       chatRef.current?.scrollTo({
         top: chatRef.current?.scrollHeight,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
       try {
         if (!conversationId && id && userUid) {
-          await addDoc(collection(db, 'chats'), {
+          await addDoc(collection(db, "chats"), {
             messages: [],
             user_id: userUid,
             createdAt: new Date().toISOString(),
-            title: 'Web ask Brain2 Conversation',
+            title: "Web ask Brain2 Conversation",
             character: id,
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
         } else {
-          await updateDoc(doc(db, 'chats', conversationId), {
+          await updateDoc(doc(db, "chats", conversationId), {
             messages: conversation,
             challengeCompleted,
           });
         }
       } catch (error: any) {
-        toast.error('Error adding document: ', error);
+        toast.error("Error adding document: ", error);
       }
     };
 
@@ -180,16 +180,16 @@ function Chat({
         className="absolute right-0 left-0 bottom-16 px-6 pb-[50px] top-0 pt-4 overflow-scroll flex flex-col"
       >
         <div className="mt-auto flex flex-col gap-3 justify-end">
-          {[{ content: firstMessage, role: 'assistant' }, ...conversation]
+          {[{ content: firstMessage, role: "assistant" }, ...conversation]
             ?.filter((m) => m.content || m.loading)
             ?.map((m) => (
               <div
                 className={`flex gap-2 items-end ${
-                  m.role === 'user' ? 'self-end' : 'self-start'
+                  m.role === "user" ? "self-end" : "self-start"
                 }`}
                 key={m.content}
               >
-                {avatarImage && (m.role === 'assistant' || m.loading) && (
+                {avatarImage && (m.role === "assistant" || m.loading) && (
                   <img
                     src={avatarImage}
                     alt="Avatar Preview"
@@ -198,11 +198,11 @@ function Chat({
                 )}
                 <div
                   className={`${
-                    m.role === 'user'
-                      ? 'bg-[#000000de] text-white'
-                      : 'bg-[#ffefe0]'
-                  } ${m.loading ? 'p-0' : 'p-2.5'} rounded-2xl ${
-                    m.role === 'user' ? 'rounded-br-none' : 'rounded-bl-none'
+                    m.role === "user"
+                      ? "bg-[#000000de] text-white"
+                      : "bg-[#ffefe0]"
+                  } ${m.loading ? "p-0" : "p-2.5"} rounded-2xl ${
+                    m.role === "user" ? "rounded-br-none" : "rounded-bl-none"
                   }`}
                 >
                   {m.loading ? (
@@ -229,6 +229,7 @@ function Chat({
                 judge?.message
               ) : (
                 <p className="text-sm whitespace-pre-line">
+                  {limitMessage?.message}
                   <div className="flex gap-12 p-4">
                     <a
                       href="https://apps.apple.com/app/ask-brain2-chat-with-chatbot/id6448963886"
@@ -237,8 +238,8 @@ function Chat({
                       rel="noreferrer"
                       onClick={async () => {
                         try {
-                          await addDoc(collection(db, 'clicks'), {
-                            app: 'ios',
+                          await addDoc(collection(db, "clicks"), {
+                            app: "ios",
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
                             character: id,
@@ -246,12 +247,12 @@ function Chat({
 
                           if (limitMessage) {
                             const docRef = await getDoc(
-                              doc(db, 'limitMessages', limitMessage.id)
+                              doc(db, "limitMessages", limitMessage.id)
                             );
 
                             /* eslint-disable no-unsafe-optional-chaining */
                             await updateDoc(
-                              doc(db, 'limitMessages', limitMessage.id),
+                              doc(db, "limitMessages", limitMessage.id),
                               {
                                 clicked: docRef.data()?.clicked + 1,
                               }
@@ -276,8 +277,8 @@ function Chat({
                       rel="noreferrer"
                       onClick={async () => {
                         try {
-                          await addDoc(collection(db, 'clicks'), {
-                            app: 'android',
+                          await addDoc(collection(db, "clicks"), {
+                            app: "android",
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
                             character: id,
@@ -285,11 +286,11 @@ function Chat({
 
                           if (limitMessage) {
                             const docRef = await getDoc(
-                              doc(db, 'limitMessages', limitMessage.id)
+                              doc(db, "limitMessages", limitMessage.id)
                             );
                             /* eslint-disable no-unsafe-optional-chaining */
                             await updateDoc(
-                              doc(db, 'limitMessages', limitMessage.id),
+                              doc(db, "limitMessages", limitMessage.id),
                               {
                                 clicked: docRef.data()?.clicked + 1,
                               }
@@ -318,7 +319,7 @@ function Chat({
         <input
           onKeyDown={(e) => {
             if (
-              e.key === 'Enter' &&
+              e.key === "Enter" &&
               !e.shiftKey &&
               message &&
               responseFinished &&
@@ -348,8 +349,8 @@ function Chat({
             (!responseFinished ||
               conversation.length >= characterLimit ||
               challengeCompleted)
-              ? 'opacity-50'
-              : ''
+              ? "opacity-50"
+              : ""
           } absolute top-3 right-4`}
         >
           <svg
@@ -376,7 +377,7 @@ function Chat({
 export default Chat;
 
 Chat.defaultProps = {
-  id: '',
+  id: "",
   judge: null,
   avatarImage: null,
   characterLimit: MAX_MESSAGE_COUNT,
