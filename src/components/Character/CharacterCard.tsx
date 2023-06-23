@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { auth } from 'config/firebase';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { ToastContainer, toast } from 'react-toastify';
-import { characterData, getCharacterStats } from '@/services/characters';
-import 'react-toastify/dist/ReactToastify.css';
-import Button from '../Button';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { auth } from "config/firebase";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { ToastContainer, toast } from "react-toastify";
+import { characterData, getCharacterStats } from "@/services/characters";
+import "react-toastify/dist/ReactToastify.css";
+import Button from "../Button";
 
 export default function CharacterCard({
   setCharacterToDelete,
   setShowModal,
   setSelectedCharacterName,
   updatedCharacters,
+  handleDuplicate,
 }: any) {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // const [showForm, setShowForm] = useState(false);
-  const [characterId, setCharacterId] = useState('');
+  const [characterId, setCharacterId] = useState("");
   const [characterStats, setCharacterStats] = useState({
     loading: false,
     data: null as any,
@@ -128,7 +129,7 @@ export default function CharacterCard({
                       <Button
                         type="button"
                         className="flex gap-1 cursor-pointer text-grad-green hover:bg-grad-green hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
-                        onClick={() => toast('Link copied to clipboard!')}
+                        onClick={() => toast("Link copied to clipboard!")}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -211,6 +212,15 @@ export default function CharacterCard({
 
                       <h4>Delete</h4>
                     </Button>
+                    <Button
+                      type="button"
+                      className="flex gap-1 cursor-pointer text-pink-500 hover:bg-pink-500 hover:text-white px-4 py-2 rounded-md hover:shadow-lg transition duration-300 ease-in-out"
+                      onClick={() => {
+                        handleDuplicate(character.id);
+                      }}
+                    >
+                      <h4>Duplicate</h4>
+                    </Button>
                   </div>
                   <div className="flex flex-col justify-around my-2 items-center gap-2">
                     <Button
@@ -224,7 +234,7 @@ export default function CharacterCard({
                             data: null,
                           });
                         } else {
-                          setCharacterId('');
+                          setCharacterId("");
                           setCharacterStats({
                             loading: false,
                             data: null,
@@ -233,9 +243,9 @@ export default function CharacterCard({
                       }}
                     >
                       {characterStats.loading && characterId === character.id
-                        ? 'Loading...'
-                        : (characterId === character.id && 'Hide stats') ||
-                          'Show stats'}
+                        ? "Loading..."
+                        : (characterId === character.id && "Hide stats") ||
+                          "Show stats"}
                     </Button>
                     {characterId === character.id &&
                       !characterStats.loading && (
@@ -247,24 +257,24 @@ export default function CharacterCard({
                             iOs clicks: {characterStats?.data?.iosClicksCount}
                           </p>
                           <p>
-                            Android clicks:{' '}
+                            Android clicks:{" "}
                             {characterStats?.data?.androidClicksCount}
                           </p>
                           <p>
-                            Average chat messages:{' '}
+                            Average chat messages:{" "}
                             {characterStats?.data?.averageMessagesPerConversation?.toFixed(
                               2
                             )}
                           </p>
                           <p>
-                            Total conversations:{' '}
+                            Total conversations:{" "}
                             {characterStats?.data?.totalConversations}
                           </p>
                           <p>
                             Unique users: {characterStats?.data?.uniqueUsers}
                           </p>
                           <p>
-                            Clickthrough rate:{' '}
+                            Clickthrough rate:{" "}
                             {
                               /* eslint-disable no-unsafe-optional-chaining */
                               (
