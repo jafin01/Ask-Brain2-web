@@ -41,12 +41,12 @@ export async function getCharacterStats(characterId: string) {
   const iOSQuery = query(
     collectionRef,
     where('app', '==', 'ios'),
-    where('characterId', '==', characterId)
+    where('character', '==', characterId)
   );
   const androidQuery = query(
     collectionRef,
     where('app', '==', 'android'),
-    where('characterId', '==', characterId)
+    where('character', '==', characterId)
   );
 
   const getClicksCount = async (clicksCountQuery: any) => {
@@ -62,7 +62,7 @@ export async function getCharacterStats(characterId: string) {
   const [averageMessagesPerConversation, totalConversations, uniqueUsers] =
     await Promise.all([
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => {
         let totalMessages = 0;
         let totalConversationsCount = 0;
@@ -76,11 +76,11 @@ export async function getCharacterStats(characterId: string) {
       }),
 
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => querySnapshot.size),
 
       getDocs(
-        query(collection(db, 'chats'), where('characterId', '==', characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => {
         const users = new Set();
         querySnapshot.forEach((docSnapshot) => {
