@@ -229,6 +229,7 @@ function Chat({
                 judge?.message
               ) : (
                 <p className="text-sm whitespace-pre-line">
+                  {limitMessage?.message}
                   <div className="flex gap-12 p-4">
                     <a
                       href="https://apps.apple.com/app/ask-brain2-chat-with-chatbot/id6448963886"
