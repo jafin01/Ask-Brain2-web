@@ -18,12 +18,13 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import Chat from '@/components/Chat/Chat';
 import Button from '@/components/Button';
+import Variation from './Variation';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File | string>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [tryingOut, setTryingOut] = useState<boolean>(false);
+  // const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [gpt, setGpt] = useState<any>(null);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
@@ -36,6 +37,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     },
     firstMessage: '',
     messagesLimit: null,
+    variations: [],
   });
   const router = useRouter();
   const { push } = router;
@@ -47,8 +49,15 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const { name, prompts, firstMessage, judge, docAvatar, messagesLimit } =
-          docSnap.data()!;
+        const {
+          name,
+          prompts,
+          firstMessage,
+          judge,
+          avatar: docAvatar,
+          messagesLimit,
+          variations,
+        } = docSnap.data()!;
         setInitialValues({
           name,
           avatar: docAvatar,
@@ -57,10 +66,10 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           judge,
           showJudge: !!judge,
           messagesLimit,
+          variations,
         });
 
-        console.log(docSnap.data().avatar);
-        setAvatar(docSnap.data().avatar);
+        setAvatar(docAvatar);
       }
     } catch (error: any) {
       toast.error('Error getting document:', error);
@@ -95,6 +104,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
           judge: values.judge,
           messagesLimit: values.messagesLimit,
+          // remove undefined values from variations objects
+          variations: values.variations.map((variation: any) =>
+            Object.fromEntries(
+              Object.entries(variation).filter(([, v]) => v !== undefined)
+            )
+          ),
         });
         toast.success('character added successfully');
       } else {
@@ -105,6 +120,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           firstMessage: values.firstMessage,
           judge: values.judge,
           messagesLimit: values.messagesLimit,
+          variations: values.variations.map((variation: any) =>
+            Object.fromEntries(
+              Object.entries(variation).filter(([, v]) => v !== undefined)
+            )
+          ),
         });
 
         toast.success('character updated successfully');
@@ -153,7 +173,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       .nullable(),
   });
 
-  function setFormikFields(formikProps: any) {
+  const setFormikFields = (formikProps: any) => {
     formikProps.setFieldValue('showJudge', !formikProps.values?.showJudge);
 
     formikProps.setFieldValue(
@@ -166,7 +186,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           }
         : null
     );
-  }
+  };
 
   const handleGptSubmit = async () => {
     try {
@@ -194,55 +214,72 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   };
 
   return (
-    <div className="bg-[#FFFAF5] min-h-screen flex justify-center items-center py-10">
-      <div className="w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
-        <h1 className="text-4xl font-bold text-center mb-4 text-black bg-clip-text">
-          {!isUpdate ? 'Create your character' : 'Update your character'}
-        </h1>
-        <div className="flex justify-center items-center gap-4 mb-4">
-          <Button
-            onClick={() => {
-              if (gpt === null) {
-                setGpt('');
-              } else {
-                setGpt(null);
-              }
-            }}
-            className="text-black border-2 border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-all duration-500"
-          >
-            {gpt !== null
-              ? 'Go back to regular chat'
-              : 'Try out GPT character creation ✨'}
-          </Button>
-        </div>
-        {gpt !== null && (
-          <div className="flex flex-col gap-2">
-            <textarea
-              rows={4}
-              className="border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-500"
-              placeholder="Enter your prompt here"
-              value={gpt}
-              onChange={(e) => setGpt(e.target.value)}
-            />
-            <Button
-              type="submit"
-              disabled={isLoading}
-              onClick={handleGptSubmit}
-              className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
-            >
-              {isLoading ? 'Generating...' : 'Generate'}
-            </Button>
-          </div>
-        )}
-        {gpt === null && (
-          <Formik
-            enableReinitialize
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {(formikProps) => (
-              <Form className="flex flex-col gap-2">
+    <div className="bg-[#FFFAF5] min-h-screen flex justify-center items-center py-10 gap-4">
+      {gpt === null && (
+        <Formik
+          enableReinitialize
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {(formikProps) => (
+            <Form className="flex flex-row gap-4">
+              <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
+                <h1 className="text-4xl font-bold text-center mb-4 text-black bg-clip-text">
+                  {((): any => {
+                    let result;
+
+                    if (
+                      initialValues?.variations &&
+                      initialValues?.variations?.length > 0
+                    ) {
+                      result = 'Variation 1';
+                    } else if (!isUpdate) {
+                      result = 'Create your character';
+                    } else {
+                      result = 'Update your character';
+                    }
+                    return result;
+                  })()}
+                </h1>
+                {(!initialValues?.variations ||
+                  initialValues?.variations?.length < 1) && (
+                  <div className="flex justify-center items-center gap-4 mb-4">
+                    <Button
+                      onClick={() => {
+                        if (gpt === null) {
+                          setGpt('');
+                        } else {
+                          setGpt(null);
+                        }
+                      }}
+                      className="text-black border-2 border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-all duration-500"
+                    >
+                      {gpt !== null
+                        ? 'Go back to regular chat'
+                        : 'Try out GPT character creation ✨'}
+                    </Button>
+                  </div>
+                )}
+                {gpt !== null && (
+                  <div className="flex flex-col gap-2">
+                    <textarea
+                      rows={4}
+                      className="border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-500"
+                      placeholder="Enter your prompt here"
+                      value={gpt}
+                      onChange={(e) => setGpt(e.target.value)}
+                    />
+                    <Button
+                      type="submit"
+                      disabled={isLoading}
+                      onClick={handleGptSubmit}
+                      className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
+                    >
+                      {isLoading ? 'Generating...' : 'Generate'}
+                    </Button>
+                  </div>
+                )}
                 <div className="relative">
                   <input
                     type="file"
@@ -497,14 +534,14 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   <Link href="/user">
                     <p className="text-black underline">Cancel</p>
                   </Link>
-                  <Button
+                  {/* <Button
                     disabled={isLoading}
                     onClick={() => setTryingOut(!tryingOut)}
                     type="button"
                     className="font-bold py-2 px-4 rounded border border-gray-600"
                   >
-                    {tryingOut ? 'Hide chat' : 'Try out'}
-                  </Button>
+                    {tryingOut ? "Hide chat" : "Try out"}
+                  </Button> */}
 
                   <Button
                     type="submit"
@@ -520,7 +557,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     width: '100%',
                     height: '500px',
                     position: 'relative',
-                    display: tryingOut ? 'block' : 'none',
+                    display: 'none',
+                    // display: tryingOut ? 'block' : 'none',
                   }}
                 >
                   <Chat
@@ -530,11 +568,50 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     characterName={formikProps.values.name}
                   />
                 </div>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </div>
+              </div>
+              {initialValues?.variations?.map((__: any, index: number) => (
+                <Variation
+                  index={index}
+                  formikProps={formikProps}
+                  handleAvatarUpload={handleAvatarUpload}
+                  avatar={avatar}
+                  isUpdate={isUpdate}
+                  isEditing={isEditing}
+                  remove={() => {
+                    setInitialValues({
+                      ...formikProps.values,
+                      variations: formikProps.values.variations.filter(
+                        (_: any, i: number) => i !== index
+                      ),
+                    });
+                  }}
+                />
+              ))}
+              {(!initialValues?.variations ||
+                initialValues?.variations?.length < 3) &&
+                gpt === null && (
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setInitialValues({
+                        ...formikProps.values,
+                        variations: [
+                          ...formikProps.values.variations,
+                          {
+                            ...formikProps.values,
+                            variations: undefined,
+                          },
+                        ],
+                      });
+                    }}
+                  >
+                    Add variation
+                  </Button>
+                )}
+            </Form>
+          )}
+        </Formik>
+      )}
     </div>
   );
 }

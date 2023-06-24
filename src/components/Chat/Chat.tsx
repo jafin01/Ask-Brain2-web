@@ -151,7 +151,7 @@ function Chat({
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
-        } else {
+        } else if (conversationId) {
           await updateDoc(doc(db, 'chats', conversationId), {
             messages: conversation,
             challengeCompleted,
