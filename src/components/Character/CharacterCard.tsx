@@ -279,7 +279,7 @@ export default function CharacterCard({
                               /* eslint-disable no-unsafe-optional-chaining */
                               (
                                 (characterStats?.data?.totalClicks /
-                                  characterStats?.data?.totalConversations) *
+                                  characterStats?.data?.uniqueUsers) *
                                 100
                               ).toFixed(2)
                               /* eslint-enable no-unsafe-optional-chaining */
