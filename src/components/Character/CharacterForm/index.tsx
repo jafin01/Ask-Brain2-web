@@ -154,6 +154,34 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         content: Yup.string().required('Content is required'),
       })
     ),
+    variations: Yup.array().of(
+      Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        prompts: Yup.array().of(
+          Yup.object().shape({
+            role: Yup.string().required('Role is required'),
+            content: Yup.string().required('Content is required'),
+          })
+        ),
+        judge: Yup.object()
+          .when('$showJudge', {
+            is: true,
+            then: (schema) =>
+              schema.shape({
+                condition: Yup.string().required('Condition is required'),
+                maxMessages: Yup.number().required('Max Messages is required'),
+                message: Yup.string().required('Message is required'),
+              }),
+            otherwise: (schema) =>
+              schema.shape({
+                condition: Yup.string(),
+                maxMessages: Yup.number(),
+                message: Yup.string(),
+              }),
+          })
+          .nullable(),
+      })
+    ),
     judge: Yup.object()
       .when('$showJudge', {
         is: true,
@@ -534,15 +562,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   <Link href="/user">
                     <p className="text-black underline">Cancel</p>
                   </Link>
-                  {/* <Button
-                    disabled={isLoading}
-                    onClick={() => setTryingOut(!tryingOut)}
-                    type="button"
-                    className="font-bold py-2 px-4 rounded border border-gray-600"
-                  >
-                    {tryingOut ? "Hide chat" : "Try out"}
-                  </Button> */}
-
                   <Button
                     type="submit"
                     disabled={isLoading}
