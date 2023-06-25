@@ -74,30 +74,35 @@ export default function CharacterCard({
       />
       <div className="py-16 m-auto">
         <h1 className="text-center font-bold text-2xl pb-4">Experiences</h1>
-        <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
-          <Link
-            href="/user/character"
-            className="rounded px-2 py-2 bg-black text-white"
-          >
-            <span className="flex gap-2 font-bold mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              Create an experience
-            </span>
-          </Link>
-        </div>
+        {[
+          '81LSvPTJ5qgrmBglmUVklyczMPR2',
+          'Y8X1W3GjupchKGT3KcASQ2m9UVC2',
+        ].includes(auth?.currentUser?.uid || '') && (
+          <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
+            <Link
+              href="/user/character"
+              className="rounded px-2 py-2 bg-black text-white"
+            >
+              <span className="flex gap-2 font-bold mr-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                Create an experience
+              </span>
+            </Link>
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
           {isLoading &&
             [1, 2, 3, 4, 5].map(() => (
