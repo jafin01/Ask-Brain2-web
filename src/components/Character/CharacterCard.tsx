@@ -1,12 +1,20 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { auth } from 'config/firebase';
+import Link from 'next/link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ToastContainer, toast } from 'react-toastify';
-import { characterData, getCharacterStats } from '@/services/characters';
 import 'react-toastify/dist/ReactToastify.css';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import { characterData, getCharacterStats } from '@/services/characters';
 import Button from '../Button';
 
 export default function CharacterCard({
@@ -66,30 +74,35 @@ export default function CharacterCard({
       />
       <div className="py-16 m-auto">
         <h1 className="text-center font-bold text-2xl pb-4">Experiences</h1>
-        <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
-          <Link
-            href="/user/character"
-            className="rounded px-2 py-2 bg-black text-white"
-          >
-            <span className="flex gap-2 font-bold mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              Create an experience
-            </span>
-          </Link>
-        </div>
+        {[
+          '81LSvPTJ5qgrmBglmUVklyczMPR2',
+          'Y8X1W3GjupchKGT3KcASQ2m9UVC2',
+        ].includes(auth?.currentUser?.uid || '') && (
+          <div className="w-full flex justify-center mb-4 text-app-bg md:justify-end">
+            <Link
+              href="/user/character"
+              className="rounded px-2 py-2 bg-black text-white"
+            >
+              <span className="flex gap-2 font-bold mr-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                Create an experience
+              </span>
+            </Link>
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
           {isLoading &&
             [1, 2, 3, 4, 5].map(() => (
@@ -277,7 +290,7 @@ export default function CharacterCard({
                             <thead>
                               <tr>
                                 <th className="px-4 py-2" />
-                                {characterStats?.data?.map(
+                                {characterStats?.data?.stats?.map(
                                   (stat: any, index: number) => (
                                     <th className="px-4 py-2" key={stat.id}>
                                       {index === 0
@@ -293,99 +306,133 @@ export default function CharacterCard({
                                 <td className="border px-4 py-2">
                                   Total clicks
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat.totalClicks}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat.totalClicks}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">iOs clicks</td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat.iosClicksCount}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat.iosClicksCount}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">
                                   Android clicks
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat.androidClicksCount}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat.androidClicksCount}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">
                                   Average chat messages
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat?.averageMessagesPerConversation?.toFixed(
-                                      2
-                                    ) || 0}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat?.averageMessagesPerConversation?.toFixed(
+                                        2
+                                      ) || 0}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">
                                   <p>Total conversations</p>
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat?.totalConversations}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat?.totalConversations}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">
                                   Unique users
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {stat?.uniqueUsers}
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {stat?.uniqueUsers}
+                                    </td>
+                                  )
+                                )}
                               </tr>
                               <tr>
                                 <td className="border px-4 py-2">
                                   Clickthrough rate
                                 </td>
-                                {characterStats?.data?.map((stat: any) => (
-                                  <td
-                                    className="border px-4 py-2"
-                                    key={stat.id}
-                                  >
-                                    {(
-                                      (stat?.totalClicks / stat?.uniqueUsers) * // eslint-disable-line
-                                        100 || 0
-                                    ).toFixed(2)}
-                                    %
-                                  </td>
-                                ))}
+                                {characterStats?.data?.stats?.map(
+                                  (stat: any) => (
+                                    <td
+                                      className="border px-4 py-2"
+                                      key={stat.id}
+                                    >
+                                      {(
+                                        (stat?.totalClicks / // eslint-disable-line
+                                          stat?.uniqueUsers) * // eslint-disable-line
+                                          100 || 0
+                                      ).toFixed(2)}
+                                      %
+                                    </td>
+                                  )
+                                )}
                               </tr>
                             </tbody>
                           </table>
+                          <ResponsiveContainer width="100%" height={250}>
+                            <BarChart
+                              width={730}
+                              height={250}
+                              data={characterStats?.data?.views}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="time"
+                                tickFormatter={(tickItem) => {
+                                  return new Date(
+                                    tickItem
+                                  ).toLocaleTimeString();
+                                }}
+                              />
+                              <YAxis />
+                              <Bar dataKey="value" fill="#8884d8" />
+                            </BarChart>
+                          </ResponsiveContainer>
                         </div>
                       )}
                   </div>

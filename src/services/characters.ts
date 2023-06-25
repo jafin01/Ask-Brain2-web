@@ -1,4 +1,5 @@
 import {
+  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -190,5 +191,51 @@ export async function getCharacterStats(characterId: string) {
         )
       : [];
 
-  return [stats, ...variationStats];
+  const views = await getDocs(
+    query(
+      collection(db, 'chats'),
+      where('character', '==', characterId),
+      where(
+        'createdAtTimestamp',
+        '>',
+        // 24 hours ago
+        new Timestamp(
+          Math.floor((new Date().getTime() - 24 * 60 * 60 * 1000) / 1000),
+          0
+        )
+      )
+    )
+  ).then((querySnapshot) => {
+    // get views by 30 minutes interval
+    const viewsChart = new Array(48).fill(0).map((_, index) => ({
+      value: 0,
+      time: new Date(
+        new Date(new Date().getTime() - 24 * 60 * 60 * 1000).getTime() +
+          30 * 60 * 1000 * index
+      ),
+    }));
+
+    querySnapshot.forEach((docSnapshot) => {
+      const createdAtTimestamp = docSnapshot.data()?.createdAtTimestamp;
+      const date = new Date(createdAtTimestamp.seconds * 1000).getTime();
+      const date24HoursAgo = new Date(
+        new Date().getTime() - 24 * 60 * 60 * 1000
+      ).getTime();
+
+      // minutes since 24 hours ago
+      const minutesSince24HoursAgo = Math.floor(
+        (date - date24HoursAgo) / 1000 / 60
+      );
+
+      // 30 minutes interval
+      const interval = Math.floor(minutesSince24HoursAgo / 30);
+
+      viewsChart[interval].value += 1;
+
+      console.log('viewsChart', viewsChart);
+    });
+    return viewsChart;
+  });
+
+  return { stats: [stats, ...variationStats], views };
 }
