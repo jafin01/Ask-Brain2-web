@@ -102,7 +102,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           avatar: tmpAvatar,
           prompts: values.prompts,
           firstMessage: values.firstMessage,
-          judge: values.judge,
+          judge: values.judge || null,
           messagesLimit: values.messagesLimit,
           // remove undefined values from variations objects
           variations: values.variations.map((variation: any) =>
@@ -118,7 +118,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           prompts: values.prompts,
           avatar: tmpAvatar,
           firstMessage: values.firstMessage,
-          judge: values.judge,
+          judge: values.judge || null,
           messagesLimit: values.messagesLimit,
           variations: values.variations.map((variation: any) =>
             Object.fromEntries(
