@@ -24,6 +24,7 @@ function Chat({
   avatarImage = null,
   limitMessage = null,
   characterLimit = MAX_MESSAGE_COUNT,
+  variation = 0,
 }: {
   firstMessage: string;
   characterName: string;
@@ -33,6 +34,7 @@ function Chat({
   avatarImage?: string | null;
   limitMessage?: DocumentData | null;
   characterLimit?: number;
+  variation?: number;
 }) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -148,6 +150,7 @@ function Chat({
             createdAt: new Date().toISOString(),
             title: 'Web ask Brain2 Conversation',
             character: id,
+            variation,
           }).then((docRef) => {
             setConversationId(docRef.id);
           });
@@ -243,6 +246,7 @@ function Chat({
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
                             character: id,
+                            variation,
                           });
 
                           if (limitMessage) {
@@ -282,6 +286,7 @@ function Chat({
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
                             character: id,
+                            variation,
                           });
 
                           if (limitMessage) {
@@ -382,4 +387,5 @@ Chat.defaultProps = {
   avatarImage: null,
   characterLimit: MAX_MESSAGE_COUNT,
   limitMessage: null,
+  variation: 0,
 };

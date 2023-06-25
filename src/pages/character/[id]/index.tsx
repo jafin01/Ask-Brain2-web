@@ -24,6 +24,7 @@ function Character() {
   const [image, setImage] = useState(null);
   const [limitMessage, setLimitMessage] = useState<DocumentData | null>(null);
   const [characterLimit, setCharacterLimit] = useState(undefined);
+  const [variation, setVariation] = useState(null);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -38,12 +39,42 @@ function Character() {
           judge: docJudge,
           avatar: docAvatar,
           messagesLimit,
+          variations,
         } = docSnap.data()!;
-        setFirstMessage(docFirstMessage);
-        setPrompts(docPrompts);
-        setJudge(docJudge);
-        setImage(docAvatar);
-        setCharacterLimit(messagesLimit);
+        if (variations) {
+          const randomIndex = Math.floor(
+            Math.random() * (variations.length + 1)
+          );
+          if (randomIndex === 0) {
+            setFirstMessage(docFirstMessage);
+            setPrompts(docPrompts);
+            setJudge(docJudge);
+            setImage(docAvatar);
+            setCharacterLimit(messagesLimit);
+          } else {
+            const randomVariation = variations[randomIndex - 1];
+            const {
+              prompts: variationPrompts,
+              firstMessage: variationFirstMessage,
+              judge: variationJudge,
+              avatar: variationAvatar,
+              messagesLimit: variationMessagesLimit,
+            } = randomVariation;
+
+            setVariation(randomVariation);
+            setFirstMessage(variationFirstMessage);
+            setPrompts(variationPrompts);
+            setJudge(variationJudge);
+            setImage(variationAvatar);
+            setCharacterLimit(variationMessagesLimit);
+          }
+        } else {
+          setFirstMessage(docFirstMessage);
+          setPrompts(docPrompts);
+          setJudge(docJudge);
+          setImage(docAvatar);
+          setCharacterLimit(messagesLimit);
+        }
       }
 
       // get all docs for limitMessages collection
@@ -83,6 +114,7 @@ function Character() {
           avatarImage={image}
           limitMessage={limitMessage}
           characterLimit={characterLimit}
+          variation={variation || 0}
         />
       </div>
     </div>

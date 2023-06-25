@@ -243,6 +243,58 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
 
   return (
     <div className="bg-[#FFFAF5] min-h-screen flex justify-center items-center py-10 gap-4">
+      {gpt !== null && (
+        <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
+          <h1 className="text-4xl font-bold text-center mb-4 text-black bg-clip-text">
+            {((): any => {
+              let result;
+
+              if (
+                initialValues?.variations &&
+                initialValues?.variations?.length > 0
+              ) {
+                result = 'Variation 1';
+              } else if (!isUpdate) {
+                result = 'Create your character';
+              } else {
+                result = 'Update your character';
+              }
+              return result;
+            })()}
+          </h1>
+          <div className="flex justify-center items-center gap-4 mb-4">
+            <Button
+              onClick={() => {
+                if (gpt === null) {
+                  setGpt('');
+                } else {
+                  setGpt(null);
+                }
+              }}
+              className="text-black border-2 border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-all duration-500"
+            >
+              {gpt !== null
+                ? 'Go back to regular chat'
+                : 'Try out GPT character creation ✨'}
+            </Button>
+          </div>
+          <textarea
+            rows={4}
+            className="border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-500"
+            placeholder="Enter your prompt here"
+            value={gpt}
+            onChange={(e) => setGpt(e.target.value)}
+          />
+          <Button
+            type="submit"
+            disabled={isLoading}
+            onClick={handleGptSubmit}
+            className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
+          >
+            {isLoading ? 'Generating...' : 'Generate'}
+          </Button>
+        </div>
+      )}
       {gpt === null && (
         <Formik
           enableReinitialize
@@ -252,7 +304,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         >
           {(formikProps) => (
             <Form className="flex flex-row gap-4">
-              <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl">
+              <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl min-w-[500px]">
                 <h1 className="text-4xl font-bold text-center mb-4 text-black bg-clip-text">
                   {((): any => {
                     let result;
@@ -286,25 +338,6 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                       {gpt !== null
                         ? 'Go back to regular chat'
                         : 'Try out GPT character creation ✨'}
-                    </Button>
-                  </div>
-                )}
-                {gpt !== null && (
-                  <div className="flex flex-col gap-2">
-                    <textarea
-                      rows={4}
-                      className="border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-500"
-                      placeholder="Enter your prompt here"
-                      value={gpt}
-                      onChange={(e) => setGpt(e.target.value)}
-                    />
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      onClick={handleGptSubmit}
-                      className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
-                    >
-                      {isLoading ? 'Generating...' : 'Generate'}
                     </Button>
                   </div>
                 )}
