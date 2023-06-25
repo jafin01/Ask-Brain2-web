@@ -24,7 +24,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<File | string>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // const [tryingOut, setTryingOut] = useState<boolean>(false);
+  const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [gpt, setGpt] = useState<any>(null);
   const [initialValues, setInitialValues] = useState<any>({
     name: '',
@@ -304,7 +304,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         >
           {(formikProps) => (
             <Form className="flex flex-row gap-4">
-              <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl min-w-[500px]">
+              <div className="flex flex-col gap-2 w-full max-w-md p-6 bg-white text-gray-600 rounded-2xl min-w-[500px] h-[fit-content] shadow-xl">
                 <h1 className="text-4xl font-bold text-center mb-4 text-black bg-clip-text">
                   {((): any => {
                     let result;
@@ -596,6 +596,13 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     <p className="text-black underline">Cancel</p>
                   </Link>
                   <Button
+                    onClick={() => setTryingOut(!tryingOut)}
+                    disabled={isLoading}
+                    className="text-white font-bold py-2 px-4 rounded bg-blue-500 hover:bg-blue-700"
+                  >
+                    {tryingOut ? 'Hide' : 'Try it out'}
+                  </Button>
+                  <Button
                     type="submit"
                     disabled={isLoading}
                     className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700"
@@ -609,8 +616,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     width: '100%',
                     height: '500px',
                     position: 'relative',
-                    display: 'none',
-                    // display: tryingOut ? 'block' : 'none',
+                    display: tryingOut ? 'block' : 'none',
                   }}
                 >
                   <Chat

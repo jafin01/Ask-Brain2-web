@@ -13,7 +13,7 @@ function Variation({
   isEditing,
 }: any) {
   return (
-    <div className="w-full p-6 bg-white text-gray-600 rounded-2xl min-w-[500px]">
+    <div className="w-full p-6 bg-white text-gray-600 rounded-2xl min-w-[500px] h-[fit-content] shadow-xl">
       <h1 className="text-4xl font-bold text-center mb-6 text-black bg-clip-text">
         Variation {index + 2}
       </h1>
