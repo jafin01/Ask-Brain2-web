@@ -109,7 +109,11 @@ function Chat({
 
   useEffect(() => {
     const update = async () => {
-      if (judge && conversation?.slice(-1)?.[0]?.role === 'assistant') {
+      if (
+        judge &&
+        judge?.condition &&
+        conversation?.slice(-1)?.[0]?.role === 'assistant'
+      ) {
         // get last judge.numMessages messages
         const judgeMessages = conversation.slice(-judge.numMessages);
 
