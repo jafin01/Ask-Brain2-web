@@ -1,5 +1,6 @@
 import {
   DocumentData,
+  Timestamp,
   addDoc,
   collection,
   doc,
@@ -108,7 +109,11 @@ function Chat({
 
   useEffect(() => {
     const update = async () => {
-      if (judge && conversation?.slice(-1)?.[0]?.role === 'assistant') {
+      if (
+        judge &&
+        judge?.condition &&
+        conversation?.slice(-1)?.[0]?.role === 'assistant'
+      ) {
         // get last judge.numMessages messages
         const judgeMessages = conversation.slice(-judge.numMessages);
 
@@ -148,6 +153,7 @@ function Chat({
             messages: [],
             user_id: userUid,
             createdAt: new Date().toISOString(),
+            createdAtTimestamp: Timestamp.fromDate(new Date()),
             title: 'Web ask Brain2 Conversation',
             character: id,
             variation,
@@ -245,6 +251,7 @@ function Chat({
                             app: 'ios',
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
+                            createdAtTimestamp: Timestamp.fromDate(new Date()),
                             character: id,
                             variation,
                           });
@@ -285,6 +292,7 @@ function Chat({
                             app: 'android',
                             user_id: userUid,
                             createdAt: new Date().toISOString(),
+                            createdAtTimestamp: Timestamp.fromDate(new Date()),
                             character: id,
                             variation,
                           });
