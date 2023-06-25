@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -90,19 +91,19 @@ export default function CharacterCard({
           </Link>
         </div>
         <div
-          className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 
-        2xl:grid-cols-4 gap-4"
+          className="w-full flex flex-row gap-4 justify-center flex-wrap
+        md:justify-start"
         >
           {isLoading &&
             [1, 2, 3, 4, 5].map(() => (
               <div
-                className="min-h-[200px] w-full bg-white rounded-lg animate-pulse
+                className="min-h-[100px] min-w-[400px] bg-white rounded-lg animate-pulse
               shadow-2xl border border-gray-100"
               />
             ))}
           {!isLoading &&
             characters.map((character: any) => (
-              <div className="min-h-[100px]">
+              <div className="min-h-[100px] min-w-[500px]">
                 <div className="border rounded-lg border-gray-100 bg-white shadow-xl">
                   <div className="flex gap-4 px-4 py-4 items-center">
                     <div>
@@ -278,42 +279,119 @@ export default function CharacterCard({
                     {characterId === character.id &&
                       !characterStats.loading && (
                         <div className="flex flex-col justify-around my-2 items-center gap-2">
-                          <p>
-                            Total clicks: {characterStats?.data?.totalClicks}
-                          </p>
-                          <p>
-                            iOs clicks: {characterStats?.data?.iosClicksCount}
-                          </p>
-                          <p>
-                            Android clicks:{' '}
-                            {characterStats?.data?.androidClicksCount}
-                          </p>
-                          <p>
-                            Average chat messages:{' '}
-                            {characterStats?.data?.averageMessagesPerConversation?.toFixed(
-                              2
-                            )}
-                          </p>
-                          <p>
-                            Total conversations:{' '}
-                            {characterStats?.data?.totalConversations}
-                          </p>
-                          <p>
-                            Unique users: {characterStats?.data?.uniqueUsers}
-                          </p>
-                          <p>
-                            Clickthrough rate:{' '}
-                            {
-                              /* eslint-disable no-unsafe-optional-chaining */
-                              (
-                                (characterStats?.data?.totalClicks /
-                                  characterStats?.data?.uniqueUsers) *
-                                100
-                              ).toFixed(2)
-                              /* eslint-enable no-unsafe-optional-chaining */
-                            }
-                            %
-                          </p>
+                          <table className="table-auto">
+                            <thead>
+                              <tr>
+                                <th className="px-4 py-2" />
+                                {characterStats?.data?.map(
+                                  (stat: any, index: number) => (
+                                    <th className="px-4 py-2" key={stat.id}>
+                                      {characterStats?.data?.length === 1
+                                        ? ''
+                                        : `Variation ${index + 1}`}
+                                    </th>
+                                  )
+                                )}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  Total clicks
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat.totalClicks}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">iOs clicks</td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat.iosClicksCount}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  Android clicks
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat.androidClicksCount}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  Average chat messages
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat?.averageMessagesPerConversation?.toFixed(
+                                      2
+                                    ) || 0}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  <p>Total conversations</p>
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat?.totalConversations}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  Unique users
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {stat?.uniqueUsers}
+                                  </td>
+                                ))}
+                              </tr>
+                              <tr>
+                                <td className="border px-4 py-2">
+                                  Clickthrough rate
+                                </td>
+                                {characterStats?.data?.map((stat: any) => (
+                                  <td
+                                    className="border px-4 py-2"
+                                    key={stat.id}
+                                  >
+                                    {(
+                                      (stat?.totalClicks / stat?.uniqueUsers) * // eslint-disable-line
+                                        100 || 0
+                                    ).toFixed(2)}
+                                    %
+                                  </td>
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       )}
                   </div>
