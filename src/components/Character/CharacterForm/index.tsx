@@ -7,18 +7,18 @@ import {
   doc,
   getDoc,
   updateDoc,
-} from "@firebase/firestore";
-import { auth, db, storage } from "config/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import * as Yup from "yup";
-import { toast } from "react-toastify";
-import Chat from "@/components/Chat/Chat";
-import Button from "@/components/Button";
-import Variation from "./Variation";
+} from '@firebase/firestore';
+import { auth, db, storage } from 'config/firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import Chat from '@/components/Chat/Chat';
+import Button from '@/components/Button';
+import Variation from './Variation';
 
 function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,15 +27,15 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   // const [tryingOut, setTryingOut] = useState<boolean>(false);
   const [gpt, setGpt] = useState<any>(null);
   const [initialValues, setInitialValues] = useState<any>({
-    name: "",
-    avatar: "",
-    prompts: [{ role: "system", content: "" }],
+    name: '',
+    avatar: '',
+    prompts: [{ role: 'system', content: '' }],
     judge: {
-      condition: "",
-      message: "",
-      numMessages: "",
+      condition: '',
+      message: '',
+      numMessages: '',
     },
-    firstMessage: "",
+    firstMessage: '',
     messagesLimit: null,
     variations: [],
   });
@@ -46,7 +46,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     const { id } = router.query;
 
     try {
-      const docRef = doc(db, "characters", id as string);
+      const docRef = doc(db, 'characters', id as string);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const {
@@ -72,7 +72,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
         setAvatar(docAvatar);
       }
     } catch (error: any) {
-      toast.error("Error getting document:", error);
+      toast.error('Error getting document:', error);
     }
   }
 
@@ -87,7 +87,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       setIsLoading(true);
 
       let tmpAvatar = values.avatar;
-      if (typeof avatar === "string") {
+      if (typeof avatar === 'string') {
         tmpAvatar = avatar;
       } else {
         const uploadAvatar = ref(storage, `/user/${avatar?.name}`);
@@ -96,7 +96,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       }
 
       if (!isUpdate) {
-        await addDoc(collection(db, "characters"), {
+        await addDoc(collection(db, 'characters'), {
           userId: auth.currentUser?.uid,
           name: values.name,
           avatar: tmpAvatar,
@@ -111,9 +111,9 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
             )
           ),
         });
-        toast.success("character added successfully");
+        toast.success('character added successfully');
       } else {
-        await updateDoc(doc(db, "characters", router.query.id as string), {
+        await updateDoc(doc(db, 'characters', router.query.id as string), {
           name: values.name,
           prompts: values.prompts,
           avatar: tmpAvatar,
@@ -127,12 +127,12 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
           ),
         });
 
-        toast.success("character updated successfully");
+        toast.success('character updated successfully');
       }
 
-      push("/user");
+      push('/user');
     } catch (error: any) {
-      toast.error("Error adding document: ", error);
+      toast.error('Error adding document: ', error);
     } finally {
       setSubmitting(false);
       setIsLoading(false);
@@ -142,35 +142,35 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isUpdate) setIsEditing(true);
     const file = e.target.files?.[0];
-    console.log("file", file);
+    console.log('file', file);
     setAvatar(file);
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    name: Yup.string().required('Name is required'),
     prompts: Yup.array().of(
       Yup.object().shape({
-        role: Yup.string().required("Role is required"),
-        content: Yup.string().required("Content is required"),
+        role: Yup.string().required('Role is required'),
+        content: Yup.string().required('Content is required'),
       })
     ),
     variations: Yup.array().of(
       Yup.object().shape({
-        name: Yup.string().required("Name is required"),
+        name: Yup.string().required('Name is required'),
         prompts: Yup.array().of(
           Yup.object().shape({
-            role: Yup.string().required("Role is required"),
-            content: Yup.string().required("Content is required"),
+            role: Yup.string().required('Role is required'),
+            content: Yup.string().required('Content is required'),
           })
         ),
         judge: Yup.object()
-          .when("$showJudge", {
+          .when('$showJudge', {
             is: true,
             then: (schema) =>
               schema.shape({
-                condition: Yup.string().required("Condition is required"),
-                maxMessages: Yup.number().required("Max Messages is required"),
-                message: Yup.string().required("Message is required"),
+                condition: Yup.string().required('Condition is required'),
+                maxMessages: Yup.number().required('Max Messages is required'),
+                message: Yup.string().required('Message is required'),
               }),
             otherwise: (schema) =>
               schema.shape({
@@ -183,13 +183,13 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
       })
     ),
     judge: Yup.object()
-      .when("$showJudge", {
+      .when('$showJudge', {
         is: true,
         then: (schema) =>
           schema.shape({
-            condition: Yup.string().required("Condition is required"),
-            maxMessages: Yup.number().required("Max Messages is required"),
-            message: Yup.string().required("Message is required"),
+            condition: Yup.string().required('Condition is required'),
+            maxMessages: Yup.number().required('Max Messages is required'),
+            message: Yup.string().required('Message is required'),
           }),
         otherwise: (schema) =>
           schema.shape({
@@ -202,14 +202,14 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
   });
 
   const setFormikFields = (formikProps: any) => {
-    formikProps.setFieldValue("showJudge", !formikProps.values?.showJudge);
+    formikProps.setFieldValue('showJudge', !formikProps.values?.showJudge);
 
     formikProps.setFieldValue(
-      "judge",
+      'judge',
       !formikProps.values?.showJudge
         ? {
-            condition: "",
-            message: "",
+            condition: '',
+            message: '',
             numMessages: 1,
           }
         : null
@@ -220,11 +220,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "https://msa-stories.com/api/app-chat/generate-character",
+        'https://msa-stories.com/api/app-chat/generate-character',
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             query: gpt,
@@ -253,11 +253,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 initialValues?.variations &&
                 initialValues?.variations?.length > 0
               ) {
-                result = "Variation 1";
+                result = 'Variation 1';
               } else if (!isUpdate) {
-                result = "Create your character";
+                result = 'Create your character';
               } else {
-                result = "Update your character";
+                result = 'Update your character';
               }
               return result;
             })()}
@@ -266,7 +266,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
             <Button
               onClick={() => {
                 if (gpt === null) {
-                  setGpt("");
+                  setGpt('');
                 } else {
                   setGpt(null);
                 }
@@ -274,8 +274,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
               className="text-black border-2 border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-all duration-500"
             >
               {gpt !== null
-                ? "Go back to regular chat"
-                : "Try out GPT character creation ✨"}
+                ? 'Go back to regular chat'
+                : 'Try out GPT character creation ✨'}
             </Button>
           </div>
           <textarea
@@ -291,7 +291,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
             onClick={handleGptSubmit}
             className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700 transition-all duration-500"
           >
-            {isLoading ? "Generating..." : "Generate"}
+            {isLoading ? 'Generating...' : 'Generate'}
           </Button>
         </div>
       )}
@@ -313,11 +313,11 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                       initialValues?.variations &&
                       initialValues?.variations?.length > 0
                     ) {
-                      result = "Variation 1";
+                      result = 'Variation 1';
                     } else if (!isUpdate) {
-                      result = "Create your character";
+                      result = 'Create your character';
                     } else {
-                      result = "Update your character";
+                      result = 'Update your character';
                     }
                     return result;
                   })()}
@@ -328,7 +328,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     <Button
                       onClick={() => {
                         if (gpt === null) {
-                          setGpt("");
+                          setGpt('');
                         } else {
                           setGpt(null);
                         }
@@ -336,8 +336,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                       className="text-black border-2 border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-all duration-500"
                     >
                       {gpt !== null
-                        ? "Go back to regular chat"
-                        : "Try out GPT character creation ✨"}
+                        ? 'Go back to regular chat'
+                        : 'Try out GPT character creation ✨'}
                     </Button>
                   </div>
                 )}
@@ -356,7 +356,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     {!isUpdate && avatar && (
                       <img
                         src={
-                          typeof avatar === "string"
+                          typeof avatar === 'string'
                             ? avatar
                             : URL.createObjectURL(avatar)
                         }
@@ -434,18 +434,18 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                   type="button"
                   className={`flex flex-row gap-2 border rounded p-2 items-center justify-center ${
                     !formikProps.values?.showJudge
-                      ? "border-gray-200"
-                      : "border-gray-300"
+                      ? 'border-gray-200'
+                      : 'border-gray-300'
                   }`}
                   onClick={() => setFormikFields(formikProps)}
                 >
-                  {formikProps.values?.showJudge ? "Hide Judge" : "Add Judge"}
+                  {formikProps.values?.showJudge ? 'Hide Judge' : 'Add Judge'}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className={`h-6 w-6 ${
                       !formikProps.values?.showJudge
-                        ? "text-black hover:text-gray-500"
-                        : "text-gray-300 hover:text-gray-500"
+                        ? 'text-black hover:text-gray-500'
+                        : 'text-gray-300 hover:text-gray-500'
                     }`}
                     fill="none"
                     viewBox="0 0 24 24"
@@ -457,8 +457,8 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                       strokeWidth="2.5"
                       d={
                         !formikProps.values?.showJudge
-                          ? "M12 6v6m0 0v6m0-6h6m-6 0H6"
-                          : "M6 18L18 6M6 6l12 12"
+                          ? 'M12 6v6m0 0v6m0-6h6m-6 0H6'
+                          : 'M6 18L18 6M6 6l12 12'
                       }
                     />
                   </svg>
@@ -568,7 +568,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                       )}
                       <Button
                         type="button"
-                        onClick={() => innerPush({ role: "user", content: "" })}
+                        onClick={() => innerPush({ role: 'user', content: '' })}
                         className="flex flex-row gap-2 border border-gray-200 rounded p-2 items-center justify-center"
                       >
                         Add Prompt
@@ -600,16 +600,16 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                     disabled={isLoading}
                     className="text-white font-bold py-2 px-4 rounded bg-gray-800 hover:bg-gray-700"
                   >
-                    {isLoading ? "Saving..." : "Save"}
+                    {isLoading ? 'Saving...' : 'Save'}
                   </Button>
                 </div>
                 <div
                   className="relative"
                   style={{
-                    width: "100%",
-                    height: "500px",
-                    position: "relative",
-                    display: "none",
+                    width: '100%',
+                    height: '500px',
+                    position: 'relative',
+                    display: 'none',
                     // display: tryingOut ? 'block' : 'none',
                   }}
                 >
