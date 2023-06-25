@@ -286,9 +286,9 @@ export default function CharacterCard({
                                 {characterStats?.data?.map(
                                   (stat: any, index: number) => (
                                     <th className="px-4 py-2" key={stat.id}>
-                                      {characterStats?.data?.length === 1
-                                        ? ''
-                                        : `Variation ${index + 1}`}
+                                      {index === 0
+                                        ? 'Totals stats'
+                                        : `Variation ${index}`}
                                     </th>
                                   )
                                 )}
