@@ -24,7 +24,7 @@ function Character() {
   const [image, setImage] = useState(null);
   const [limitMessage, setLimitMessage] = useState<DocumentData | null>(null);
   const [characterLimit, setCharacterLimit] = useState(undefined);
-  const [variation, setVariation] = useState(null);
+  const [variation, setVariation] = useState<number | null>(null);
 
   async function getSelectedData() {
     const { id } = router.query;
@@ -61,7 +61,7 @@ function Character() {
               messagesLimit: variationMessagesLimit,
             } = randomVariation;
 
-            setVariation(randomVariation);
+            setVariation(randomIndex);
             setFirstMessage(variationFirstMessage);
             setPrompts(variationPrompts);
             setJudge(variationJudge);
