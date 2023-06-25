@@ -90,14 +90,10 @@ export default function CharacterCard({
             </span>
           </Link>
         </div>
-        <div
-          className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4"
-        >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
           {isLoading &&
             [1, 2, 3, 4, 5].map(() => (
-              <div
-                className="min-h-[200px] min-w-[500px] bg-white rounded-lg animate-pulse shadow-2xl border border-gray-100"
-              />
+              <div className="min-h-[200px] min-w-[500px] bg-white rounded-lg animate-pulse shadow-2xl border border-gray-100" />
             ))}
           {!isLoading &&
             characters.map((character: any) => (
