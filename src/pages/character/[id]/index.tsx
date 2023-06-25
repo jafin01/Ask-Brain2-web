@@ -114,7 +114,7 @@ function Character() {
           avatarImage={image}
           limitMessage={limitMessage}
           characterLimit={characterLimit}
-          variation={variation}
+          variation={variation || 0}
         />
       </div>
     </div>
