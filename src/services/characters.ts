@@ -8,11 +8,11 @@ import {
   query,
   updateDoc,
   where,
-} from "@firebase/firestore";
-import { db } from "config/firebase";
+} from '@firebase/firestore';
+import { db } from 'config/firebase';
 
 export async function characterData(userId: string | undefined) {
-  const characters = await getDocs(collection(db, "characters"));
+  const characters = await getDocs(collection(db, 'characters'));
   const characterArray: any[] = [];
 
   characters.forEach((docId: any) => {
@@ -24,32 +24,32 @@ export async function characterData(userId: string | undefined) {
 }
 
 export async function updateCharacter() {
-  const docRef = doc(db, "characters", "sdgdJGK3TRc4QjwUuYII");
+  const docRef = doc(db, 'characters', 'sdgdJGK3TRc4QjwUuYII');
   await updateDoc(docRef, {
-    name: "kusuma",
-    avatar: "https://www.googlemap.com",
-    description: "this is the updated character",
+    name: 'kusuma',
+    avatar: 'https://www.googlemap.com',
+    description: 'this is the updated character',
   });
 }
 
 export async function removeCharacter() {
-  const docRef = doc(db, "characters", "sdgdJGK3TRc4QjwUuYII");
+  const docRef = doc(db, 'characters', 'sdgdJGK3TRc4QjwUuYII');
   await deleteDoc(docRef);
 }
 
 export async function getCharacterStats(characterId: string) {
-  const collectionRef = collection(db, "clicks");
-  const character = await getDoc(doc(db, "characters", characterId));
+  const collectionRef = collection(db, 'clicks');
+  const character = await getDoc(doc(db, 'characters', characterId));
 
   const iOSQuery = query(
     collectionRef,
-    where("app", "==", "ios"),
-    where("character", "==", characterId)
+    where('app', '==', 'ios'),
+    where('character', '==', characterId)
   );
   const androidQuery = query(
     collectionRef,
-    where("app", "==", "android"),
-    where("character", "==", characterId)
+    where('app', '==', 'android'),
+    where('character', '==', characterId)
   );
 
   const getClicksCount = async (clicksCountQuery: any) => {
@@ -65,7 +65,7 @@ export async function getCharacterStats(characterId: string) {
   const [averageMessagesPerConversation, totalConversations, uniqueUsers] =
     await Promise.all([
       getDocs(
-        query(collection(db, "chats"), where("character", "==", characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => {
         let totalMessages = 0;
         let totalConversationsCount = 0;
@@ -79,11 +79,11 @@ export async function getCharacterStats(characterId: string) {
       }),
 
       getDocs(
-        query(collection(db, "chats"), where("character", "==", characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => querySnapshot.size),
 
       getDocs(
-        query(collection(db, "chats"), where("character", "==", characterId))
+        query(collection(db, 'chats'), where('character', '==', characterId))
       ).then((querySnapshot) => {
         const users = new Set();
         querySnapshot.forEach((docSnapshot) => {
@@ -112,15 +112,15 @@ export async function getCharacterStats(characterId: string) {
           variationsArray.map(async (variation) => {
             const iOSQuery1 = query(
               collectionRef,
-              where("app", "==", "ios"),
-              where("character", "==", characterId),
-              where("variation", "==", variation)
+              where('app', '==', 'ios'),
+              where('character', '==', characterId),
+              where('variation', '==', variation)
             );
             const androidQuery1 = query(
               collectionRef,
-              where("app", "==", "android"),
-              where("character", "==", characterId),
-              where("variation", "==", variation)
+              where('app', '==', 'android'),
+              where('character', '==', characterId),
+              where('variation', '==', variation)
             );
 
             const getClicksCount1 = async (clicksCountQuery: any) => {
@@ -140,9 +140,9 @@ export async function getCharacterStats(characterId: string) {
             ] = await Promise.all([
               getDocs(
                 query(
-                  collection(db, "chats"),
-                  where("character", "==", characterId),
-                  where("variation", "==", variation)
+                  collection(db, 'chats'),
+                  where('character', '==', characterId),
+                  where('variation', '==', variation)
                 )
               ).then((querySnapshot) => {
                 let totalMessages = 0;
@@ -158,17 +158,17 @@ export async function getCharacterStats(characterId: string) {
 
               getDocs(
                 query(
-                  collection(db, "chats"),
-                  where("character", "==", characterId),
-                  where("variation", "==", variation)
+                  collection(db, 'chats'),
+                  where('character', '==', characterId),
+                  where('variation', '==', variation)
                 )
               ).then((querySnapshot) => querySnapshot.size),
 
               getDocs(
                 query(
-                  collection(db, "chats"),
-                  where("character", "==", characterId),
-                  where("variation", "==", variation)
+                  collection(db, 'chats'),
+                  where('character', '==', characterId),
+                  where('variation', '==', variation)
                 )
               ).then((querySnapshot) => {
                 const users = new Set();
@@ -193,11 +193,11 @@ export async function getCharacterStats(characterId: string) {
 
   const views = await getDocs(
     query(
-      collection(db, "chats"),
-      where("character", "==", characterId),
+      collection(db, 'chats'),
+      where('character', '==', characterId),
       where(
-        "createdAtTimestamp",
-        ">",
+        'createdAtTimestamp',
+        '>',
         // 24 hours ago
         new Timestamp(
           Math.floor((new Date().getTime() - 24 * 60 * 60 * 1000) / 1000),
@@ -232,7 +232,7 @@ export async function getCharacterStats(characterId: string) {
 
       if (viewsChart[interval]) viewsChart[interval].value += 1;
 
-      console.log("viewsChart", viewsChart);
+      console.log('viewsChart', viewsChart);
     });
     return viewsChart;
   });
