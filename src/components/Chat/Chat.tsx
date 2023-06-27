@@ -162,7 +162,9 @@ function Chat({
           });
         } else if (conversationId) {
           await updateDoc(doc(db, 'chats', conversationId), {
-            messages: conversation,
+            messages: conversation.filter(
+              (m) => m.content !== '' && !m.loading
+            ),
             challengeCompleted,
           });
         }
