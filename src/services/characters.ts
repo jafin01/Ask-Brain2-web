@@ -230,7 +230,7 @@ export async function getCharacterStats(characterId: string) {
       // 30 minutes interval
       const interval = Math.floor(minutesSince24HoursAgo / 30);
 
-      viewsChart[interval].value += 1;
+      if (viewsChart[interval]) viewsChart[interval].value += 1;
 
       console.log('viewsChart', viewsChart);
     });
