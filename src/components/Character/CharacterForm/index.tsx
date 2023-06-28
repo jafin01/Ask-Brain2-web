@@ -417,6 +417,7 @@ function CharacterForm({ isUpdate }: { isUpdate: boolean }) {
                 <Field
                   name="messagesLimit"
                   id="messagesLimit"
+                  min="1"
                   type="number"
                   className="p-2 border border-gray-200 rounded"
                 />
