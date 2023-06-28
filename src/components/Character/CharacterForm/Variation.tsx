@@ -94,6 +94,7 @@ function Variation({
             id={`variations[${index}].messagesLimit`}
             name={`variations[${index}].messagesLimit`}
             type="number"
+            min="1"
             className="p-2 border border-gray-200 rounded"
           />
         </label>
