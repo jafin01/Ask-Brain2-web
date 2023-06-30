@@ -1,16 +1,23 @@
-import { functions } from 'config/firebase';
-import { httpsCallable } from 'firebase/functions';
-
 const sendMessage = async (messages: { content: string; role: string }[]) => {
   try {
-    const generateChat = httpsCallable(functions, 'generateChat');
+    const response: any = await fetch(
+      // "http://localhost:8000/api/app-chat/generate",
+      'https://msa-stories.com/api/app-chat/generate',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: messages.filter((message) => message.content),
+        }),
+      }
+    );
 
-    const response: any = await generateChat({
-      model: 'gpt-3.5-turbo',
-      prompt: messages.filter((message) => message.content),
-    });
+    const data = await response.json();
 
-    return response.data.choices[0].message.content;
+    return data.response.choices[0].message.content;
   } catch (error) {
     console.error('Error:', error);
   }

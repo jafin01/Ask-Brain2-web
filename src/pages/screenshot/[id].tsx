@@ -57,11 +57,11 @@ export default function Screenshot() {
               Ask Brain2
             </h1>
           </div>
-          <h1 className="text-gray-100 text-right text-base lg:text-xl font-mono">
+          <h1 className="text-gray-100 text-right text-base lg:text-xl font-mono overflow-hidden whitespace-nowrap overflow-ellipsis">
             {updatedChat.title}
           </h1>
         </div>
-        <main className="flex-1 flex flex-col gap-1">
+        <main className="flex-1 flex flex-col gap-1 min-h-screen">
           {updatedChat.messages?.reverse().map((message: any) => {
             return message.role === 'user' ? (
               <div className="px-4 font-lato">

@@ -1,0 +1,9 @@
+[debug] [2023-06-30T08:43:49.638Z] ----------------------------------------------------------------------
+[debug] [2023-06-30T08:43:49.639Z] Command:       /usr/local/bin/firebase /Users/hammymy/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase deploy --only functions:onMessageUpdate
+[debug] [2023-06-30T08:43:49.640Z] CLI Version:   12.0.0
+[debug] [2023-06-30T08:43:49.640Z] Platform:      darwin
+[debug] [2023-06-30T08:43:49.641Z] Node Version:  v16.16.0
+[debug] [2023-06-30T08:43:49.645Z] Time:          Fri Jun 30 2023 14:13:49 GMT+0530 (India Standard Time)
+[debug] [2023-06-30T08:43:49.646Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-06-30T08:43:49.651Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]

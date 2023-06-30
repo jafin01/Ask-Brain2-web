@@ -26,7 +26,13 @@ export default function CreateCharacter() {
     isLoggedIn();
   }, []);
 
-  if (!isAuthenticated) return null;
+  if (
+    !isAuthenticated ||
+    !['81LSvPTJ5qgrmBglmUVklyczMPR2', 'Y8X1W3GjupchKGT3KcASQ2m9UVC2'].includes(
+      auth?.currentUser?.uid || ''
+    )
+  )
+    return null;
 
   return <CharacterForm isUpdate={false} />;
 }

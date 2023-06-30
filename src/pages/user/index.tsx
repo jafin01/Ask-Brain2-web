@@ -1,4 +1,10 @@
-import { deleteDoc, doc } from '@firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+} from '@firebase/firestore';
 import { auth, db } from 'config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
@@ -44,6 +50,47 @@ export default function UserProfile() {
       }
     } else {
       toast.error('Incorrect input. Please enter the character name exactly.');
+    }
+  };
+
+  const handleDuplicate = async (characterId: any) => {
+    try {
+      setIsLoading(true);
+      const docRef = doc(db, 'characters', characterId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        docSnap.data();
+        const {
+          name,
+          prompts,
+          firstMessage,
+          judge,
+          avatar,
+          messageLimit,
+          userId,
+        } = docSnap.data()!;
+        const newCharacter = {
+          name,
+          prompts,
+          firstMessage,
+          judge,
+          avatar,
+          messageLimit,
+          userId,
+        } as any;
+
+        Object.keys(newCharacter).forEach(
+          (key) => newCharacter[key] === undefined && delete newCharacter[key]
+        );
+        const newDoc = await addDoc(collection(db, 'characters'), newCharacter);
+        const newCharacterDoc = {
+          id: newDoc.id,
+          ...newCharacter,
+        } as never;
+        setCharacters([newCharacterDoc, ...characters]);
+      }
+    } catch (error: any) {
+      console.log(error);
     }
   };
 
@@ -112,6 +159,7 @@ export default function UserProfile() {
           setShowModal={setShowDeleteModal}
           setSelectedCharacterName={setSelectedCharacterName}
           updatedCharacters={characters}
+          handleDuplicate={handleDuplicate}
         />
       </div>
       {showDeleteModal && (
