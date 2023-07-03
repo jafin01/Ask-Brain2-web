@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-black via-app-bg to-grad-purple">
+    <div className="w-full bg-gradient-to-br from-black via-app-bg to-app-bg">
       <Navbar
         isOpen={isOpen}
         handleOpen={handleOpen}
