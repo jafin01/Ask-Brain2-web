@@ -1,22 +1,55 @@
+/* eslint-disable consistent-return */
 // import { connectFunctionsEmulator } from 'firebase/functions';
-import React, { useEffect, useState } from 'react';
-// import { functions } from 'config/firebase';
+import React, { useEffect, useRef, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'config/firebase';
+import { useScroll, useTransform, motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
-import FeatureList from '@/layouts/FeatureList';
 import MetricsList from '@/layouts/MetricsList';
 import Accordion from '@/components/Accordian';
 import PricingCard from '@/components/PricingCard';
 import Footer from '@/components/Footer';
 import HeroHead from '@/components/HeroSection/HeroHead';
 import HeroBody from '@/components/HeroSection/HeroBody';
+import Features from '@/components/FeatureSection';
 
 export default function Home() {
-  // connectFunctionsEmulator(functions, 'localhost', 5001);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const [screenHeight, setScreenHeight] = useState<number>(0);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const featureRef: any = useRef(null);
+
+  // useEffect(() => {
+  //   if (featureRef.current) {
+  //     const options = {
+  //       root: null,
+  //       rootMargin: '0px',
+  //       threshold: 0,
+  //     };
+
+  //     const observer = new IntersectionObserver((entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           setIsFeaturesVisible(true);
+
+  //           const elem = document.getElementById('features');
+  //           elem?.scrollIntoView({
+  //             behavior: 'smooth',
+  //           });
+  //         } else {
+  //           setIsFeaturesVisible(false);
+  //         }
+  //       });
+  //     }, options);
+
+  //     observer.observe(featureRef.current);
+
+  //     return () => {
+  //       observer.disconnect();
+  //     };
+  //   }
+  // }, [featureRef]);
 
   const isLoggedIn = async () => {
     const unsubscribe = await onAuthStateChanged(auth, (user) => {
@@ -27,6 +60,7 @@ export default function Home() {
 
   useEffect(() => {
     const unsubscribePromise = isLoggedIn();
+    setScreenHeight(window.innerHeight);
 
     return () => {
       unsubscribePromise.then((unsubscribe) => {
@@ -52,8 +86,6 @@ export default function Home() {
     setIsOpen(!isOpen);
   };
 
-  // if (!isAuthenticated) return null;
-
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault(); // prevent the default behavior
     if (isOpen) handleOpen(); // close the navbar
@@ -66,8 +98,17 @@ export default function Home() {
     });
   };
 
+  console.log('screenHeight', screenHeight);
+
+  const { scrollY } = useScroll();
+  const y = useTransform(
+    scrollY,
+    [screenHeight / 2, screenHeight * 2],
+    ['0%', '50%']
+  );
+
   return (
-    <div className="w-full bg-gradient-to-br from-black via-app-bg to-app-bg">
+    <div className="w-full bg-gradient-to-br from-black via-black to-app-bg">
       <Navbar
         isOpen={isOpen}
         handleOpen={handleOpen}
@@ -75,22 +116,32 @@ export default function Home() {
         isScrolling={isScrolling}
         isAuthenticated={isAuthenticated}
       />
-      <section
-        id="home"
-        className="px-10 pt-24 md:pt-32 lg:pt-32 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center"
-      >
-        <section className="w-full lg:flex-col lg:justify-center lg:items-center selection:bg-lime-300 selection:text-black">
-          <HeroHead />
-          <HeroBody />
+      <motion.div className="overflow-y-scroll" style={{ y }}>
+        <section
+          id="home"
+          className="px-10 pt-24 md:pt-32 lg:pt-32 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center"
+        >
+          <section className="w-full lg:flex-col lg:justify-center lg:items-center selection:bg-lime-300 selection:text-black">
+            <HeroHead />
+            <HeroBody />
+          </section>
         </section>
-      </section>
 
-      <section className="w-full py-28 px-32 text-gray-300 font-poppins">
-        <MetricsList />
-      </section>
+        <section
+          id="metricsList"
+          className="px-10 pt-28 md:pt-32 lg:pt-32 pb-64 w-full text-gray-300 font-poppins relative"
+        >
+          <MetricsList />
+        </section>
+      </motion.div>
 
-      <section id="features" className="px-10 w-full text-gray-300 py-10">
-        <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed">
+      <section
+        id="features"
+        className="px-24 relative w-full text-gray-300 bg-gradient-to-b from-gray-900 via-black to-black py-10"
+        ref={featureRef}
+      >
+        {/* <div className=""> */}
+        <div className="text-3xl md:text-4xl lg:text-5xl py-14 font-poppins font-bold leading-relaxed">
           <span className="md:block md:py-5">
             Maximise your potential with{' '}
           </span>
@@ -98,9 +149,10 @@ export default function Home() {
             ASK BRAIN 2
           </span>
         </div>
-        <div id="about" className="pt-16">
-          <FeatureList />
+        <div id="about" className="pt-16 h-full relative">
+          <Features />
         </div>
+        {/* </div> */}
       </section>
 
       <section id="faq" className="px-10 py-32 w-full text-gray-300">
