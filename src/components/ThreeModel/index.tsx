@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 function ThreeSphere() {
@@ -8,8 +9,8 @@ function ThreeSphere() {
   const sphereRef = useRef<THREE.Mesh>();
 
   useEffect(() => {
-    let mouseX = 0;
-    let mouseY = 0;
+    const mouseX = 0;
+    const mouseY = 0;
 
     const container = containerRef.current;
 
@@ -18,20 +19,23 @@ function ThreeSphere() {
     const scene = new THREE.Scene();
 
     // Create a sphere
-    const geometry = new THREE.SphereGeometry(5, 64, 64);
-    const material = new THREE.MeshStandardMaterial({ color: '#00fff' });
+    const geometry = new THREE.SphereGeometry(15, 32, 16);
+    const material = new THREE.MeshStandardMaterial({
+      color: '#00fff',
+      wireframe: true,
+    });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
     sphereRef.current = mesh;
 
     // Add lighting
-    const pointLight = new THREE.PointLight(0xfffff, 1, 100);
-    pointLight.position.set(0, 10, 10);
-    scene.add(pointLight);
+    // const pointLight = new THREE.PointLight(0x00fff, 2, 100);
+    // pointLight.position.set(0, 10, 10);
+    // scene.add(pointLight);
 
     // Add camera
     const camera = new THREE.PerspectiveCamera(
-      45,
+      50,
       container.clientWidth / container.clientHeight,
       0.1,
       100
@@ -47,21 +51,21 @@ function ThreeSphere() {
     // Add controlls
     const controls = new OrbitControls(camera, container);
     controls.enableDamping = true;
-    controls.enablePan = false;
+    // controls.enablePan = false;
     controls.enableZoom = false;
     controls.autoRotate = true;
     // controls.autoRotateSpeed = 0.5;
 
-    // const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    // scene.add(ambientLight);
+    const ambientLight = new THREE.AmbientLight(0xfffff, 0.5);
+    scene.add(ambientLight);
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event;
-      const { left, top, width, height } = container.getBoundingClientRect();
+    // const handleMouseMove = (event: MouseEvent) => {
+    //   const { clientX, clientY } = event;
+    //   const { left, top, width, height } = container.getBoundingClientRect();
 
-      mouseX = ((clientX - left) / width) * 2 - 1;
-      mouseY = (-(clientY - top) / height) * 2 + 1;
-    };
+    //   mouseX = ((clientX - left) / width) * 2 - 1;
+    //   mouseY = (-(clientY - top) / height) * 2 + 1;
+    // };
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -92,13 +96,39 @@ function ThreeSphere() {
       window.requestAnimationFrame(loop);
     };
     loop();
-    container.addEventListener('mousemove', handleMouseMove);
+    // container.addEventListener('mousemove', handleMouseMove);
+
+    // add animation
+    const tl = gsap.timeline({
+      defaults: { duration: 1, delay: 0.5, ease: 'power3.inOut' },
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Play the animation when the element is in view
+          tl.fromTo(mesh.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 });
+          tl.fromTo(
+            '.feature-card',
+            { opacity: 0, duration: 0.5 },
+            { opacity: 1, stagger: 0.2 }
+          );
+          // Stop observing the element after playing the animation
+          // observer.unobserve(entry.target);
+        } else {
+          tl.fromTo('.feature-card', { opacity: 1 }, { opacity: 0, delay: 0 });
+        }
+      });
+    });
+    const elem = document.getElementById('features');
+    observer.observe(elem as Element);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      container.removeEventListener('mousemove', handleMouseMove);
+      // container.removeEventListener('mousemove', handleMouseMove);
 
       // Cleanup the scene and renderer
+      // observer.disconnect();
       container.removeChild(renderer.domElement);
       scene.remove(mesh);
       geometry.dispose();
@@ -106,12 +136,7 @@ function ThreeSphere() {
     };
   }, []);
 
-  return (
-    <div
-      className="w-full top-0 left-0 z-50 m-0 flex h-screen justify-center items-center"
-      ref={containerRef}
-    />
-  );
+  return <div className="w-full flex h-screen" ref={containerRef} />;
 }
 
 export default ThreeSphere;
