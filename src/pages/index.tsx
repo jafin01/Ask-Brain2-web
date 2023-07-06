@@ -20,37 +20,6 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const featureRef: any = useRef(null);
 
-  // useEffect(() => {
-  //   if (featureRef.current) {
-  //     const options = {
-  //       root: null,
-  //       rootMargin: '0px',
-  //       threshold: 0,
-  //     };
-
-  //     const observer = new IntersectionObserver((entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           setIsFeaturesVisible(true);
-
-  //           const elem = document.getElementById('features');
-  //           elem?.scrollIntoView({
-  //             behavior: 'smooth',
-  //           });
-  //         } else {
-  //           setIsFeaturesVisible(false);
-  //         }
-  //       });
-  //     }, options);
-
-  //     observer.observe(featureRef.current);
-
-  //     return () => {
-  //       observer.disconnect();
-  //     };
-  //   }
-  // }, [featureRef]);
-
   const isLoggedIn = async () => {
     const unsubscribe = await onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
@@ -100,12 +69,18 @@ export default function Home() {
 
   console.log('screenHeight', screenHeight);
 
-  const { scrollY } = useScroll();
-  const y = useTransform(
-    scrollY,
-    [screenHeight / 2, screenHeight * 2],
-    ['0%', '50%']
-  );
+  const { scrollYProgress } = useScroll({
+    target: featureRef,
+    offset: ['start start', 'end start'],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
+
+  const { scrollYProgress: scrollYProgressTitle } = useScroll({
+    target: featureRef,
+    offset: ['center start', 'end start'],
+  });
+  // const { scrollYProgress: scrollYProgressTitle } = useScroll();
+  const xTitle = useTransform(scrollYProgressTitle, [0, 1], [0, -700]);
 
   return (
     <div className="w-full bg-gradient-to-br from-black via-black to-app-bg">
@@ -116,7 +91,7 @@ export default function Home() {
         isScrolling={isScrolling}
         isAuthenticated={isAuthenticated}
       />
-      <motion.div className="overflow-y-scroll" style={{ y }}>
+      <motion.div ref={featureRef} style={{ y }}>
         <section
           id="home"
           className="px-10 pt-24 md:pt-32 lg:pt-32 lg:flex w-full lg:min-h-screen lg:justify-center lg:items-center"
@@ -129,7 +104,7 @@ export default function Home() {
 
         <section
           id="metricsList"
-          className="px-10 pt-28 md:pt-32 lg:pt-32 pb-64 w-full text-gray-300 font-poppins relative"
+          className="px-10 pt-28 md:pt-28 lg:pb-96 w-full text-gray-300 font-poppins relative"
         >
           <MetricsList />
         </section>
@@ -137,22 +112,33 @@ export default function Home() {
 
       <section
         id="features"
-        className="px-24 relative w-full text-gray-300 bg-gradient-to-b from-gray-900 via-black to-black py-10"
-        ref={featureRef}
+        className="relative w-full text-gray-300 bg-gradient-to-b from-gray-900 via-black to-black py-10"
+        // ref={featureRef}
       >
-        {/* <div className=""> */}
-        <div className="text-3xl md:text-4xl lg:text-5xl py-14 font-poppins font-bold leading-relaxed">
-          <span className="md:block md:py-5">
-            Maximise your potential with{' '}
-          </span>
-          <span className="text-4xl md:text-5xl lg:text-6xl text-transparent md:py-5 bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-grad-green md:tracking-tight">
-            ASK BRAIN 2
-          </span>
-        </div>
-        <div id="about" className="pt-16 h-full relative">
+        {/* <div className="px-24 text-3xl md:text-4xl lg:text-5xl pt-14 font-poppins font-bold leading-relaxed">
+        </div> */}
+        {/* <span className="md:block px-24 text-3xl md:text-4xl lg:text-5xl pt-14 font-poppins font-light leading-relaxed">
+          Get started with{' '}
+        </span> */}
+        <motion.h3
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          exit={{ opacity: 0, y: 30, transition: { duration: 1 } }}
+          className="px-24 text-center text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-cyan-300 to-lime-300 font-poppins text-4xl font-thin"
+        >
+          Get Started with
+        </motion.h3>
+
+        <motion.h1
+          style={{ x: xTitle }}
+          className="font-poppins pl-56 text-4xl md:text-5xl font-semibold lg:text-[20rem] whitespace-nowrap w-max text-transparent bg-clip-text bg-gradient-to-b from-gray-700 to-gray-900 md:tracking-tight"
+        >
+          Ask Brain2
+        </motion.h1>
+        <div id="about" className="h-full relative">
           <Features />
         </div>
-        {/* </div> */}
       </section>
 
       <section id="faq" className="px-10 py-32 w-full text-gray-300">
