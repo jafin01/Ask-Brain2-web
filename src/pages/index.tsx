@@ -143,7 +143,10 @@ export default function Home() {
 
       <section id="faq" className="px-10 py-32 w-full text-gray-300">
         <div className="text-3xl md:text-4xl lg:text-5xl font-poppins font-bold leading-relaxed pb-10 text-center">
-          <h1 className="md:py-4">FAQ</h1>
+          {/* <h1 className="md:py-4">FAQ</h1> */}
+          <h3 className="text-center pb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-cyan-300 to-lime-300 font-poppins font-thin">
+            Frequently Asked Questions
+          </h3>
         </div>
         <Accordion title="How do we use">We can use it</Accordion>
         <Accordion title="How do we use">We can use it</Accordion>
@@ -153,11 +156,15 @@ export default function Home() {
       </section>
 
       <section id="pricing" className="px-10 font-poppins">
-        <div className="text-center text-gray-300 pb-10 pt-10">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6">
+        <div className="text-center text-gray-300 pb-4 pt-10">
+          <h1
+            className="md:text-4xl lg:text-5xl mb-4 px-24 text-center text-transparent bg-clip-text bg-gradient-to-r
+          from-orange-400 via-cyan-300 to-lime-300 font-poppins text-4xl
+          font-thin"
+          >
             Subscription Options
           </h1>
-          <h3 className="text-sm md:text-lg font-normal text-gray-400 md:mb-12">
+          <h3 className="text-lg md:text-xl font-extralight text-gray-500 md:mb-12">
             We have got plans which fits your budget
           </h3>
         </div>
